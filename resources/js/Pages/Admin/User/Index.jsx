@@ -1,0 +1,360 @@
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import { Button, Form, InputNumber, notification, Row, Select, Space, Table } from "antd";
+import Search from "antd/es/input/Search";
+import {
+    PhoneOutlined ,
+    LockOutlined,
+    MailOutlined,
+    PlusOutlined,
+    UserOutlined,
+    EditOutlined,
+    DeleteOutlined,
+    QuestionCircleOutlined,
+} from "@ant-design/icons";
+import Modal from "antd/es/modal/Modal";
+import { useEffect, useState } from "react";
+import Input from "antd/es/input/Input";
+import axios from "axios";
+import Column from "antd/es/table/Column";
+
+export default function Index({auth}) {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(1);
+    const [search, setSearch] = useState("");
+    const [searching, setSearching] = useState(false);
+    const [sortField, setSortField] = useState("id");
+    const [sortOrder, setSortOrder] = useState("asc");
+
+    const getData = async (isSearch = false) => {
+        if (isSearch) {
+            setSearching(true);
+        }
+        setLoading(true);
+
+        const params = [
+            `page=${page}`,
+            `search=${search}`,
+            `sortField=${sortField}`,
+            `sortOrder=${sortOrder}`,
+        ].join("&");
+
+        try {
+            const res = await axios.get(`/admin/user/getdata?${params}`);
+            setData(res.data.data);
+            setTotal(res.data.total);
+        } catch {
+            console.log(err);
+        } finally {
+            setLoading(false);
+            setSearching(false);
+        }
+    };
+
+    //antd onchange table has 3 params
+    const handleTableChange = (pagination, filters, sorter) => {
+        setSortField(sorter.field || "id");
+        setSortOrder(sorter.order === "ascend" ? "asc" : "desc");
+        setPage(pagination.current);
+    };
+
+    useEffect(() => {
+        getData(false);
+    }, [page, sortField, sortOrder]);
+
+    const [user, setUser] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (type, placement, title, msg) => {
+        api[type]({
+            message: title,
+            description: msg,
+            placement: placement,
+        });
+    };
+
+    const [form] = Form.useForm();
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const showCreateModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+        setUser(false);
+        setErrors({});
+        getData();
+    };
+
+    const handleSubmit = async (values) => {
+        setProcessing(true);
+        try {
+            const res = await axios.post("/admin/user/store", values);
+            if (res.data.status === "created") {
+                handleCancel();
+                openNotification(
+                    "success",
+                    "bottomRight",
+                    "Created!",
+                    "The user has been created successfully."
+                );
+            }
+        } catch (err) {
+            setErrors(err.response.data.errors);
+        } finally {
+            setProcessing(false);
+        }
+    };
+
+    const handleDelete = async(id) => {
+        setLoading(true);
+        
+        try{
+            const res = await axios.delete(`/admin/user/destroy/${id}`);
+
+            if (res.data.status === "deleted") {
+                handleCancel();
+                openNotification(
+                    "success",
+                    "bottomRight",
+                    "Created!",
+                    "The user has been deleted successfully."
+                );
+            }
+
+        }catch(err){
+            console.log(err)
+        }finally{
+            setLoading(false);
+        }
+    }
+
+    return (
+        <AuthenticatedLayout header="User Management" auth={auth}>
+            <Head title="User Management" />
+            {contextHolder}
+            <div className="py-2">List of Users</div>
+            <div className="flex gap-2 mb-2">
+                <Search
+                    placeholder="Input name or email"
+                    allowClear
+                    enterButton="Search"
+                    loading={searching}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onSearch={() => getData(true)}
+                />
+                <Button
+                    type="primary"
+                    onClick={showCreateModal}
+                    icon={<PlusOutlined />}
+                >
+                    New
+                </Button>
+            </div>
+            <div className="overflow-x-auto">
+                <Table
+                    loading={loading}
+                    dataSource={data}
+                    rowKey={(data) => data.id}
+                    pagination={{
+                        current: page,
+                        total: total,
+                        pageSize: 10,
+                        showSizeChanger: false,
+                        onChange: (page) => setPage(page),
+                    }}
+                    onChange={handleTableChange}
+                >
+                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+
+                    <Column
+                        sorter={true}
+                        title="Name"
+                        dataIndex="name"
+                        key="name"
+                    />
+                    <Column
+                        sorter={true}
+                        title="Email"
+                        dataIndex="email"
+                        key="email"
+                    />
+                    <Column
+                        title="Action"
+                        key="action"
+                        render={(_, record) => (
+                            <Space>
+                                <Button
+                                    type="primary"
+                                    shape="circle"
+                                    icon={<EditOutlined />}
+                                    // onClick={() => showEditModal(record)}
+                                ></Button>
+                                <Button
+                                    danger
+                                    shape="circle"
+                                    icon={<DeleteOutlined />}
+                                    onClick={() =>
+                                        Modal.confirm({
+                                            title: "Delete?",
+                                            icon: <QuestionCircleOutlined />,
+                                            content:
+                                                "Are you sure you want to delete this data?",
+                                            okText: "Yes",
+                                            cancelText: "No",
+                                            onOk() {
+                                                handleDelete(record.id);
+                                            },
+                                        })
+                                    }
+                                />
+                            </Space>
+                        )}
+                    />
+                </Table>
+            </div>
+
+            <Modal
+                title={user ? "UPDATE USER INFORMATION" : "USER INFORMATION"}
+                open={isModalOpen}
+                onCancel={handleCancel}
+                maskClosable={false}
+                footer={false}
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    autoComplete="off"
+                    onFinish={handleSubmit}
+                >
+                    <Form.Item>
+                        <Form.Item
+                            label="NAME"
+                            name="name"
+                            // Custom error handling
+                            validateStatus={errors?.name ? "error" : ""}
+                            help={errors?.name ? errors.name[0] : ""}
+                        >
+                            <Input
+                                placeholder="Name"
+                                prefix={<UserOutlined />}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            label="EMAIL"
+                            name="email"
+                            validateStatus={errors?.email ? "error" : ""}
+                            help={errors?.email ? errors?.email[0] : ""}
+                        >
+                            <Input
+                                placeholder="Email"
+                                prefix={<MailOutlined />}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="CONTACT"
+                            name="contact"
+                            validateStatus={errors?.contact ? "error" : ""}
+                            help={errors?.contact ? errors?.contact[0] : ""}
+                        >
+                            <InputNumber
+                                placeholder="Contact"
+                                prefix={<PhoneOutlined />}
+                                className="w-full"
+                            />
+                        </Form.Item>
+
+                        <div className="flex gap-4">
+                            <Form.Item
+                                label="ROLE"
+                                name="role"
+                                validateStatus={errors?.role ? "error" : ""}
+                                help={errors?.role ? errors?.role[0] : ""}
+                                className="w-full"
+                            >
+                                <Select
+                                    options={[
+                                        { value: 0, label: "Admin" },
+                                        { value: 1, label: "Staff 1" },
+                                        { value: 2, label: "Staff 2" },
+                                        { value: 3, label: "Mayor" },
+                                        { value: 4, label: "On-Site Engineer" },
+                                    ]}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="STATUS"
+                                name="status"
+                                validateStatus={errors?.status ? "error" : ""}
+                                help={errors?.status ? errors?.status[0] : ""}
+                                className="w-full"
+                            >
+                                <Select
+                                    options={[
+                                        { value: 0, label: "Active" },
+                                        { value: 1, label: "Inactive" },
+                                    ]}
+                                />
+                            </Form.Item>
+                        </div>
+
+                        <Form.Item
+                            label="PASSWORD"
+                            name="password"
+                            validateStatus={errors?.password ? "error" : ""}
+                            help={errors?.password ? errors?.password[0] : ""}
+                        >
+                            <Input.Password
+                                placeholder="Password"
+                                type="password"
+                                prefix={<LockOutlined />}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="RE-TYPE PASSWORD"
+                            name="password_confirmation"
+                            validateStatus={
+                                errors?.password_confirmation ? "error" : ""
+                            }
+                            help={
+                                errors?.password_confirmation
+                                    ? errors?.password_confirmation[0]
+                                    : ""
+                            }
+                        >
+                            <Input.Password
+                                placeholder="Re-type Password"
+                                type="password"
+                                prefix={<LockOutlined />}
+                            />
+                        </Form.Item>
+                    </Form.Item>
+                    <Row justify="end">
+                        <Space size="small">
+                            <Button type="default" onClick={handleCancel}>
+                                Cancel
+                            </Button>
+
+                            <Button
+                                htmlType="submit"
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                disabled={processing}
+                                loading={processing}
+                            >
+                                {user ? "Update" : "Create"}
+                            </Button>
+                        </Space>
+                    </Row>
+                </Form>
+            </Modal>
+        </AuthenticatedLayout>
+    );
+}

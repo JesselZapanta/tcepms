@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user');
+    Route::get('/admin/user/getdata', [AdminUserController::class, 'getData']);
+    Route::post('/admin/user/store', [AdminUserController::class, 'store']);
+    Route::delete('/admin/user/destroy/{id}', [AdminUserController::class, 'destroy']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
