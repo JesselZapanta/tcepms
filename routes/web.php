@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminContructorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
@@ -28,12 +29,18 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 
 Route::middleware(['auth','admin'])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    
+
     Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user');
     Route::get('/admin/user/getdata', [AdminUserController::class, 'getData']);
     Route::post('/admin/user/store', [AdminUserController::class, 'store']);
     Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
     Route::delete('/admin/user/destroy/{id}', [AdminUserController::class, 'destroy']);
+
+    Route::get('/admin/contructor', [AdminContructorController::class, 'index'])->name('admin.contructor');
+    Route::get('/admin/contructor/getdata', [AdminContructorController::class, 'getData']);
+    Route::post('/admin/contructor/store', [AdminContructorController::class, 'store']);
+    Route::put('/admin/contructor/update/{id}', [AdminContructorController::class, 'update']);
+    Route::delete('/admin/contructor/destroy/{id}', [AdminContructorController::class, 'destroy']);
 });
 
 Route::middleware(['auth', 'staffone'])->group(function() {

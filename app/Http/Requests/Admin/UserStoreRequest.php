@@ -26,7 +26,7 @@ class UserStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required','string','lowercase','email','max:255','unique:users,email'],
-            'contact' => ['required', 'integer', 'unique:users,contact', 'digits:11'],
+            'contact' => ['required', 'string'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'integer', Rule::in('0', '1', '2','3','4')],
             'status' => ['required', 'integer', Rule::in('1', '0')],

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->bigInteger('contact');
+            $table->string('contact');
             $table->boolean('status')->default(1);//1 = active
             $table->tinyInteger('role')->default(1);//0 = admin 
             $table->timestamp('email_verified_at')->nullable();

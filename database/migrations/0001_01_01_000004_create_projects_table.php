@@ -29,8 +29,8 @@ return new class extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
 
-            $table->string('engineer');
-            $table->string('contructor');
+            $table->foreignId('engineer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('contructor_id')->constrained('contructors')->onDelete('cascade');
             $table->tinyText('status')->default('Pending');
             $table->tinyText('priority');
 

@@ -32,6 +32,11 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "admin.user",
             icon: <UserOutlined />,
         },
+        {
+            label: <Link href={route("admin.contructor")}>Contructor</Link>,
+            key: "admin.contructor",
+            icon: <UserOutlined />,
+        },
     ];
     const staffOneLinks = [
         {
