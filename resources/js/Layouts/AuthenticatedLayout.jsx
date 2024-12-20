@@ -11,7 +11,7 @@ import { Link } from "@inertiajs/react";
 import { Footer } from "antd/es/layout/layout";
 const { Header, Sider, Content } = Layout;
 export default function AuthenticatedLayout({ auth, header, children }) {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -39,7 +39,9 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             <Sider
                 trigger={null}
                 collapsible
+                breakpoint="lg"
                 collapsed={collapsed}
+                onCollapse={(collapsedValue) => setCollapsed(collapsedValue)}
                 style={{ minHeight: "100vh" }}
             >
                 <div className="w-full h-16 flex items-center justify-center">

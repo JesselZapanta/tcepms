@@ -84,30 +84,65 @@ export default function Index({auth}) {
         setIsModalOpen(true);
     };
 
+    const showEditModal = (user) => {
+        setIsModalOpen(true);
+        setUser(user);
+
+        form.setFieldsValue({
+            name: user.name,
+            email: user.email,
+            contact: user.contact,
+            role: user.role,
+            status: user.status,
+            password: ""
+        })
+    }
+
     const handleCancel = () => {
         setIsModalOpen(false);
         setUser(false);
+        form.resetFields();
         setErrors({});
         getData();
     };
 
     const handleSubmit = async (values) => {
         setProcessing(true);
-        try {
-            const res = await axios.post("/admin/user/store", values);
-            if (res.data.status === "created") {
-                handleCancel();
-                openNotification(
-                    "success",
-                    "bottomRight",
-                    "Created!",
-                    "The user has been created successfully."
-                );
+        
+        if(user){
+            try {
+                const res = await axios.put(`/admin/user/update/${user.id}`, values);
+                if (res.data.status === "updated") {
+                    handleCancel();
+                    openNotification(
+                        "success",
+                        "bottomRight",
+                        "Updated!",
+                        "The user has been updated successfully."
+                    );
+                }
+            } catch (err) {
+                setErrors(err.response.data.errors);
+            } finally {
+                setProcessing(false);
             }
-        } catch (err) {
-            setErrors(err.response.data.errors);
-        } finally {
-            setProcessing(false);
+        }else{
+            try {
+                const res = await axios.post("/admin/user/store", values);
+                if (res.data.status === "created") {
+                    handleCancel();
+                    openNotification(
+                        "success",
+                        "bottomRight",
+                        "Created!",
+                        "The user has been created successfully."
+                    );
+                }
+            } catch (err) {
+                setErrors(err.response.data.errors);
+            } finally {
+                setProcessing(false);
+            }
         }
     };
 
@@ -122,7 +157,7 @@ export default function Index({auth}) {
                 openNotification(
                     "success",
                     "bottomRight",
-                    "Created!",
+                    "Deleted!",
                     "The user has been deleted successfully."
                 );
             }
@@ -185,6 +220,12 @@ export default function Index({auth}) {
                         key="email"
                     />
                     <Column
+                        // sorter={true}
+                        title="Contact"
+                        dataIndex="contact"
+                        key="contact"
+                    />
+                    <Column
                         title="Action"
                         key="action"
                         render={(_, record) => (
@@ -193,7 +234,7 @@ export default function Index({auth}) {
                                     type="primary"
                                     shape="circle"
                                     icon={<EditOutlined />}
-                                    // onClick={() => showEditModal(record)}
+                                    onClick={() => showEditModal(record)}
                                 ></Button>
                                 <Button
                                     danger
@@ -263,8 +304,9 @@ export default function Index({auth}) {
                             validateStatus={errors?.contact ? "error" : ""}
                             help={errors?.contact ? errors?.contact[0] : ""}
                         >
-                            <InputNumber
+                            <Input
                                 placeholder="Contact"
+                                type="number"
                                 prefix={<PhoneOutlined />}
                                 className="w-full"
                             />
@@ -297,8 +339,8 @@ export default function Index({auth}) {
                             >
                                 <Select
                                     options={[
-                                        { value: 0, label: "Active" },
-                                        { value: 1, label: "Inactive" },
+                                        { value: 1, label: "Active" },
+                                        { value: 0, label: "Inactive" },
                                     ]}
                                 />
                             </Form.Item>

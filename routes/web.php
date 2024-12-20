@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user');
     Route::get('/admin/user/getdata', [AdminUserController::class, 'getData']);
     Route::post('/admin/user/store', [AdminUserController::class, 'store']);
+    Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
     Route::delete('/admin/user/destroy/{id}', [AdminUserController::class, 'destroy']);
 });
 
