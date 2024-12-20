@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StaffOne\ProjectController;
 use App\Http\Controllers\StaffOne\StaffOneDashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 
 Route::middleware(['auth','admin'])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    
     Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user');
     Route::get('/admin/user/getdata', [AdminUserController::class, 'getData']);
     Route::post('/admin/user/store', [AdminUserController::class, 'store']);
@@ -36,6 +38,12 @@ Route::middleware(['auth','admin'])->group(function() {
 
 Route::middleware(['auth', 'staffone'])->group(function() {
     Route::get('/staffone/dashboard', [StaffOneDashboardController::class, 'index'])->name('staffone.dashboard');
+
+    Route::get('/staffone/project', [ProjectController::class, 'index'])->name('staffone.project');
+    Route::get('/staffone/project/getdata', [ProjectController::class, 'getData']);
+    Route::post('/staffone/project/store', [ProjectController::class, 'store']);
+    Route::put('/staffone/project/updata/{id}', [ProjectController::class, 'update']);
+    Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

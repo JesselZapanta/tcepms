@@ -82,6 +82,7 @@ export default function Index({auth}) {
 
     const showCreateModal = () => {
         setIsModalOpen(true);
+        form.resetFields();
     };
 
     const showEditModal = (user) => {
@@ -325,7 +326,8 @@ export default function Index({auth}) {
                                         { value: 0, label: "Admin" },
                                         { value: 1, label: "Staff 1" },
                                         { value: 2, label: "Staff 2" },
-                                        { value: 3, label: "On-Site Engineer" },
+                                        { value: 3, label: "On-Site Engineer"
+                                         },
                                         { value: 4, label: "Mayor" },
                                     ]}
                                 />

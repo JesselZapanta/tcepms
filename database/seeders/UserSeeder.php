@@ -25,13 +25,13 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('jeszapanta9'),
             ],
             [
-                'name' => 'Jessel Zapatna',
-                'email' => 'jeszapgasaanta9@gmail.com',
-                'contact' => '09300192172',
-                'role' => '0',
+                'name' => 'Staff 1',
+                'email' => 'staffone@gmail.com',
+                'contact' => '09786543212',
+                'role' => '1',
                 'status' => '1',
                 'email_verified_at' => now(),
-                'password' => Hash::make('jeszapanta9'),
+                'password' => Hash::make('staffone'),
             ],
             [
                 'name' => 'Jessel Zapatna',

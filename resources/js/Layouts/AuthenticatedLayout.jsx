@@ -20,11 +20,11 @@ export default function AuthenticatedLayout({ auth, header, children }) {
 
     const currentRoute = route().current();
 
-    // Define the menu items
-    const items = [
+    // Admin
+    const adminLinks = [
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
-            key: "dashboard",
+            key: "admin.dashboard",
             icon: <AppstoreOutlined />,
         },
         {
@@ -33,6 +33,18 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <UserOutlined />,
         },
     ];
+    const staffOneLinks = [
+        {
+            label: <Link href={route("dashboard")}>Dashboard</Link>,
+            key: "staffone.dashboard",
+            icon: <AppstoreOutlined />,
+        },
+        {
+            label: <Link href={route("staffone.project")}>Project</Link>,
+            key: "staffone.project",
+            icon: <UserOutlined />,
+        },
+    ];  
 
     return (
         <Layout>
@@ -47,13 +59,28 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 <div className="w-full h-16 flex items-center justify-center">
                     <div className="font-bold text-lg text-gray-50">TCEMPS</div>
                 </div>
-                <Menu
-                    theme="dark"
-                    mode="inline"
-                    defaultSelectedKeys={["1"]}
-                    selectedKeys={[currentRoute]}
-                    items={items}
-                />
+                {
+                    auth.user.role === 0 && (
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={["1"]}
+                        selectedKeys={[currentRoute]}
+                        items={adminLinks}
+                    />
+                    )
+                }
+                {
+                    auth.user.role === 1 && (
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={["1"]}
+                        selectedKeys={[currentRoute]}
+                        items={staffOneLinks}
+                    />
+                    )
+                }
             </Sider>
             <Layout>
                 <Header className="w-full bg-gray-50 px-0">
