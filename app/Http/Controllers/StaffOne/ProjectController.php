@@ -5,7 +5,9 @@ namespace App\Http\Controllers\StaffOne;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StaffOne\ProjectStoreRequest;
 use App\Http\Requests\StaffOne\ProjectUpdateRequest;
+use App\Models\Contructor;
 use App\Models\Project;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -13,12 +15,20 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        return inertia('StaffOne/Project/Index');
+        $contructors = Contructor::where('status', 1)->get(['id','company_name']);
+        $engineers = User::where('role', 3)
+                        ->where('status', 1)
+                        ->get(['id','name']);
+        return inertia('StaffOne/Project/Index',[
+            'contructors' => $contructors,
+            'engineers' => $engineers
+        ]);
     }
 
     public function getData(Request $request)
     {
-        return Project::where('name', 'like', "{$request->search}%")
+        return Project::with(['siteEngineer:id,name'])
+                        ->where('name', 'like', "{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

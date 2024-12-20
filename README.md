@@ -16,7 +16,7 @@ Install the following:
     MariaDB
 
 ### Versions
-    Laravel 10
+    Laravel 11
 
 ### Installation
 

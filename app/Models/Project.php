@@ -20,17 +20,17 @@ class Project extends Model
         'location',
         'latitude',
         'longitude',
-        'engineer_id',
-        'contructor_id',
+        'engineer',
+        'contructor',
         'status',
         'priority',
     ];
-    public function engineer()
+    public function siteEngineer()
     {
-        return $this->belongsTo(User::class, 'engineer_id');
+        return $this->belongsTo(User::class, 'engineer');
     }
     public function contructor()
     {
-        return $this->belongsTo(Contructor::class, 'contructor_id');
+        return $this->belongsTo(Contructor::class, 'contructor');
     }
 }

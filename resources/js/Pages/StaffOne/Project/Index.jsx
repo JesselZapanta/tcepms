@@ -31,7 +31,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 const { RangePicker } = DatePicker;
 
-export default function Index({ auth }) {
+export default function Index({ auth, contructors, engineers }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -106,9 +106,13 @@ export default function Index({ auth }) {
             name: project.name,
             description: project.description,
             start_date: project.start_date ? dayjs(project.start_date) : null,
-            end_date:  project.end_date ? dayjs(project.end_date) : null,
-            actual_start_date: project.actual_start_date ? dayjs(project.actual_start_date) : null,
-            actual_end_date: project.actual_end_date ? dayjs(project.actual_end_date) : null,
+            end_date: project.end_date ? dayjs(project.end_date) : null,
+            actual_start_date: project.actual_start_date
+                ? dayjs(project.actual_start_date)
+                : null,
+            actual_end_date: project.actual_end_date
+                ? dayjs(project.actual_end_date)
+                : null,
             budget: project.budget,
             cost: project.cost,
             source: project.source,
@@ -120,8 +124,6 @@ export default function Index({ auth }) {
             status: project.status,
             priority: project.priority,
         });
-
-
     };
 
     const handleCancel = () => {
@@ -197,6 +199,8 @@ export default function Index({ auth }) {
         }
     };
 
+    // console.log(data);
+
     return (
         <AuthenticatedLayout header="Project Management" auth={auth}>
             <Head title="Project Management" />
@@ -244,8 +248,9 @@ export default function Index({ auth }) {
                     <Column
                         sorter={true}
                         title="Engineer"
-                        dataIndex="engineer"
-                        key="engineer"
+                        dataIndex="site_engineer"
+                        key="site_engineer"
+                        render={(site_engineer) => site_engineer?.name || "N/A"}
                     />
                     <Column
                         // sorter={true}
@@ -296,7 +301,9 @@ export default function Index({ auth }) {
 
             <Modal
                 title={
-                    project ? "UPDATE PROJECT INFORMATION" : "PROJECT INFORMATION"
+                    project
+                        ? "UPDATE PROJECT INFORMATION"
+                        : "PROJECT INFORMATION"
                 }
                 width={800}
                 open={isModalOpen}
@@ -525,24 +532,10 @@ export default function Index({ auth }) {
                                 className="w-full"
                             >
                                 <Select
-                                    options={[
-                                        {
-                                            value: "Enginner 1",
-                                            label: "Enginner 1",
-                                        },
-                                        {
-                                            value: "Enginner 2",
-                                            label: "Enginner 2",
-                                        },
-                                        {
-                                            value: "Enginner 3",
-                                            label: "Enginner 3",
-                                        },
-                                        {
-                                            value: "Enginner 4 ",
-                                            label: "Enginner 4 ",
-                                        },
-                                    ]}
+                                    options={engineers.map((engineer) => ({
+                                        label: engineer.name,
+                                        value: engineer.id,
+                                    }))}
                                 />
                             </Form.Item>
 
@@ -560,24 +553,10 @@ export default function Index({ auth }) {
                                 className="w-full"
                             >
                                 <Select
-                                    options={[
-                                        {
-                                            value: "Contructor 1",
-                                            label: "Contructor 1",
-                                        },
-                                        {
-                                            value: "Contructor 2",
-                                            label: "Contructor 2",
-                                        },
-                                        {
-                                            value: "Contructor 3",
-                                            label: "Contructor 3",
-                                        },
-                                        {
-                                            value: "Contructor 4 ",
-                                            label: "Contructor 4 ",
-                                        },
-                                    ]}
+                                    options={contructors.map((contructor) => ({
+                                        label: contructor.company_name,
+                                        value: contructor.id,
+                                    }))}
                                 />
                             </Form.Item>
                         </div>

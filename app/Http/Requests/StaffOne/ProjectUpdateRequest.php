@@ -34,8 +34,8 @@ class ProjectUpdateRequest extends FormRequest
             'location' => ['required', 'string', 'max:255'],
             'latitude' => ['nullable', 'string', 'max:255'],
             'longitude' => ['nullable', 'string', 'max:255'],
-            'engineer' => ['required', 'string', 'max:255'],
-            'contructor' => ['required', 'string', 'max:255'],
+            'engineer' => ['required','exists:users,id'],
+            'contructor' => ['required','exists:contructors,id'],
             'status' => ['required', 'string', 'in:Pending,Ongoing,Completed,Hold'],
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
         ];
