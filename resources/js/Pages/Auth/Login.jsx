@@ -18,7 +18,7 @@ export default function Login({ status, canResetPassword }) {
             .post("/login", values)
             .then((res) => {
                 if (res.data.status === "login") {
-                    router.visit("/login"); //change to dashboard controller
+                    router.visit("/dashboard"); //change to dashboard controller
                 }
             })
             .catch((err) => {

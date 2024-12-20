@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'contact',
-        'role',
+        'role', // 0 = admin, 1 = staff 1, 2 = staff 2, 3 = on-site engineer, 4 = mayor
         'status',
         'password',
     ];
