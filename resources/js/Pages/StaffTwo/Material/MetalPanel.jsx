@@ -1,9 +1,5 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import dayjs from "dayjs";
 import {
     Button,
-    Divider,
     Form,
     DatePicker,
     notification,
@@ -15,8 +11,6 @@ import {
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
-    LockOutlined,
-    MailOutlined,
     PlusOutlined,
     UserOutlined,
     EditOutlined,
@@ -24,14 +18,12 @@ import {
     QuestionCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
-import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
-const { RangePicker } = DatePicker;
 
-export default function ConcretePanel({project}) {
+export default function MetalPanel({ project }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -56,10 +48,12 @@ export default function ConcretePanel({project}) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/stafftwo/materials/concrete/getdata?${params}`);
+            const res = await axios.get(
+                `/stafftwo/materials/metal/getdata?${params}`
+            );
             setData(res.data.data);
             setTotal(res.data.total);
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -78,7 +72,7 @@ export default function ConcretePanel({project}) {
         getData(false);
     }, [page, sortField, sortOrder]);
 
-    const [concrete, setConcrete] = useState(false);
+    const [metal, setMetal] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
@@ -99,22 +93,22 @@ export default function ConcretePanel({project}) {
         form.resetFields();
     };
 
-    const showEditModal = (concrete) => {
+    const showEditModal = (metal) => {
         setIsModalOpen(true);
-        setConcrete(concrete);
+        setMetal(metal);
 
         form.setFieldsValue({
-            material: concrete.material,
-            unit: concrete.unit,
-            quantity: concrete.quantity,
-            unit_cost: concrete.unit_cost,
-            cost: concrete.cost,
+            material: metal.material,
+            unit: metal.unit,
+            quantity: metal.quantity,
+            unit_cost: metal.unit_cost,
+            cost: metal.cost,
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setConcrete(false);
+        setMetal(false);
         form.resetFields();
         setErrors({});
         getData();
@@ -125,10 +119,10 @@ export default function ConcretePanel({project}) {
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (concrete) {
+        if (metal) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/concrete/updata/${concrete.id}`,
+                    `/stafftwo/materials/metal/updata/${metal.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -137,7 +131,7 @@ export default function ConcretePanel({project}) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The concrete has been updated successfully."
+                        "The metal has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -146,12 +140,11 @@ export default function ConcretePanel({project}) {
                 setProcessing(false);
             }
         } else {
-
             values.project = project.id;
 
             try {
                 const res = await axios.post(
-                    "/stafftwo/materials/concrete/store",
+                    "/stafftwo/materials/metal/store",
                     values
                 );
                 if (res.data.status === "created") {
@@ -160,7 +153,7 @@ export default function ConcretePanel({project}) {
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The concrete has been created successfully."
+                        "The metal has been created successfully."
                     );
                 }
             } catch (err) {
@@ -176,7 +169,7 @@ export default function ConcretePanel({project}) {
 
         try {
             const res = await axios.delete(
-                `/stafftwo/materials/concrete/destroy/${id}`
+                `/stafftwo/materials/metal/destroy/${id}`
             );
 
             if (res.data.status === "deleted") {
@@ -185,7 +178,7 @@ export default function ConcretePanel({project}) {
                     "success",
                     "bottomRight",
                     "Deleted!",
-                    "The concrete has been deleted successfully."
+                    "The metal has been deleted successfully."
                 );
             }
         } catch (err) {
@@ -217,10 +210,10 @@ export default function ConcretePanel({project}) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Concrete Works Materials</div>
+            <div className="py-2">List of Metal Works Materials</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input concrete material"
+                    placeholder="Input metal material"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -326,7 +319,7 @@ export default function ConcretePanel({project}) {
             </div>
             <Modal
                 title={
-                    concrete
+                    metal
                         ? "UPDATE CONCRETE WORKS MATERIAL"
                         : "CONCRETE WORKS MATERIAL"
                 }
@@ -450,7 +443,7 @@ export default function ConcretePanel({project}) {
                                 disabled={processing}
                                 loading={processing}
                             >
-                                {concrete ? "Update" : "Save"}
+                                {metal ? "Update" : "Save"}
                             </Button>
                         </Space>
                     </Row>

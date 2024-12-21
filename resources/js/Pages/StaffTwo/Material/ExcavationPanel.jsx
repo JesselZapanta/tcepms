@@ -209,6 +209,7 @@ export default function ExcavationPanel({project}) {
 
     return (
         <>
+            {contextHolder}
             <div className="py-2">List of Excavation Materials</div>
             <div className="flex gap-2 mb-2">
                 <Search

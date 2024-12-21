@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Descriptions, Collapse,  } from "antd";
 import ExcavationPanel from './ExcavationPanel';
 import ConcretePanel from './ConcretePanel';
+import MetalPanel from './MetalPanel';
+import EquipmentPanel from './EquipmentPanel';
 
 const { Panel } = Collapse;
 
@@ -75,8 +77,12 @@ export default function Index({ auth, project }) {
                     <Panel header="Concrete Works" key="3">
                         <ConcretePanel project={project} />
                     </Panel>
-                    <Panel header="Metal Structure" key="4"></Panel>
-                    <Panel header="Equipment " key="5"></Panel>
+                    <Panel header="Metal Structure" key="4">
+                        <MetalPanel project={project} />
+                    </Panel>
+                    <Panel header="Equipment " key="5">
+                        <EquipmentPanel project={project} />
+                    </Panel>
                 </Collapse>
             </div>
         </AuthenticatedLayout>

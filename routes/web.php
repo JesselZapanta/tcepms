@@ -10,6 +10,7 @@ use App\Http\Controllers\StaffOne\StaffOneDashboardController;
 use App\Http\Controllers\StaffTwo\ConcreteController;
 use App\Http\Controllers\StaffTwo\ExcavationController;
 use App\Http\Controllers\StaffTwo\MaterialController;
+use App\Http\Controllers\StaffTwo\MetalController;
 use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
 use App\Http\Controllers\StaffTwo\StaffTwoProjectController;
 use Illuminate\Foundation\Application;
@@ -75,6 +76,11 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::post('/stafftwo/materials/concrete/store', [ConcreteController::class, 'store']);
     Route::put('/stafftwo/materials/concrete/updata/{id}', [ConcreteController::class, 'update']);
     Route::delete('/stafftwo/materials/concrete/destroy/{id}', [ConcreteController::class, 'destroy']);
+
+    Route::get('/stafftwo/materials/metal/getdata', [MetalController::class, 'getdata']);
+    Route::post('/stafftwo/materials/metal/store', [MetalController::class, 'store']);
+    Route::put('/stafftwo/materials/metal/updata/{id}', [MetalController::class, 'update']);
+    Route::delete('/stafftwo/materials/metal/destroy/{id}', [MetalController::class, 'destroy']);
 
 });
 
