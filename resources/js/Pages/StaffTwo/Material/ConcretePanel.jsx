@@ -56,7 +56,7 @@ export default function ConcretePanel({project}) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/stafftwo/materials/excavation/getdata?${params}`);
+            const res = await axios.get(`/stafftwo/materials/concrete/getdata?${params}`);
             setData(res.data.data);
             setTotal(res.data.total);
         } catch(err) {
@@ -78,7 +78,7 @@ export default function ConcretePanel({project}) {
         getData(false);
     }, [page, sortField, sortOrder]);
 
-    const [excavation, setExcavation] = useState(false);
+    const [concrete, setConcrete] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
@@ -99,34 +99,36 @@ export default function ConcretePanel({project}) {
         form.resetFields();
     };
 
-    const showEditModal = (excavation) => {
+    const showEditModal = (concrete) => {
         setIsModalOpen(true);
-        setExcavation(excavation);
+        setConcrete(concrete);
 
         form.setFieldsValue({
-            material: excavation.material,
-            quantity: excavation.quantity,
-            no_of_days: excavation.no_of_days,
-            rate: excavation.rate,
-            cost: excavation.cost,
+            material: concrete.material,
+            unit: concrete.unit,
+            quantity: concrete.quantity,
+            unit_cost: concrete.unit_cost,
+            cost: concrete.cost,
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setExcavation(false);
+        setConcrete(false);
         form.resetFields();
         setErrors({});
         getData();
+        setQuantity(0);
+        setUnitCost(0);
     };
 
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (excavation) {
+        if (concrete) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/excavation/updata/${excavation.id}`,
+                    `/stafftwo/materials/concrete/updata/${concrete.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -135,7 +137,7 @@ export default function ConcretePanel({project}) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The excavation has been updated successfully."
+                        "The concrete has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -148,14 +150,17 @@ export default function ConcretePanel({project}) {
             values.project = project.id;
 
             try {
-                const res = await axios.post("/stafftwo/materials/excavation/store", values);
+                const res = await axios.post(
+                    "/stafftwo/materials/concrete/store",
+                    values
+                );
                 if (res.data.status === "created") {
                     handleCancel();
                     openNotification(
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The excavation has been created successfully."
+                        "The concrete has been created successfully."
                     );
                 }
             } catch (err) {
@@ -170,7 +175,9 @@ export default function ConcretePanel({project}) {
         setLoading(true);
 
         try {
-            const res = await axios.delete(`/stafftwo/materials/excavation/destroy/${id}`);
+            const res = await axios.delete(
+                `/stafftwo/materials/concrete/destroy/${id}`
+            );
 
             if (res.data.status === "deleted") {
                 handleCancel();
@@ -178,7 +185,7 @@ export default function ConcretePanel({project}) {
                     "success",
                     "bottomRight",
                     "Deleted!",
-                    "The excavation has been deleted successfully."
+                    "The concrete has been deleted successfully."
                 );
             }
         } catch (err) {
@@ -189,16 +196,17 @@ export default function ConcretePanel({project}) {
     };
 
     const [quantity, setQuantity] = useState(0);
-    const [noOfDays, setNoOfDays] = useState(0);
-    const [rate, setRate] = useState(0);
+    const [unitCost, setUnitCost] = useState(0);
 
     // Calculate cost dynamically
-    const cost = quantity * noOfDays * rate;
+    const cost = quantity * unitCost;
 
     const totalAmount = data.reduce(
         (total, item) => total + parseFloat(item.cost || 0),
         0
     );
+
+    const laborCost = totalAmount * 0.4;
 
     useEffect(() => {
         form.setFieldsValue({ cost });
@@ -209,7 +217,7 @@ export default function ConcretePanel({project}) {
             <div className="py-2">List of Concrete Works Materials</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input excavation material"
+                    placeholder="Input concrete material"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -236,7 +244,14 @@ export default function ConcretePanel({project}) {
                         showSizeChanger: false,
                         onChange: (page) => setPage(page),
                     }}
-                    footer={() => `Total Amount: ${totalAmount.toFixed(2)}`}
+                    footer={() => (
+                        <div>
+                            <div>
+                                Total Material Cost: {totalAmount.toFixed(2)}
+                            </div>
+                            <div>Labor Cost (40%): {laborCost.toFixed(2)}</div>
+                        </div>
+                    )}
                     onChange={handleTableChange}
                 >
                     <Column sorter={true} title="ID" dataIndex="id" key="id" />
@@ -249,21 +264,21 @@ export default function ConcretePanel({project}) {
                     />
                     <Column
                         sorter={true}
+                        title="Unit"
+                        dataIndex="unit"
+                        key="unit"
+                    />
+                    <Column
+                        sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
                         sorter={true}
-                        title="No. of Days"
-                        dataIndex="no_of_days"
-                        key="no_of_days"
-                    />
-                    <Column
-                        sorter={true}
-                        title="Rate / Day"
-                        dataIndex="rate"
-                        key="rate"
+                        title="UNIT COST"
+                        dataIndex="unit_cost"
+                        key="unit_cost"
                     />
                     <Column
                         sorter={true}
@@ -307,9 +322,9 @@ export default function ConcretePanel({project}) {
             </div>
             <Modal
                 title={
-                    excavation
-                        ? "UPDATE EXCAVATION MATERIAL"
-                        : "EXCAVATION MATERIAL"
+                    concrete
+                        ? "UPDATE CONCRETE WORKS MATERIAL"
+                        : "CONCRETE WORKS MATERIAL"
                 }
                 width={800}
                 open={isModalOpen}
@@ -338,6 +353,30 @@ export default function ConcretePanel({project}) {
                         </Form.Item>
                         <div className="flex gap-4">
                             <Form.Item
+                                label="UNIT"
+                                name="unit"
+                                validateStatus={errors?.unit ? "error" : ""}
+                                help={errors?.unit ? errors?.unit[0] : ""}
+                                className="w-full"
+                            >
+                                <Select
+                                    options={[
+                                        { value: "bag", label: "Bag" },
+                                        {
+                                            value: "cu.m",
+                                            label: "Cubic Meter (cu.m)",
+                                        },
+                                        { value: "pcs", label: "Pieces (pcs)" },
+                                        {
+                                            value: "bd.ft.",
+                                            label: "Board Feet (bd.ft.)",
+                                        },
+                                        { value: "kg", label: "Kilogram (kg)" },
+                                    ]}
+                                    className="w-full"
+                                />
+                            </Form.Item>
+                            <Form.Item
                                 label="QUANTITY"
                                 name="quantity"
                                 validateStatus={errors?.quantity ? "error" : ""}
@@ -355,15 +394,17 @@ export default function ConcretePanel({project}) {
                                     className="w-full"
                                 />
                             </Form.Item>
+                        </div>
+                        <div className="flex gap-4">
                             <Form.Item
-                                label="NO. OF DAYS"
-                                name="no_of_days"
+                                label="UNIT COST"
+                                name="unit_cost"
                                 validateStatus={
-                                    errors?.no_of_days ? "error" : ""
+                                    errors?.unit_cost ? "error" : ""
                                 }
                                 help={
-                                    errors?.no_of_days
-                                        ? errors?.no_of_days[0]
+                                    errors?.unit_cost
+                                        ? errors?.unit_cost[0]
                                         : ""
                                 }
                                 className="w-full"
@@ -372,25 +413,7 @@ export default function ConcretePanel({project}) {
                                     type="number"
                                     prefix={<PhoneOutlined />}
                                     onChange={(e) =>
-                                        setNoOfDays(Number(e.target.value) || 0)
-                                    }
-                                    className="w-full"
-                                />
-                            </Form.Item>
-                        </div>
-                        <div className="flex gap-4">
-                            <Form.Item
-                                label="RATE / DAY"
-                                name="rate"
-                                validateStatus={errors?.rate ? "error" : ""}
-                                help={errors?.rate ? errors?.rate[0] : ""}
-                                className="w-full"
-                            >
-                                <Input
-                                    type="number"
-                                    prefix={<PhoneOutlined />}
-                                    onChange={(e) =>
-                                        setRate(Number(e.target.value) || 0)
+                                        setUnitCost(Number(e.target.value) || 0)
                                     }
                                     className="w-full"
                                 />
@@ -423,7 +446,7 @@ export default function ConcretePanel({project}) {
                                 disabled={processing}
                                 loading={processing}
                             >
-                                {excavation ? "Update" : "Save"}
+                                {concrete ? "Update" : "Save"}
                             </Button>
                         </Space>
                     </Row>

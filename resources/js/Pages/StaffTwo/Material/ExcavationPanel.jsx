@@ -118,6 +118,9 @@ export default function ExcavationPanel({project}) {
         form.resetFields();
         setErrors({});
         getData();
+        setQuantity(0);
+        setNoOfDays(0);
+        setRate(0);
     };
 
     const handleSubmit = async (values) => {
@@ -236,7 +239,9 @@ export default function ExcavationPanel({project}) {
                         showSizeChanger: false,
                         onChange: (page) => setPage(page),
                     }}
-                    footer={() => `Total Amount: ${totalAmount.toFixed(2)}`}
+                    footer={() =>
+                        `Total Material Cost: ${totalAmount.toFixed(2)}`
+                    }
                     onChange={handleTableChange}
                 >
                     <Column sorter={true} title="ID" dataIndex="id" key="id" />

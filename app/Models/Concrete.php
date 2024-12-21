@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Excavation extends Model
+class Concrete extends Model
 {
-    protected $table = 'excavations';
+    protected $table = 'concretes';
 
     protected $fillable = [
         'project',
         'material',
+        'unit',
         'quantity',
-        'no_of_days',
-        'rate',
+        'unit_cost',
         'cost',
     ];
 
