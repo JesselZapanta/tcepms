@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffOne\ProjectController;
 use App\Http\Controllers\StaffOne\StaffOneDashboardController;
 use App\Http\Controllers\StaffTwo\ConcreteController;
+use App\Http\Controllers\StaffTwo\EquipmentController;
 use App\Http\Controllers\StaffTwo\ExcavationController;
 use App\Http\Controllers\StaffTwo\MaterialController;
 use App\Http\Controllers\StaffTwo\MetalController;
@@ -81,6 +82,11 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::post('/stafftwo/materials/metal/store', [MetalController::class, 'store']);
     Route::put('/stafftwo/materials/metal/updata/{id}', [MetalController::class, 'update']);
     Route::delete('/stafftwo/materials/metal/destroy/{id}', [MetalController::class, 'destroy']);
+
+    Route::get('/stafftwo/materials/equipment/getdata', [EquipmentController::class, 'getdata']);
+    Route::post('/stafftwo/materials/equipment/store', [EquipmentController::class, 'store']);
+    Route::put('/stafftwo/materials/equipment/updata/{id}', [EquipmentController::class, 'update']);
+    Route::delete('/stafftwo/materials/equipment/destroy/{id}', [EquipmentController::class, 'destroy']);
 
 });
 
