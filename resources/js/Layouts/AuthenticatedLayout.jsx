@@ -38,6 +38,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <UserOutlined />,
         },
     ];
+
     const staffOneLinks = [
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
@@ -48,6 +49,19 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             label: <Link href={route("staffone.project")}>Project</Link>,
             key: "staffone.project",
             icon: <UserOutlined />,
+        },
+    ];  
+
+    const staffTwoLinks = [
+        {
+            label: <Link href={route("dashboard")}>Dashboard</Link>,
+            key: "stafftwo.dashboard",
+            icon: <AppstoreOutlined />,
+        },
+        {
+            label: <Link href={route("stafftwo.project")}>Material</Link>,
+            key: "stafftwo.project",
+            icon: <AppstoreOutlined />,
         },
     ];  
 
@@ -64,8 +78,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 <div className="w-full h-16 flex items-center justify-center">
                     <div className="font-bold text-lg text-gray-50">TCEMPS</div>
                 </div>
-                {
-                    auth.user.role === 0 && (
+                {auth.user.role === 0 && (
                     <Menu
                         theme="dark"
                         mode="inline"
@@ -73,10 +86,8 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         selectedKeys={[currentRoute]}
                         items={adminLinks}
                     />
-                    )
-                }
-                {
-                    auth.user.role === 1 && (
+                )}
+                {auth.user.role === 1 && (
                     <Menu
                         theme="dark"
                         mode="inline"
@@ -84,8 +95,16 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         selectedKeys={[currentRoute]}
                         items={staffOneLinks}
                     />
-                    )
-                }
+                )}
+                {auth.user.role === 2 && (
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={["1"]}
+                        selectedKeys={[currentRoute]}
+                        items={staffTwoLinks}
+                    />
+                )}
             </Sider>
             <Layout>
                 <Header className="w-full bg-gray-50 px-0">

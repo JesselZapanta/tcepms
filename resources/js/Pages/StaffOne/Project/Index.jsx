@@ -208,7 +208,7 @@ export default function Index({ auth, contructors, engineers }) {
             <div className="py-2">List of Project</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input name or email"
+                    placeholder="Input project name"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -318,7 +318,7 @@ export default function Index({ auth, contructors, engineers }) {
                     onFinish={handleSubmit}
                 >
                     <Form.Item>
-                        <Divider orientation="left">Basic Job Details</Divider>
+                        <Divider orientation="left">Basic Project Details</Divider>
                         <Form.Item
                             label="PROJECT NAME"
                             name="name"

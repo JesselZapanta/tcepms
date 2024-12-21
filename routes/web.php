@@ -7,6 +7,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffOne\ProjectController;
 use App\Http\Controllers\StaffOne\StaffOneDashboardController;
+use App\Http\Controllers\StaffTwo\ExcavationController;
+use App\Http\Controllers\StaffTwo\MaterialController;
+use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
+use App\Http\Controllers\StaffTwo\StaffTwoProjectController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +55,21 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::post('/staffone/project/store', [ProjectController::class, 'store']);
     Route::put('/staffone/project/updata/{id}', [ProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
+});
+
+Route::middleware(['auth', 'stafftwo'])->group(function() {
+    Route::get('/stafftwo/dashboard', [StaffTwoDashboardController::class, 'index'])->name('stafftwo.dashboard');
+
+    Route::get('/stafftwo/project', [StaffTwoProjectController::class, 'index'])->name('stafftwo.project');
+    Route::get('/stafftwo/project/getdata', [StaffTwoProjectController::class, 'getdata']);
+
+    Route::get('/stafftwo/materials/index/{id}', [MaterialController::class, 'index'])->name('stafftwo.material');
+    
+    Route::get('/stafftwo/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
+    Route::post('/stafftwo/materials/excavation/store', [ExcavationController::class, 'store']);
+    Route::put('/stafftwo/materials/excavation/updata/{id}', [ExcavationController::class, 'update']);
+    Route::delete('/stafftwo/materials/excavation/destroy/{id}', [ExcavationController::class, 'destroy']);
+
 });
 
 Route::middleware('auth')->group(function () {

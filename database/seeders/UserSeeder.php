@@ -35,13 +35,13 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('staffone'),
             ],
             [
-                'name' => 'Staff 1',
-                'email' => 'staftwo@gmail.com',
+                'name' => 'Staff 2',
+                'email' => 'stafftwo@gmail.com',
                 'contact' => '09786543212',
                 'role' => '2',
                 'status' => '1',
                 'email_verified_at' => now(),
-                'password' => Hash::make('staffone'),
+                'password' => Hash::make('stafftwo'),
             ],
             [
                 'name' => 'Engineer 1',
