@@ -61,7 +61,7 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::post('/staffone/project/store', [ProjectController::class, 'store']);
     Route::put('/staffone/project/updata/{id}', [ProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
-    //todo
+    
     Route::get('/staffone/materials/index/{id}', [StaffOneMaterialController::class, 'index'])->name('staffone.material');
 
     Route::get('/staffone/materials/excavation/getdata', [ExcavationController::class, 'getdata']);

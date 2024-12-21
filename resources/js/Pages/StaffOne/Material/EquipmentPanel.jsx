@@ -210,7 +210,7 @@ export default function EquipmentPanel({ project }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Excavation Materials</div>
+            <div className="py-2">List of Equipment Materials</div>
             <div className="flex gap-2 mb-2">
                 <Search
                     placeholder="Input equipment material"
@@ -313,9 +313,7 @@ export default function EquipmentPanel({ project }) {
             </div>
             <Modal
                 title={
-                    equipment
-                        ? "UPDATE EQUIPMENT DETAILS"
-                        : "EQUIPMENT DETAILS"
+                    equipment ? "UPDATE EQUIPMENT DETAILS" : "EQUIPMENT DETAILS"
                 }
                 width={800}
                 open={isModalOpen}
