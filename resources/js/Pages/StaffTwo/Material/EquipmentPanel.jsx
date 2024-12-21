@@ -95,12 +95,16 @@ export default function EquipmentPanel({ project }) {
         setIsModalOpen(true);
         setEquipment(equipment);
 
+        setQuantity(equipment.quantity);
+        setNoOfDays(equipment.no_of_days);
+        setRate(equipment.rate);
+
         form.setFieldsValue({
             equipment: equipment.equipment,
             quantity: equipment.quantity,
             no_of_days: equipment.no_of_days,
             rate: equipment.rate,
-            // cost: equipment.cost,
+            cost: equipment.cost,
         });
     };
 

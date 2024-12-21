@@ -97,6 +97,9 @@ export default function MetalPanel({ project }) {
         setIsModalOpen(true);
         setMetal(metal);
 
+        setQuantity(metal.quantity);
+        setUnitCost(metal.unit_cost);
+
         form.setFieldsValue({
             material: metal.material,
             unit: metal.unit,

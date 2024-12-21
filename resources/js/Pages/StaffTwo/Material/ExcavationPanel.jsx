@@ -1,22 +1,15 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import dayjs from "dayjs";
 import {
     Button,
-    Divider,
     Form,
     DatePicker,
     notification,
     Row,
-    Select,
     Space,
     Table,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
-    LockOutlined,
-    MailOutlined,
     PlusOutlined,
     UserOutlined,
     EditOutlined,
@@ -102,6 +95,10 @@ export default function ExcavationPanel({project}) {
     const showEditModal = (excavation) => {
         setIsModalOpen(true);
         setExcavation(excavation);
+
+        setQuantity(excavation.quantity);
+        setNoOfDays(excavation.no_of_days);
+        setRate(excavation.rate);
 
         form.setFieldsValue({
             material: excavation.material,

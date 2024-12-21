@@ -103,6 +103,9 @@ export default function ConcretePanel({project}) {
         setIsModalOpen(true);
         setConcrete(concrete);
 
+        setQuantity(concrete.quantity);
+        setUnitCost(concrete.unit_cost);
+
         form.setFieldsValue({
             material: concrete.material,
             unit: concrete.unit,
