@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\StaffTwo;
+namespace App\Http\Controllers\StaffOne;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StaffTwo\ExcavationStoreRequest;
-use App\Http\Requests\StaffTwo\ExcavationUpdateRequest;
-use App\Models\Excavation;
+use App\Http\Requests\StaffOne\MetalStoreRequest;
+use App\Http\Requests\StaffOne\MetalUpdateRequest;
+use App\Models\Metal;
 use Illuminate\Http\Request;
 
-class ExcavationController extends Controller
+class MetalController extends Controller
 {
-    public function store (ExcavationStoreRequest $request)
+    public function store (MetalStoreRequest $request)
     {
         $data = $request->validated();
 
-        Excavation::create($data);
+        Metal::create($data);
 
         return response()->json([
             'status' => 'created'
@@ -22,17 +22,17 @@ class ExcavationController extends Controller
     }
     public function getData(Request $request)
     {
-        return Excavation::where('project' , $request->project)
+        return Metal::where('project' , $request->project)
                         ->where('material', 'like', "{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }
 
-    public function update(ExcavationUpdateRequest $request, $id)
+    public function update(MetalUpdateRequest $request, $id)
     {
         $data = $request->validated();
 
-        $project = Excavation::findOrFail($id);
+        $project = Metal::findOrFail($id);
 
         $project->update($data);
 
@@ -43,7 +43,7 @@ class ExcavationController extends Controller
     
     public function destroy($id)
     {
-        Excavation::destroy($id);
+        Metal::destroy($id);
 
         return response()->json([
             'status' => 'deleted'

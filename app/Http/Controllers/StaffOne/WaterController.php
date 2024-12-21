@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\StaffTwo;
+namespace App\Http\Controllers\StaffOne;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StaffTwo\EquipmentStoreRequest;
-use App\Http\Requests\StaffTwo\EquipmentUpdateRequest;
-use App\Models\Equipment;
+use App\Http\Requests\StaffOne\WaterStoreRequest;
+use App\Http\Requests\StaffOne\WaterUpdateRequest;
+use App\Models\Water;
 use Illuminate\Http\Request;
 
-class EquipmentController extends Controller
+class WaterController extends Controller
 {
-    public function store (EquipmentStoreRequest $request)
+    public function store (WaterStoreRequest $request)
     {
         $data = $request->validated();
 
-        Equipment::create($data);
+        Water::create($data);
 
         return response()->json([
             'status' => 'created'
@@ -22,17 +22,17 @@ class EquipmentController extends Controller
     }
     public function getData(Request $request)
     {
-        return Equipment::where('project' , $request->project)
-                        ->where('equipment', 'like', "{$request->search}%")
+        return Water::where('project' , $request->project)
+                        ->where('material', 'like', "{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }
 
-    public function update(EquipmentUpdateRequest $request, $id)
+    public function update(WaterUpdateRequest $request, $id)
     {
         $data = $request->validated();
 
-        $project = Equipment::findOrFail($id);
+        $project = Water::findOrFail($id);
 
         $project->update($data);
 
@@ -43,7 +43,7 @@ class EquipmentController extends Controller
     
     public function destroy($id)
     {
-        Equipment::destroy($id);
+        Water::destroy($id);
 
         return response()->json([
             'status' => 'deleted'

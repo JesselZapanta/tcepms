@@ -1,11 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 import { Descriptions, Collapse,  } from "antd";
 import ExcavationPanel from './ExcavationPanel';
 import ConcretePanel from './ConcretePanel';
 import MetalPanel from './MetalPanel';
 import EquipmentPanel from './EquipmentPanel';
+import WaterPanel from './WaterPanel';
+import PlasterFinishPanel from './PlasterFinishPanel';
 
 const { Panel } = Collapse;
 
@@ -77,10 +78,16 @@ export default function Index({ auth, project }) {
                     <Panel header="Concrete Works" key="3">
                         <ConcretePanel project={project} />
                     </Panel>
-                    <Panel header="Metal Structure" key="4">
+                    <Panel header="Water Works" key="4">
+                        <WaterPanel project={project} />
+                    </Panel>
+                    <Panel header="Metal Structure" key="5">
                         <MetalPanel project={project} />
                     </Panel>
-                    <Panel header="Equipment " key="5">
+                    <Panel header="Cement Plaster and Finishes" key="6">
+                        <PlasterFinishPanel project={project} />
+                    </Panel>
+                    <Panel header="Equipment " key="7">
                         <EquipmentPanel project={project} />
                     </Panel>
                 </Collapse>

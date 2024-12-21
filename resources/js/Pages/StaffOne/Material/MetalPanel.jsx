@@ -49,7 +49,7 @@ export default function MetalPanel({ project }) {
 
         try {
             const res = await axios.get(
-                `/stafftwo/materials/metal/getdata?${params}`
+                `/staffone/materials/metal/getdata?${params}`
             );
             setData(res.data.data);
             setTotal(res.data.total);
@@ -125,7 +125,7 @@ export default function MetalPanel({ project }) {
         if (metal) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/metal/updata/${metal.id}`,
+                    `/staffone/materials/metal/updata/${metal.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -147,7 +147,7 @@ export default function MetalPanel({ project }) {
 
             try {
                 const res = await axios.post(
-                    "/stafftwo/materials/metal/store",
+                    "/staffone/materials/metal/store",
                     values
                 );
                 if (res.data.status === "created") {
@@ -172,7 +172,7 @@ export default function MetalPanel({ project }) {
 
         try {
             const res = await axios.delete(
-                `/stafftwo/materials/metal/destroy/${id}`
+                `/staffone/materials/metal/destroy/${id}`
             );
 
             if (res.data.status === "deleted") {

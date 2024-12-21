@@ -56,7 +56,7 @@ export default function ConcretePanel({project}) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/stafftwo/materials/concrete/getdata?${params}`);
+            const res = await axios.get(`/staffone/materials/concrete/getdata?${params}`);
             setData(res.data.data);
             setTotal(res.data.total);
         } catch(err) {
@@ -131,7 +131,7 @@ export default function ConcretePanel({project}) {
         if (concrete) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/concrete/updata/${concrete.id}`,
+                    `/staffone/materials/concrete/updata/${concrete.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -154,7 +154,7 @@ export default function ConcretePanel({project}) {
 
             try {
                 const res = await axios.post(
-                    "/stafftwo/materials/concrete/store",
+                    "/staffone/materials/concrete/store",
                     values
                 );
                 if (res.data.status === "created") {
@@ -179,7 +179,7 @@ export default function ConcretePanel({project}) {
 
         try {
             const res = await axios.delete(
-                `/stafftwo/materials/concrete/destroy/${id}`
+                `/staffone/materials/concrete/destroy/${id}`
             );
 
             if (res.data.status === "deleted") {

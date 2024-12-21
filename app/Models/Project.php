@@ -34,4 +34,30 @@ class Project extends Model
     {
         return $this->belongsTo(Contructor::class, 'contructor');
     }
+    //has many relation
+    public function excavation()
+    {
+        return $this->hasMany(Excavation::class, 'project');
+    }
+    public function concrete()
+    {
+        return $this->hasMany(Concrete::class, 'project');
+    }
+    public function water()
+    {
+        return $this->hasMany(Water::class, 'project');
+    }
+    public function metal()
+    {
+        return $this->hasMany(Metal::class, 'project');
+    }
+    public function plasterFinish()
+    {
+        return $this->hasMany(PlasterFinish::class, 'project');
+    }
+    public function equipment()
+    {
+        return $this->hasMany(Equipment::class, 'project');
+    }
+
 }

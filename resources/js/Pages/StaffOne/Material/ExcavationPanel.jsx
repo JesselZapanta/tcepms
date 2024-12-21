@@ -49,7 +49,7 @@ export default function ExcavationPanel({project}) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/stafftwo/materials/excavation/getdata?${params}`);
+            const res = await axios.get(`/staffone/materials/excavation/getdata?${params}`);
             setData(res.data.data);
             setTotal(res.data.total);
         } catch(err) {
@@ -126,7 +126,7 @@ export default function ExcavationPanel({project}) {
         if (excavation) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/excavation/updata/${excavation.id}`,
+                    `/staffone/materials/excavation/updata/${excavation.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -148,7 +148,7 @@ export default function ExcavationPanel({project}) {
             values.project = project.id;
 
             try {
-                const res = await axios.post("/stafftwo/materials/excavation/store", values);
+                const res = await axios.post("/staffone/materials/excavation/store", values);
                 if (res.data.status === "created") {
                     handleCancel();
                     openNotification(
@@ -170,7 +170,7 @@ export default function ExcavationPanel({project}) {
         setLoading(true);
 
         try {
-            const res = await axios.delete(`/stafftwo/materials/excavation/destroy/${id}`);
+            const res = await axios.delete(`/staffone/materials/excavation/destroy/${id}`);
 
             if (res.data.status === "deleted") {
                 handleCancel();

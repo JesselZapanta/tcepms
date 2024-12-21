@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\StaffTwo;
+namespace App\Http\Controllers\StaffOne;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StaffTwo\ConcreteStoreRequest;
-use App\Http\Requests\StaffTwo\ConcreteUpdateRequest;
-use App\Models\Concrete;
+use App\Http\Requests\StaffOne\ExcavationStoreRequest;
+use App\Http\Requests\StaffOne\ExcavationUpdateRequest;
+use App\Models\Excavation;
 use Illuminate\Http\Request;
 
-class ConcreteController extends Controller
+class ExcavationController extends Controller
 {
-    public function store (ConcreteStoreRequest $request)
+    public function store (ExcavationStoreRequest $request)
     {
         $data = $request->validated();
 
-        Concrete::create($data);
+        Excavation::create($data);
 
         return response()->json([
             'status' => 'created'
@@ -22,17 +22,17 @@ class ConcreteController extends Controller
     }
     public function getData(Request $request)
     {
-        return Concrete::where('project' , $request->project)
+        return Excavation::where('project' , $request->project)
                         ->where('material', 'like', "{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }
 
-    public function update(ConcreteUpdateRequest $request, $id)
+    public function update(ExcavationUpdateRequest $request, $id)
     {
         $data = $request->validated();
 
-        $project = Concrete::findOrFail($id);
+        $project = Excavation::findOrFail($id);
 
         $project->update($data);
 
@@ -43,7 +43,7 @@ class ConcreteController extends Controller
     
     public function destroy($id)
     {
-        Concrete::destroy($id);
+        Excavation::destroy($id);
 
         return response()->json([
             'status' => 'deleted'

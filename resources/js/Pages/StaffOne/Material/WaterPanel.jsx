@@ -1,8 +1,10 @@
 import {
     Button,
     Form,
+    DatePicker,
     notification,
     Row,
+    Select,
     Space,
     Table,
 } from "antd";
@@ -21,7 +23,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function EquipmentPanel({ project }) {
+export default function WaterPanel({ project }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -47,7 +49,7 @@ export default function EquipmentPanel({ project }) {
 
         try {
             const res = await axios.get(
-                `/staffone/materials/equipment/getdata?${params}`
+                `/staffone/materials/water/getdata?${params}`
             );
             setData(res.data.data);
             setTotal(res.data.total);
@@ -70,7 +72,7 @@ export default function EquipmentPanel({ project }) {
         getData(false);
     }, [page, sortField, sortOrder]);
 
-    const [equipment, setEquipment] = useState(false);
+    const [water, setWater] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
@@ -91,41 +93,39 @@ export default function EquipmentPanel({ project }) {
         form.resetFields();
     };
 
-    const showEditModal = (equipment) => {
+    const showEditModal = (water) => {
         setIsModalOpen(true);
-        setEquipment(equipment);
+        setWater(water);
 
-        setQuantity(equipment.quantity);
-        setNoOfDays(equipment.no_of_days);
-        setRate(equipment.rate);
+        setQuantity(water.quantity);
+        setUnitCost(water.unit_cost);
 
         form.setFieldsValue({
-            equipment: equipment.equipment,
-            quantity: equipment.quantity,
-            no_of_days: equipment.no_of_days,
-            rate: equipment.rate,
-            cost: equipment.cost,
+            material: water.material,
+            unit: water.unit,
+            quantity: water.quantity,
+            unit_cost: water.unit_cost,
+            cost: water.cost,
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setEquipment(false);
+        setWater(false);
         form.resetFields();
         setErrors({});
         getData();
         setQuantity(0);
-        setNoOfDays(0);
-        setRate(0);
+        setUnitCost(0);
     };
 
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (equipment) {
+        if (water) {
             try {
                 const res = await axios.put(
-                    `/staffone/materials/equipment/updata/${equipment.id}`,
+                    `/staffone/materials/water/updata/${water.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -134,7 +134,7 @@ export default function EquipmentPanel({ project }) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The equipment has been updated successfully."
+                        "The water has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -147,7 +147,7 @@ export default function EquipmentPanel({ project }) {
 
             try {
                 const res = await axios.post(
-                    "/staffone/materials/equipment/store",
+                    "/staffone/materials/water/store",
                     values
                 );
                 if (res.data.status === "created") {
@@ -156,7 +156,7 @@ export default function EquipmentPanel({ project }) {
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The equipment has been created successfully."
+                        "The water has been created successfully."
                     );
                 }
             } catch (err) {
@@ -172,7 +172,7 @@ export default function EquipmentPanel({ project }) {
 
         try {
             const res = await axios.delete(
-                `/staffone/materials/equipment/destroy/${id}`
+                `/staffone/materials/water/destroy/${id}`
             );
 
             if (res.data.status === "deleted") {
@@ -181,7 +181,7 @@ export default function EquipmentPanel({ project }) {
                     "success",
                     "bottomRight",
                     "Deleted!",
-                    "The equipment has been deleted successfully."
+                    "The water has been deleted successfully."
                 );
             }
         } catch (err) {
@@ -192,16 +192,19 @@ export default function EquipmentPanel({ project }) {
     };
 
     const [quantity, setQuantity] = useState(0);
-    const [noOfDays, setNoOfDays] = useState(0);
-    const [rate, setRate] = useState(0);
+    const [unitCost, setUnitCost] = useState(0);
 
     // Calculate cost dynamically
-    const cost = quantity * noOfDays * rate;
+    const cost = quantity * unitCost;
 
     const totalAmount = data.reduce(
         (total, item) => total + parseFloat(item.cost || 0),
         0
     );
+
+    const laborCost = totalAmount * 0.4;
+
+    const subTotalCost = totalAmount + laborCost;
 
     useEffect(() => {
         form.setFieldsValue({ cost });
@@ -210,10 +213,10 @@ export default function EquipmentPanel({ project }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Excavation Materials</div>
+            <div className="py-2">List of Water Works Materials</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input equipment material"
+                    placeholder="Input water material"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -240,18 +243,30 @@ export default function EquipmentPanel({ project }) {
                         showSizeChanger: false,
                         onChange: (page) => setPage(page),
                     }}
-                    footer={() =>
-                        `Total Material Cost: ${totalAmount.toFixed(2)}`
-                    }
+                    footer={() => (
+                        <div>
+                            <div>
+                                Total Material Cost: {totalAmount.toFixed(2)}
+                            </div>
+                            <div>Labor Cost (40%): {laborCost.toFixed(2)}</div>
+                            <div>Sub Total Cost: {subTotalCost.toFixed(2)}</div>
+                        </div>
+                    )}
                     onChange={handleTableChange}
                 >
                     <Column sorter={true} title="ID" dataIndex="id" key="id" />
 
                     <Column
                         sorter={true}
-                        title="Equipment"
-                        dataIndex="equipment"
-                        key="equipment"
+                        title="Materials"
+                        dataIndex="material"
+                        key="material"
+                    />
+                    <Column
+                        sorter={true}
+                        title="Unit"
+                        dataIndex="unit"
+                        key="unit"
                     />
                     <Column
                         sorter={true}
@@ -261,15 +276,9 @@ export default function EquipmentPanel({ project }) {
                     />
                     <Column
                         sorter={true}
-                        title="No. of Days"
-                        dataIndex="no_of_days"
-                        key="no_of_days"
-                    />
-                    <Column
-                        sorter={true}
-                        title="Rate / Day"
-                        dataIndex="rate"
-                        key="rate"
+                        title="UNIT COST"
+                        dataIndex="unit_cost"
+                        key="unit_cost"
                     />
                     <Column
                         sorter={true}
@@ -313,9 +322,9 @@ export default function EquipmentPanel({ project }) {
             </div>
             <Modal
                 title={
-                    equipment
-                        ? "UPDATE EQUIPMENT DETAILS"
-                        : "EQUIPMENT DETAILS"
+                    water
+                        ? "UPDATE WATER WORKS MATERIAL"
+                        : "WATER WORKS MATERIAL"
                 }
                 width={800}
                 open={isModalOpen}
@@ -331,18 +340,42 @@ export default function EquipmentPanel({ project }) {
                 >
                     <Form.Item>
                         <Form.Item
-                            label="EQUIPMENT NAME"
-                            name="equipment"
+                            label="MATERIAL NAME"
+                            name="material"
                             // Custom error handling
-                            validateStatus={errors?.equipment ? "error" : ""}
-                            help={errors?.equipment ? errors.equipment[0] : ""}
+                            validateStatus={errors?.material ? "error" : ""}
+                            help={errors?.material ? errors.material[0] : ""}
                         >
                             <Input
-                                placeholder="Equipment Name"
+                                placeholder="Material Name"
                                 prefix={<UserOutlined />}
                             />
                         </Form.Item>
                         <div className="flex gap-4">
+                            <Form.Item
+                                label="UNIT"
+                                name="unit"
+                                validateStatus={errors?.unit ? "error" : ""}
+                                help={errors?.unit ? errors?.unit[0] : ""}
+                                className="w-full"
+                            >
+                                <Select
+                                    options={[
+                                        { value: "bag", label: "Bag" },
+                                        {
+                                            value: "cu.m",
+                                            label: "Cubic Meter (cu.m)",
+                                        },
+                                        { value: "pcs", label: "Pieces (pcs)" },
+                                        {
+                                            value: "bd.ft.",
+                                            label: "Board Feet (bd.ft.)",
+                                        },
+                                        { value: "kg", label: "Kilogram (kg)" },
+                                    ]}
+                                    className="w-full"
+                                />
+                            </Form.Item>
                             <Form.Item
                                 label="QUANTITY"
                                 name="quantity"
@@ -361,15 +394,17 @@ export default function EquipmentPanel({ project }) {
                                     className="w-full"
                                 />
                             </Form.Item>
+                        </div>
+                        <div className="flex gap-4">
                             <Form.Item
-                                label="NO. OF DAYS"
-                                name="no_of_days"
+                                label="UNIT COST"
+                                name="unit_cost"
                                 validateStatus={
-                                    errors?.no_of_days ? "error" : ""
+                                    errors?.unit_cost ? "error" : ""
                                 }
                                 help={
-                                    errors?.no_of_days
-                                        ? errors?.no_of_days[0]
+                                    errors?.unit_cost
+                                        ? errors?.unit_cost[0]
                                         : ""
                                 }
                                 className="w-full"
@@ -378,25 +413,7 @@ export default function EquipmentPanel({ project }) {
                                     type="number"
                                     prefix={<PhoneOutlined />}
                                     onChange={(e) =>
-                                        setNoOfDays(Number(e.target.value) || 0)
-                                    }
-                                    className="w-full"
-                                />
-                            </Form.Item>
-                        </div>
-                        <div className="flex gap-4">
-                            <Form.Item
-                                label="RATE / DAY"
-                                name="rate"
-                                validateStatus={errors?.rate ? "error" : ""}
-                                help={errors?.rate ? errors?.rate[0] : ""}
-                                className="w-full"
-                            >
-                                <Input
-                                    type="number"
-                                    prefix={<PhoneOutlined />}
-                                    onChange={(e) =>
-                                        setRate(Number(e.target.value) || 0)
+                                        setUnitCost(Number(e.target.value) || 0)
                                     }
                                     className="w-full"
                                 />
@@ -429,7 +446,7 @@ export default function EquipmentPanel({ project }) {
                                 disabled={processing}
                                 loading={processing}
                             >
-                                {equipment ? "Update" : "Save"}
+                                {water ? "Update" : "Save"}
                             </Button>
                         </Space>
                     </Row>
