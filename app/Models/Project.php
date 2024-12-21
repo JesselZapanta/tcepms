@@ -22,6 +22,7 @@ class Project extends Model
         'longitude',
         'engineer',
         'contructor',
+        'category',
         'status',
         'priority',
     ];

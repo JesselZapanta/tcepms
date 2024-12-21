@@ -36,6 +36,7 @@ class ProjectUpdateRequest extends FormRequest
             'longitude' => ['nullable', 'string', 'max:255'],
             'engineer' => ['required','exists:users,id'],
             'contructor' => ['required','exists:contructors,id'],
+            'category' => ['required', 'string', 'in:Roadwork,Building,Waterworks,Hold'],
             'status' => ['required', 'string', 'in:Pending,Ongoing,Completed,Hold'],
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
         ];

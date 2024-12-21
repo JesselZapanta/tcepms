@@ -31,6 +31,7 @@ return new class extends Migration
 
             $table->foreignId('engineer')->constrained('users')->onDelete('cascade');
             $table->foreignId('contructor')->constrained('contructors')->onDelete('cascade');
+            $table->tinyText('category');
             $table->tinyText('status')->default('Pending');
             $table->tinyText('priority');
 

@@ -1,6 +1,7 @@
 import {
     Button,
     Form,
+    DatePicker,
     notification,
     Row,
     Space,
@@ -16,12 +17,14 @@ import {
     QuestionCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
+import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
+const { RangePicker } = DatePicker;
 
-export default function EquipmentPanel({ project }) {
+export default function ExcavationPanel({project}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -46,12 +49,10 @@ export default function EquipmentPanel({ project }) {
         ].join("&");
 
         try {
-            const res = await axios.get(
-                `/stafftwo/materials/equipment/getdata?${params}`
-            );
+            const res = await axios.get(`/stafftwo/materials/excavation/getdata?${params}`);
             setData(res.data.data);
             setTotal(res.data.total);
-        } catch (err) {
+        } catch(err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -70,7 +71,7 @@ export default function EquipmentPanel({ project }) {
         getData(false);
     }, [page, sortField, sortOrder]);
 
-    const [equipment, setEquipment] = useState(false);
+    const [excavation, setExcavation] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
@@ -91,26 +92,26 @@ export default function EquipmentPanel({ project }) {
         form.resetFields();
     };
 
-    const showEditModal = (equipment) => {
+    const showEditModal = (excavation) => {
         setIsModalOpen(true);
-        setEquipment(equipment);
+        setExcavation(excavation);
 
-        setQuantity(equipment.quantity);
-        setNoOfDays(equipment.no_of_days);
-        setRate(equipment.rate);
+        setQuantity(excavation.quantity);
+        setNoOfDays(excavation.no_of_days);
+        setRate(excavation.rate);
 
         form.setFieldsValue({
-            equipment: equipment.equipment,
-            quantity: equipment.quantity,
-            no_of_days: equipment.no_of_days,
-            rate: equipment.rate,
-            cost: equipment.cost,
+            material: excavation.material,
+            quantity: excavation.quantity,
+            no_of_days: excavation.no_of_days,
+            rate: excavation.rate,
+            cost: excavation.cost,
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setEquipment(false);
+        setExcavation(false);
         form.resetFields();
         setErrors({});
         getData();
@@ -122,10 +123,10 @@ export default function EquipmentPanel({ project }) {
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (equipment) {
+        if (excavation) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/equipment/updata/${equipment.id}`,
+                    `/stafftwo/materials/excavation/updata/${excavation.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -134,7 +135,7 @@ export default function EquipmentPanel({ project }) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The equipment has been updated successfully."
+                        "The excavation has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -143,20 +144,18 @@ export default function EquipmentPanel({ project }) {
                 setProcessing(false);
             }
         } else {
+
             values.project = project.id;
 
             try {
-                const res = await axios.post(
-                    "/stafftwo/materials/equipment/store",
-                    values
-                );
+                const res = await axios.post("/stafftwo/materials/excavation/store", values);
                 if (res.data.status === "created") {
                     handleCancel();
                     openNotification(
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The equipment has been created successfully."
+                        "The excavation has been created successfully."
                     );
                 }
             } catch (err) {
@@ -171,9 +170,7 @@ export default function EquipmentPanel({ project }) {
         setLoading(true);
 
         try {
-            const res = await axios.delete(
-                `/stafftwo/materials/equipment/destroy/${id}`
-            );
+            const res = await axios.delete(`/stafftwo/materials/excavation/destroy/${id}`);
 
             if (res.data.status === "deleted") {
                 handleCancel();
@@ -181,7 +178,7 @@ export default function EquipmentPanel({ project }) {
                     "success",
                     "bottomRight",
                     "Deleted!",
-                    "The equipment has been deleted successfully."
+                    "The excavation has been deleted successfully."
                 );
             }
         } catch (err) {
@@ -213,7 +210,7 @@ export default function EquipmentPanel({ project }) {
             <div className="py-2">List of Excavation Materials</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input equipment material"
+                    placeholder="Input excavation material"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -249,9 +246,9 @@ export default function EquipmentPanel({ project }) {
 
                     <Column
                         sorter={true}
-                        title="Equipment"
-                        dataIndex="equipment"
-                        key="equipment"
+                        title="Materials"
+                        dataIndex="material"
+                        key="material"
                     />
                     <Column
                         sorter={true}
@@ -313,9 +310,9 @@ export default function EquipmentPanel({ project }) {
             </div>
             <Modal
                 title={
-                    equipment
-                        ? "UPDATE EQUIPMENT DETAILS"
-                        : "EQUIPMENT DETAILS"
+                    excavation
+                        ? "UPDATE EXCAVATION MATERIAL"
+                        : "EXCAVATION MATERIAL"
                 }
                 width={800}
                 open={isModalOpen}
@@ -331,14 +328,14 @@ export default function EquipmentPanel({ project }) {
                 >
                     <Form.Item>
                         <Form.Item
-                            label="EQUIPMENT NAME"
-                            name="equipment"
+                            label="MATERIAL NAME"
+                            name="material"
                             // Custom error handling
-                            validateStatus={errors?.equipment ? "error" : ""}
-                            help={errors?.equipment ? errors.equipment[0] : ""}
+                            validateStatus={errors?.material ? "error" : ""}
+                            help={errors?.material ? errors.material[0] : ""}
                         >
                             <Input
-                                placeholder="Equipment Name"
+                                placeholder="Material Name"
                                 prefix={<UserOutlined />}
                             />
                         </Form.Item>
@@ -429,7 +426,7 @@ export default function EquipmentPanel({ project }) {
                                 disabled={processing}
                                 loading={processing}
                             >
-                                {equipment ? "Update" : "Save"}
+                                {excavation ? "Update" : "Save"}
                             </Button>
                         </Space>
                     </Row>

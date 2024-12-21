@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import dayjs from "dayjs";
 import {
     Button,
@@ -14,14 +14,15 @@ import {
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
-    PhoneOutlined,
-    LockOutlined,
-    MailOutlined,
     PlusOutlined,
-    UserOutlined,
     EditOutlined,
     DeleteOutlined,
     QuestionCircleOutlined,
+    DatabaseOutlined,
+    DollarOutlined,
+    CompassOutlined,
+    EnvironmentOutlined,
+    UnorderedListOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
@@ -29,7 +30,6 @@ import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
-const { RangePicker } = DatePicker;
 
 export default function Index({ auth, contructors, engineers }) {
     const [data, setData] = useState([]);
@@ -121,6 +121,7 @@ export default function Index({ auth, contructors, engineers }) {
             longitude: project.longitude,
             engineer: project.engineer,
             contructor: project.contructor,
+            category: project.category,
             status: project.status,
             priority: project.priority,
         });
@@ -275,6 +276,15 @@ export default function Index({ auth, contructors, engineers }) {
                                     icon={<EditOutlined />}
                                     onClick={() => showEditModal(record)}
                                 ></Button>
+                                <Link
+                                    href={route("staffone.material", record.id)}
+                                >
+                                    <Button
+                                        type="default"
+                                        shape="circle"
+                                        icon={<UnorderedListOutlined />}
+                                    />
+                                </Link>
                                 <Button
                                     danger
                                     shape="circle"
@@ -318,7 +328,9 @@ export default function Index({ auth, contructors, engineers }) {
                     onFinish={handleSubmit}
                 >
                     <Form.Item>
-                        <Divider orientation="left">Basic Project Details</Divider>
+                        <Divider orientation="left">
+                            Basic Project Details
+                        </Divider>
                         <Form.Item
                             label="PROJECT NAME"
                             name="name"
@@ -328,7 +340,7 @@ export default function Index({ auth, contructors, engineers }) {
                         >
                             <Input
                                 placeholder="Name"
-                                prefix={<UserOutlined />}
+                                prefix={<DatabaseOutlined />}
                             />
                         </Form.Item>
                         <Form.Item
@@ -424,7 +436,7 @@ export default function Index({ auth, contructors, engineers }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<DollarOutlined />}
                                     className="w-full"
                                 />
                             </Form.Item>
@@ -438,7 +450,8 @@ export default function Index({ auth, contructors, engineers }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    disabled
+                                    prefix={<DollarOutlined />}
                                     className="w-full"
                                 />
                             </Form.Item>
@@ -476,7 +489,7 @@ export default function Index({ auth, contructors, engineers }) {
                         >
                             <Input
                                 placeholder="Location"
-                                prefix={<UserOutlined />}
+                                prefix={<EnvironmentOutlined />}
                             />
                         </Form.Item>
 
@@ -492,7 +505,7 @@ export default function Index({ auth, contructors, engineers }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<CompassOutlined />}
                                     className="w-full"
                                 />
                             </Form.Item>
@@ -511,7 +524,7 @@ export default function Index({ auth, contructors, engineers }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<CompassOutlined />}
                                     className="w-full"
                                 />
                             </Form.Item>
@@ -562,6 +575,33 @@ export default function Index({ auth, contructors, engineers }) {
                         </div>
 
                         <div className="flex gap-4">
+                            <Form.Item
+                                label="CATEGORY"
+                                name="category"
+                                validateStatus={errors?.category ? "error" : ""}
+                                help={
+                                    errors?.category ? errors?.category[0] : ""
+                                }
+                                className="w-full"
+                            >
+                                <Select
+                                    options={[
+                                        {
+                                            value: "Roadwork",
+                                            label: "Roadwork",
+                                        },
+                                        {
+                                            value: "Building",
+                                            label: "Building",
+                                        },
+                                        {
+                                            value: "Waterworks",
+                                            label: "Waterworks",
+                                        },
+                                    ]}
+                                />
+                            </Form.Item>
+
                             <Form.Item
                                 label="STATUS"
                                 name="status"

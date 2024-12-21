@@ -58,6 +58,9 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::post('/staffone/project/store', [ProjectController::class, 'store']);
     Route::put('/staffone/project/updata/{id}', [ProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
+
+    Route::get('/staffone/materials/index/{id}', [MaterialController::class, 'index'])->name('staffone.material');
+    
 });
 
 Route::middleware(['auth', 'stafftwo'])->group(function() {
