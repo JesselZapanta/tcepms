@@ -7,17 +7,39 @@ import MetalPanel from "./MetalPanel";
 import EquipmentPanel from "./EquipmentPanel";
 import WaterPanel from "./WaterPanel";
 import PlasterFinishPanel from "./PlasterFinishPanel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 const { Panel } = Collapse;
 
-export default function Index({ auth, project, costs }) {
+export default function Index({ auth, project }) {
 
     const formatPeso = (value) => {
         const num = parseFloat(value);
         if (isNaN(num)) return "₱0.00";
         return `₱${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
     };
+
+    const [CostChange, setCostChange] = useState(true);
+    const[costs, setCosts] =useState([]);
+
+    const getCost = async() => {
+        console.log(project.id);
+        try {
+            const res = await axios.get(
+                `/staffone/materials/getcost/${project.id}`
+            );
+            setCosts(res.data);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setCostChange(false);
+        }
+    }
+
+    useEffect(() => {
+        getCost();
+    }, [CostChange]);
 
     return (
         <AuthenticatedLayout header="Material" auth={auth}>
@@ -29,73 +51,91 @@ export default function Index({ auth, project, costs }) {
                 <Collapse defaultActiveKey={["1", "8"]}>
                     <Panel header="Project Details" key="1">
                         <Descriptions bordered>
-                            <Descriptions.Item label="Name">
+                            <Descriptions.Item label="Name" span={4}>
                                 {project.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Description">
+                            <Descriptions.Item label="Description" span={4}>
                                 {project.description}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Start Date">
-                                {project.start_date}
+                            <Descriptions.Item label="Start Date" span={2}>
+                                {project.start_date ? dayjs(project.start_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="End Date">
-                                {project.end_date}
+                            <Descriptions.Item label="End Date" span={2}>
+                                {project.end_date ? dayjs(project.end_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Actual Start Date">
-                                {project.actual_start_date || "N/A"}
+                            <Descriptions.Item
+                                label="Actual Start Date"
+                                span={2}
+                            >
+                                {project.actual_start_date ? dayjs(project.actual_start_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Actual End Date">
-                                {project.actual_end_date || "N/A"}
+                            <Descriptions.Item label="Actual End Date" span={2}>
+                                {project.actual_end_date ? dayjs(project.actual_end_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Budget">
-                                {project.budget}
+                            <Descriptions.Item label="Budget" span={4}>
+                                {formatPeso(project.budget)}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Cost">
-                                {project.cost}
+                            <Descriptions.Item label="Cost" span={2}>
+                                {formatPeso(project.cost)}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Source">
+                            <Descriptions.Item label="Source" span={2}>
                                 {project.source || "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Location">
+                            <Descriptions.Item label="Location" span={4}>
                                 {project.location}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Latitude">
+                            <Descriptions.Item label="Latitude" span={2}>
                                 {project.latitude || "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Longitude">
+                            <Descriptions.Item label="Longitude" span={2}>
                                 {project.longitude || "N/A"}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Engineer">
+                            <Descriptions.Item label="Engineer" span={2}>
                                 {project.engineer}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Constructor">
+                            <Descriptions.Item label="Constructor" span={2}>
                                 {project.contructor}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Status">
+                            <Descriptions.Item label="Status" span={2}>
                                 {project.status}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Priority">
+                            <Descriptions.Item label="Priority" span={2}>
                                 {project.priority}
                             </Descriptions.Item>
                         </Descriptions>
                     </Panel>
                     <Panel header="Excavation" key="2">
-                        <ExcavationPanel project={project} />
+                        <ExcavationPanel
+                            project={project}
+                            setCostChange={setCostChange}
+                        />
                     </Panel>
                     <Panel header="Concrete Works" key="3">
-                        <ConcretePanel project={project} />
+                        <ConcretePanel
+                            project={project}
+                            setCostChange={setCostChange}
+                        />
                     </Panel>
                     <Panel header="Water Works" key="4">
                         <WaterPanel project={project} />
                     </Panel>
                     <Panel header="Metal Structure" key="5">
-                        <MetalPanel project={project} />
+                        <MetalPanel
+                            project={project}
+                            setCostChange={setCostChange}
+                        />
                     </Panel>
                     <Panel header="Cement Plaster and Finishes" key="6">
-                        <PlasterFinishPanel project={project} />
+                        <PlasterFinishPanel
+                            project={project}
+                            setCostChange={setCostChange}
+                        />
                     </Panel>
                     <Panel header="Equipment" key="7">
-                        <EquipmentPanel project={project}/>
+                        <EquipmentPanel
+                            project={project}
+                            setCostChange={setCostChange}
+                        />
                     </Panel>
                     <Panel header="Cost " key="8">
                         <Descriptions title="Project Costs Summary" bordered>

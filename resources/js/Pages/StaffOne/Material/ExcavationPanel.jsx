@@ -24,7 +24,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 const { RangePicker } = DatePicker;
 
-export default function ExcavationPanel({project}) {
+export default function ExcavationPanel({ project, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -49,10 +49,12 @@ export default function ExcavationPanel({project}) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/staffone/materials/excavation/getdata?${params}`);
+            const res = await axios.get(
+                `/staffone/materials/excavation/getdata?${params}`
+            );
             setData(res.data.data);
             setTotal(res.data.total);
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -130,6 +132,7 @@ export default function ExcavationPanel({project}) {
                     values
                 );
                 if (res.data.status === "updated") {
+                    setCostChange();
                     handleCancel();
                     openNotification(
                         "success",
@@ -144,12 +147,15 @@ export default function ExcavationPanel({project}) {
                 setProcessing(false);
             }
         } else {
-
             values.project = project.id;
 
             try {
-                const res = await axios.post("/staffone/materials/excavation/store", values);
+                const res = await axios.post(
+                    "/staffone/materials/excavation/store",
+                    values
+                );
                 if (res.data.status === "created") {
+                    setCostChange();
                     handleCancel();
                     openNotification(
                         "success",
@@ -170,9 +176,12 @@ export default function ExcavationPanel({project}) {
         setLoading(true);
 
         try {
-            const res = await axios.delete(`/staffone/materials/excavation/destroy/${id}`);
+            const res = await axios.delete(
+                `/staffone/materials/excavation/destroy/${id}`
+            );
 
             if (res.data.status === "deleted") {
+                setCostChange();
                 handleCancel();
                 openNotification(
                     "success",
@@ -203,6 +212,13 @@ export default function ExcavationPanel({project}) {
     useEffect(() => {
         form.setFieldsValue({ cost });
     }, [cost]);
+
+    const formatPeso = (value) => {
+        const num = parseFloat(value);
+        if (isNaN(num)) return "₱0.00";
+        return `₱${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
+    };
+    
 
     return (
         <>
@@ -238,7 +254,7 @@ export default function ExcavationPanel({project}) {
                         onChange: (page) => setPage(page),
                     }}
                     footer={() =>
-                        `Total Material Cost: ${totalAmount.toFixed(2)}`
+                        `Total Material Cost: ${formatPeso(totalAmount)}`
                     }
                     onChange={handleTableChange}
                 >
@@ -261,18 +277,21 @@ export default function ExcavationPanel({project}) {
                         title="No. of Days"
                         dataIndex="no_of_days"
                         key="no_of_days"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         sorter={true}
                         title="Rate / Day"
                         dataIndex="rate"
                         key="rate"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
                         key="cost"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         title="Action"

@@ -63,6 +63,7 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
     
     Route::get('/staffone/materials/index/{id}', [StaffOneMaterialController::class, 'index'])->name('staffone.material');
+    Route::get('/staffone/materials/getcost/{id}', [StaffOneMaterialController::class, 'getCost']);
 
     Route::get('/staffone/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
     Route::post('/staffone/materials/excavation/store', [ExcavationController::class, 'store']);

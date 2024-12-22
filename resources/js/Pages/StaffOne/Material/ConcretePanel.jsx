@@ -31,7 +31,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 const { RangePicker } = DatePicker;
 
-export default function ConcretePanel({project}) {
+export default function ConcretePanel({ project, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -56,10 +56,12 @@ export default function ConcretePanel({project}) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/staffone/materials/concrete/getdata?${params}`);
+            const res = await axios.get(
+                `/staffone/materials/concrete/getdata?${params}`
+            );
             setData(res.data.data);
             setTotal(res.data.total);
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -135,6 +137,7 @@ export default function ConcretePanel({project}) {
                     values
                 );
                 if (res.data.status === "updated") {
+                    setCostChange();
                     handleCancel();
                     openNotification(
                         "success",
@@ -149,7 +152,6 @@ export default function ConcretePanel({project}) {
                 setProcessing(false);
             }
         } else {
-
             values.project = project.id;
 
             try {
@@ -158,6 +160,7 @@ export default function ConcretePanel({project}) {
                     values
                 );
                 if (res.data.status === "created") {
+                    setCostChange();
                     handleCancel();
                     openNotification(
                         "success",
@@ -183,6 +186,7 @@ export default function ConcretePanel({project}) {
             );
 
             if (res.data.status === "deleted") {
+                setCostChange();
                 handleCancel();
                 openNotification(
                     "success",
@@ -216,6 +220,12 @@ export default function ConcretePanel({project}) {
     useEffect(() => {
         form.setFieldsValue({ cost });
     }, [cost]);
+
+    const formatPeso = (value) => {
+        const num = parseFloat(value);
+        if (isNaN(num)) return "₱0.00";
+        return `₱${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
+    };
 
     return (
         <>
@@ -253,10 +263,12 @@ export default function ConcretePanel({project}) {
                     footer={() => (
                         <div>
                             <div>
-                                Total Material Cost: {totalAmount.toFixed(2)}
+                                Total Material Cost: {formatPeso(totalAmount)}
                             </div>
-                            <div>Labor Cost (40%): {laborCost.toFixed(2)}</div>
-                            <div>Sub Total Cost: {subTotalCost.toFixed(2)}</div>
+                            <div>Labor Cost (40%): {formatPeso(laborCost)}</div>
+                            <div>
+                                Sub Total Cost: {formatPeso(subTotalCost)}
+                            </div>
                         </div>
                     )}
                     onChange={handleTableChange}
@@ -286,12 +298,14 @@ export default function ConcretePanel({project}) {
                         title="UNIT COST"
                         dataIndex="unit_cost"
                         key="unit_cost"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
                         key="cost"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         title="Action"

@@ -21,7 +21,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function EquipmentPanel({ project }) {
+export default function EquipmentPanel({ project, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -129,6 +129,7 @@ export default function EquipmentPanel({ project }) {
                     values
                 );
                 if (res.data.status === "updated") {
+                    setCostChange();
                     handleCancel();
                     openNotification(
                         "success",
@@ -151,6 +152,7 @@ export default function EquipmentPanel({ project }) {
                     values
                 );
                 if (res.data.status === "created") {
+                    setCostChange();
                     handleCancel();
                     openNotification(
                         "success",
@@ -176,6 +178,7 @@ export default function EquipmentPanel({ project }) {
             );
 
             if (res.data.status === "deleted") {
+                setCostChange();
                 handleCancel();
                 openNotification(
                     "success",
@@ -206,6 +209,12 @@ export default function EquipmentPanel({ project }) {
     useEffect(() => {
         form.setFieldsValue({ cost });
     }, [cost]);
+
+    const formatPeso = (value) => {
+        const num = parseFloat(value);
+        if (isNaN(num)) return "₱0.00";
+        return `₱${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
+    };
 
     return (
         <>
@@ -241,7 +250,7 @@ export default function EquipmentPanel({ project }) {
                         onChange: (page) => setPage(page),
                     }}
                     footer={() =>
-                        `Total Material Cost: ${totalAmount.toFixed(2)}`
+                        `Total Material Cost: ${formatPeso(totalAmount)}`
                     }
                     onChange={handleTableChange}
                 >
@@ -264,18 +273,21 @@ export default function EquipmentPanel({ project }) {
                         title="No. of Days"
                         dataIndex="no_of_days"
                         key="no_of_days"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         sorter={true}
                         title="Rate / Day"
                         dataIndex="rate"
                         key="rate"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
                         key="cost"
+                        render={(value) => formatPeso(value)}
                     />
                     <Column
                         title="Action"
