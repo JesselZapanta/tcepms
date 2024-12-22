@@ -100,25 +100,27 @@ class ExcavationController extends Controller
     {
         $data = $request->validated();
 
-        $project = Excavation::findOrFail($id);
+        $excavation = Excavation::findOrFail($id);
 
-        $project->update($data);
-
+        $excavation->update($data);
 
         // Update the project's cost
-        $this->updateProjectCost($id);
+        $this->updateProjectCost($excavation->project);
 
         return response()->json([
             'status' => 'updated'
         ], 200);
     }
     
+
     public function destroy($id)
     {
-        Excavation::destroy($id);
+        $excavation = Excavation::findOrFail($id);
+
+        $excavation->delete();
 
         // Update the project's cost
-        $this->updateProjectCost($id);
+        $this->updateProjectCost($excavation->project);
 
         return response()->json([
             'status' => 'deleted'
