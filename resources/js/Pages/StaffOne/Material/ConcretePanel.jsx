@@ -133,7 +133,7 @@ export default function ConcretePanel({ project, setCostChange }) {
         if (concrete) {
             try {
                 const res = await axios.put(
-                    `/staffone/materials/concrete/updata/${concrete.id}`,
+                    `/staffone/materials/concrete/update/${concrete.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

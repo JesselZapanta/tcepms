@@ -125,7 +125,7 @@ export default function WaterPanel({ project, setCostChange }) {
         if (water) {
             try {
                 const res = await axios.put(
-                    `/staffone/materials/water/updata/${water.id}`,
+                    `/staffone/materials/water/update/${water.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

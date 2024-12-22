@@ -128,7 +128,7 @@ export default function ExcavationPanel({ project, setCostChange }) {
         if (excavation) {
             try {
                 const res = await axios.put(
-                    `/staffone/materials/excavation/updata/${excavation.id}`,
+                    `/staffone/materials/excavation/update/${excavation.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

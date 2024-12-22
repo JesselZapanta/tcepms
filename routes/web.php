@@ -59,7 +59,7 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::get('/staffone/project', [ProjectController::class, 'index'])->name('staffone.project');
     Route::get('/staffone/project/getdata', [ProjectController::class, 'getData']);
     Route::post('/staffone/project/store', [ProjectController::class, 'store']);
-    Route::put('/staffone/project/updata/{id}', [ProjectController::class, 'update']);
+    Route::put('/staffone/project/update/{id}', [ProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
     
     Route::get('/staffone/materials/index/{id}', [StaffOneMaterialController::class, 'index'])->name('staffone.material');
@@ -67,32 +67,32 @@ Route::middleware(['auth', 'staffone'])->group(function() {
 
     Route::get('/staffone/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
     Route::post('/staffone/materials/excavation/store', [ExcavationController::class, 'store']);
-    Route::put('/staffone/materials/excavation/updata/{id}', [ExcavationController::class, 'update']);
+    Route::put('/staffone/materials/excavation/update/{id}', [ExcavationController::class, 'update']);
     Route::delete('/staffone/materials/excavation/destroy/{id}', [ExcavationController::class, 'destroy']);
 
     Route::get('/staffone/materials/concrete/getdata', [ConcreteController::class, 'getdata']);
     Route::post('/staffone/materials/concrete/store', [ConcreteController::class, 'store']);
-    Route::put('/staffone/materials/concrete/updata/{id}', [ConcreteController::class, 'update']);
+    Route::put('/staffone/materials/concrete/update/{id}', [ConcreteController::class, 'update']);
     Route::delete('/staffone/materials/concrete/destroy/{id}', [ConcreteController::class, 'destroy']);
 
     Route::get('/staffone/materials/metal/getdata', [MetalController::class, 'getdata']);
     Route::post('/staffone/materials/metal/store', [MetalController::class, 'store']);
-    Route::put('/staffone/materials/metal/updata/{id}', [MetalController::class, 'update']);
+    Route::put('/staffone/materials/metal/update/{id}', [MetalController::class, 'update']);
     Route::delete('/staffone/materials/metal/destroy/{id}', [MetalController::class, 'destroy']);
 
     Route::get('/staffone/materials/equipment/getdata', [EquipmentController::class, 'getdata']);
     Route::post('/staffone/materials/equipment/store', [EquipmentController::class, 'store']);
-    Route::put('/staffone/materials/equipment/updata/{id}', [EquipmentController::class, 'update']);
+    Route::put('/staffone/materials/equipment/update/{id}', [EquipmentController::class, 'update']);
     Route::delete('/staffone/materials/equipment/destroy/{id}', [EquipmentController::class, 'destroy']);
 
     Route::get('/staffone/materials/water/getdata', [WaterController::class, 'getdata']);
     Route::post('/staffone/materials/water/store', [WaterController::class, 'store']);
-    Route::put('/staffone/materials/water/updata/{id}', [WaterController::class, 'update']);
+    Route::put('/staffone/materials/water/update/{id}', [WaterController::class, 'update']);
     Route::delete('/staffone/materials/water/destroy/{id}', [WaterController::class, 'destroy']);
 
     Route::get('/staffone/materials/plaster-finish/getdata', [PlasterFinishController::class, 'getdata']);
     Route::post('/staffone/materials/plaster-finish/store', [PlasterFinishController::class, 'store']);
-    Route::put('/staffone/materials/plaster-finish/updata/{id}', [PlasterFinishController::class, 'update']);
+    Route::put('/staffone/materials/plaster-finish/update/{id}', [PlasterFinishController::class, 'update']);
     Route::delete('/staffone/materials/plaster-finish/destroy/{id}', [PlasterFinishController::class, 'destroy']);
     
 });
@@ -107,22 +107,22 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     
     // Route::get('/stafftwo/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
     // Route::post('/stafftwo/materials/excavation/store', [ExcavationController::class, 'store']);
-    // Route::put('/stafftwo/materials/excavation/updata/{id}', [ExcavationController::class, 'update']);
+    // Route::put('/stafftwo/materials/excavation/update/{id}', [ExcavationController::class, 'update']);
     // Route::delete('/stafftwo/materials/excavation/destroy/{id}', [ExcavationController::class, 'destroy']);
 
     // Route::get('/stafftwo/materials/concrete/getdata', [ConcreteController::class, 'getdata']);
     // Route::post('/stafftwo/materials/concrete/store', [ConcreteController::class, 'store']);
-    // Route::put('/stafftwo/materials/concrete/updata/{id}', [ConcreteController::class, 'update']);
+    // Route::put('/stafftwo/materials/concrete/update/{id}', [ConcreteController::class, 'update']);
     // Route::delete('/stafftwo/materials/concrete/destroy/{id}', [ConcreteController::class, 'destroy']);
 
     // Route::get('/stafftwo/materials/metal/getdata', [MetalController::class, 'getdata']);
     // Route::post('/stafftwo/materials/metal/store', [MetalController::class, 'store']);
-    // Route::put('/stafftwo/materials/metal/updata/{id}', [MetalController::class, 'update']);
+    // Route::put('/stafftwo/materials/metal/update/{id}', [MetalController::class, 'update']);
     // Route::delete('/stafftwo/materials/metal/destroy/{id}', [MetalController::class, 'destroy']);
 
     // Route::get('/stafftwo/materials/equipment/getdata', [EquipmentController::class, 'getdata']);
     // Route::post('/stafftwo/materials/equipment/store', [EquipmentController::class, 'store']);
-    // Route::put('/stafftwo/materials/equipment/updata/{id}', [EquipmentController::class, 'update']);
+    // Route::put('/stafftwo/materials/equipment/update/{id}', [EquipmentController::class, 'update']);
     // Route::delete('/stafftwo/materials/equipment/destroy/{id}', [EquipmentController::class, 'destroy']);
 
 });

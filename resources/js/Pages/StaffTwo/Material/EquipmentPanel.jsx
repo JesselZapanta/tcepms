@@ -125,7 +125,7 @@ export default function EquipmentPanel({ project }) {
         if (equipment) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/equipment/updata/${equipment.id}`,
+                    `/stafftwo/materials/equipment/update/${equipment.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

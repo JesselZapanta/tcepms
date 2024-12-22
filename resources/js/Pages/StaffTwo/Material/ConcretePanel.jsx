@@ -131,7 +131,7 @@ export default function ConcretePanel({project}) {
         if (concrete) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/materials/concrete/updata/${concrete.id}`,
+                    `/stafftwo/materials/concrete/update/${concrete.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

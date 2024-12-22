@@ -41,6 +41,9 @@ export default function Index({ auth, project }) {
         getCost();
     }, [CostChange]);
 
+    console.log(costs?.projectDetails?.name);
+
+
     return (
         <AuthenticatedLayout header="Material" auth={auth}>
             <Head title="Material" />
@@ -52,55 +55,55 @@ export default function Index({ auth, project }) {
                     <Panel header="Project Details" key="1">
                         <Descriptions bordered>
                             <Descriptions.Item label="Name" span={4}>
-                                {project.name}
+                                {costs?.projectDetails?.name}
                             </Descriptions.Item>
                             <Descriptions.Item label="Description" span={4}>
-                                {project.description}
+                                {costs?.projectDetails?.description}
                             </Descriptions.Item>
                             <Descriptions.Item label="Start Date" span={2}>
-                                {project.start_date ? dayjs(project.start_date).format("YYYY-MM-DD"): "N/A"}
+                                {costs?.projectDetails?.start_date ? dayjs(costs?.projectDetails?.start_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item label="End Date" span={2}>
-                                {project.end_date ? dayjs(project.end_date).format("YYYY-MM-DD"): "N/A"}
+                                {costs?.projectDetails?.end_date ? dayjs(costs?.projectDetails?.end_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item
                                 label="Actual Start Date"
                                 span={2}
                             >
-                                {project.actual_start_date ? dayjs(project.actual_start_date).format("YYYY-MM-DD"): "N/A"}
+                                {costs?.projectDetails?.actual_start_date ? dayjs(costs?.projectDetails?.actual_start_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item label="Actual End Date" span={2}>
-                                {project.actual_end_date ? dayjs(project.actual_end_date).format("YYYY-MM-DD"): "N/A"}
+                                {costs?.projectDetails?.actual_end_date ? dayjs(costs?.projectDetails?.actual_end_date).format("YYYY-MM-DD"): "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item label="Budget" span={4}>
-                                {formatPeso(project.budget)}
+                                {formatPeso(costs?.projectDetails?.budget)}
                             </Descriptions.Item>
                             <Descriptions.Item label="Cost" span={2}>
-                                {formatPeso(project.cost)}
+                                {formatPeso(costs?.projectDetails?.cost)}
                             </Descriptions.Item>
                             <Descriptions.Item label="Source" span={2}>
-                                {project.source || "N/A"}
+                                {costs?.projectDetails?.source || "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item label="Location" span={4}>
-                                {project.location}
+                                {costs?.projectDetails?.location}
                             </Descriptions.Item>
                             <Descriptions.Item label="Latitude" span={2}>
-                                {project.latitude || "N/A"}
+                                {costs?.projectDetails?.latitude || "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item label="Longitude" span={2}>
-                                {project.longitude || "N/A"}
+                                {costs?.projectDetails?.longitude || "N/A"}
                             </Descriptions.Item>
                             <Descriptions.Item label="Engineer" span={2}>
-                                {project.engineer}
+                                {costs?.projectDetails?.engineer}
                             </Descriptions.Item>
                             <Descriptions.Item label="Constructor" span={2}>
-                                {project.contructor}
+                                {costs?.projectDetails?.contructor}
                             </Descriptions.Item>
                             <Descriptions.Item label="Status" span={2}>
-                                {project.status}
+                                {costs?.projectDetails?.status}
                             </Descriptions.Item>
                             <Descriptions.Item label="Priority" span={2}>
-                                {project.priority}
+                                {costs?.projectDetails?.priority}
                             </Descriptions.Item>
                         </Descriptions>
                     </Panel>

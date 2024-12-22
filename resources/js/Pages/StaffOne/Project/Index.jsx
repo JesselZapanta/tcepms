@@ -141,7 +141,7 @@ export default function Index({ auth, contructors, engineers }) {
         if (project) {
             try {
                 const res = await axios.put(
-                    `/staffone/project/updata/${project.id}`,
+                    `/staffone/project/update/${project.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

@@ -125,7 +125,7 @@ export default function MetalPanel({ project, setCostChange }) {
         if (metal) {
             try {
                 const res = await axios.put(
-                    `/staffone/materials/metal/updata/${metal.id}`,
+                    `/staffone/materials/metal/update/${metal.id}`,
                     values
                 );
                 if (res.data.status === "updated") {

@@ -125,7 +125,7 @@ export default function PlasterFinishPanel({ project, setCostChange }) {
         if (plasterFinish) {
             try {
                 const res = await axios.put(
-                    `/staffone/materials/plaster-finish/updata/${plasterFinish.id}`,
+                    `/staffone/materials/plaster-finish/update/${plasterFinish.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
