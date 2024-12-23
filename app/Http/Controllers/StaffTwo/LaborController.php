@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\StaffOne;
+namespace App\Http\Controllers\StaffTwo;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
-class StaffOneMaterialController extends Controller
+class LaborController extends Controller
 {
     public function index($id)
     {
         $project = Project::with(['excavation', 'concrete', 'water', 'metal', 'plasterFinish', 'equipment'])->findOrFail($id);
 
-        return inertia('StaffOne/Material/Index', [
+        return inertia('StaffTwo/Labor/Index', [
             'project' => $project,
         ]);
     }

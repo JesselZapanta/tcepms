@@ -59,7 +59,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <AppstoreOutlined />,
         },
         {
-            label: <Link href={route("stafftwo.project")}>Material</Link>,
+            label: <Link href={route("stafftwo.project")}>Project</Link>,
             key: "stafftwo.project",
             icon: <AppstoreOutlined />,
         },

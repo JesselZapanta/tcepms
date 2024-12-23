@@ -6,14 +6,14 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffOne\PlasterFinishController;
-use App\Http\Controllers\StaffOne\ProjectController;
+use App\Http\Controllers\StaffOne\StaffOneProjectController;//
 use App\Http\Controllers\StaffOne\StaffOneDashboardController;
 use App\Http\Controllers\StaffOne\ConcreteController;
 use App\Http\Controllers\StaffOne\EquipmentController;
 use App\Http\Controllers\StaffOne\ExcavationController;
-use App\Http\Controllers\StaffOne\StaffOneMaterialController;
+use App\Http\Controllers\StaffOne\MaterialController;
 use App\Http\Controllers\StaffOne\WaterController;
-use App\Http\Controllers\StaffTwo\MaterialController;
+use App\Http\Controllers\StaffTwo\LaborController;
 use App\Http\Controllers\StaffOne\MetalController;
 use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
 use App\Http\Controllers\StaffTwo\StaffTwoProjectController;
@@ -56,14 +56,14 @@ Route::middleware(['auth','admin'])->group(function() {
 Route::middleware(['auth', 'staffone'])->group(function() {
     Route::get('/staffone/dashboard', [StaffOneDashboardController::class, 'index'])->name('staffone.dashboard');
 
-    Route::get('/staffone/project', [ProjectController::class, 'index'])->name('staffone.project');
-    Route::get('/staffone/project/getdata', [ProjectController::class, 'getData']);
-    Route::post('/staffone/project/store', [ProjectController::class, 'store']);
-    Route::put('/staffone/project/update/{id}', [ProjectController::class, 'update']);
-    Route::delete('/staffone/project/destroy/{id}', [ProjectController::class, 'destroy']);
+    Route::get('/staffone/project', [StaffOneProjectController::class, 'index'])->name('staffone.project');
+    Route::get('/staffone/project/getdata', [StaffOneProjectController::class, 'getData']);
+    Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);
+    Route::put('/staffone/project/update/{id}', [StaffOneProjectController::class, 'update']);
+    Route::delete('/staffone/project/destroy/{id}', [StaffOneProjectController::class, 'destroy']);
     
-    Route::get('/staffone/materials/index/{id}', [StaffOneMaterialController::class, 'index'])->name('staffone.material');
-    Route::get('/staffone/materials/getcost/{id}', [StaffOneMaterialController::class, 'getCost']);
+    Route::get('/staffone/materials/index/{id}', [MaterialController::class, 'index'])->name('staffone.material');
+    Route::get('/staffone/materials/getcost/{id}', [MaterialController::class, 'getCost']);
 
     Route::get('/staffone/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
     Route::post('/staffone/materials/excavation/store', [ExcavationController::class, 'store']);
@@ -103,27 +103,8 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::get('/stafftwo/project', [StaffTwoProjectController::class, 'index'])->name('stafftwo.project');
     Route::get('/stafftwo/project/getdata', [StaffTwoProjectController::class, 'getdata']);
 
-    Route::get('/stafftwo/materials/index/{id}', [MaterialController::class, 'index'])->name('stafftwo.material');
-    
-    // Route::get('/stafftwo/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
-    // Route::post('/stafftwo/materials/excavation/store', [ExcavationController::class, 'store']);
-    // Route::put('/stafftwo/materials/excavation/update/{id}', [ExcavationController::class, 'update']);
-    // Route::delete('/stafftwo/materials/excavation/destroy/{id}', [ExcavationController::class, 'destroy']);
-
-    // Route::get('/stafftwo/materials/concrete/getdata', [ConcreteController::class, 'getdata']);
-    // Route::post('/stafftwo/materials/concrete/store', [ConcreteController::class, 'store']);
-    // Route::put('/stafftwo/materials/concrete/update/{id}', [ConcreteController::class, 'update']);
-    // Route::delete('/stafftwo/materials/concrete/destroy/{id}', [ConcreteController::class, 'destroy']);
-
-    // Route::get('/stafftwo/materials/metal/getdata', [MetalController::class, 'getdata']);
-    // Route::post('/stafftwo/materials/metal/store', [MetalController::class, 'store']);
-    // Route::put('/stafftwo/materials/metal/update/{id}', [MetalController::class, 'update']);
-    // Route::delete('/stafftwo/materials/metal/destroy/{id}', [MetalController::class, 'destroy']);
-
-    // Route::get('/stafftwo/materials/equipment/getdata', [EquipmentController::class, 'getdata']);
-    // Route::post('/stafftwo/materials/equipment/store', [EquipmentController::class, 'store']);
-    // Route::put('/stafftwo/materials/equipment/update/{id}', [EquipmentController::class, 'update']);
-    // Route::delete('/stafftwo/materials/equipment/destroy/{id}', [EquipmentController::class, 'destroy']);
+    Route::get('/stafftwo/labor/index/{id}', [LaborController::class, 'index'])->name('stafftwo.labor');
+    Route::get('/stafftwo/labor/getcost/{id}', action: [LaborController::class, 'getCost']);
 
 });
 

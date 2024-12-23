@@ -11,7 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class StaffOneProjectController extends Controller
 {
     public function index()
     {

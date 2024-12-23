@@ -63,8 +63,8 @@ export default function Index({ auth }) {
     // console.log(data);
 
     return (
-        <AuthenticatedLayout header="Project Material Management" auth={auth}>
-            <Head title="Project Material Management" />
+        <AuthenticatedLayout header="Project Labor Management" auth={auth}>
+            <Head title="Project Labor Management" />
             <div className="py-2">List of Project</div>
             <div className="flex gap-2 mb-2">
                 <Search
@@ -122,7 +122,7 @@ export default function Index({ auth }) {
                         key="action"
                         render={(_, record) => (
                             <Space>
-                                <Link href={route("stafftwo.material", record.id)}>
+                                <Link href={route("stafftwo.labor", record.id)}>
                                     <Button
                                         type="primary"
                                         shape="circle"
