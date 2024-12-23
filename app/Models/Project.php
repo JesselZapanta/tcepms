@@ -68,6 +68,10 @@ class Project extends Model
     {
         return $this->hasMany(PlasterFinish::class, 'project');
     }
+    public function plasterFinishLabor()
+    {
+        return $this->hasMany(PlasterFinishLabor::class, 'project');
+    }
     public function equipment()
     {
         return $this->hasMany(Equipment::class, 'project');

@@ -53,10 +53,12 @@ class LaborController extends Controller
         $MetalEstimatedSubTotalCost = $MetalWorksCost + $MetalLaborBudget;
         $MetalSubTotalCost = $MetalWorksCost + $ActualMetalLaborCost;
 
-        // Plaster Finish-related calculations
-        $PlasterFinishCost = $project->plasterFinish->sum('cost');
-        $PlasterFinishLabor = $PlasterFinishCost *  0.4;
-        $PlasterFinishSubTotal = $PlasterFinishCost + $PlasterFinishLabor;
+        // PlasterFinish-related calculations
+        $PlasterFinishWorksCost = $project->plasterFinish->sum('cost');
+        $PlasterFinishLaborBudget = $PlasterFinishWorksCost * 0.4;
+        $ActualPlasterFinishLaborCost = $project->plasterFinishLabor->sum('cost');
+        $PlasterFinishEstimatedSubTotalCost = $PlasterFinishWorksCost + $PlasterFinishLaborBudget;
+        $PlasterFinishSubTotalCost = $PlasterFinishWorksCost + $ActualPlasterFinishLaborCost;
 
         // Equipment-related calculations
         $EquipmentCost = $project->equipment->sum('cost');
@@ -87,9 +89,12 @@ class LaborController extends Controller
         'MetalEstimatedSubTotalCost' => $MetalEstimatedSubTotalCost,
         'MetalSubTotalCost' => $MetalSubTotalCost,
 
-        'PlasterFinishCost' => $PlasterFinishCost,
-        'PlasterFinishLabor' => $PlasterFinishLabor,
-        'PlasterFinishSubTotal' => $PlasterFinishSubTotal,
+         // PlasterFinish-related calculations
+        'PlasterFinishWorksCost' => $PlasterFinishWorksCost,
+        'PlasterFinishLaborBudget' => $PlasterFinishLaborBudget,
+        'ActualPlasterFinishLaborCost' => $ActualPlasterFinishLaborCost,
+        'PlasterFinishEstimatedSubTotalCost' => $PlasterFinishEstimatedSubTotalCost,
+        'PlasterFinishSubTotalCost' => $PlasterFinishSubTotalCost,
 
         'EquipmentCost' => $EquipmentCost,
 
@@ -100,7 +105,16 @@ class LaborController extends Controller
             'ConcreteEstimatedSubTotalCost' => $ConcreteEstimatedSubTotalCost,
             'WaterEstimatedSubTotalCost' => $WaterEstimatedSubTotalCost,
             'MetalEstimatedSubTotalCost' => $MetalEstimatedSubTotalCost,
-            'PlasterFinishSubTotal' => $PlasterFinishSubTotal,
+            'PlasterFinishEstimatedSubTotalCost' => $PlasterFinishEstimatedSubTotalCost,
+            'EquipmentCost' => $EquipmentCost,
+        ])->sum(),
+
+        'ActualTotalCost' => collect([
+            'ExcavationCost' => $ExcavationCost,
+            'ConcreteSubTotalCost' => $ConcreteSubTotalCost,
+            'WaterSubTotalCost' => $WaterSubTotalCost,
+            'MetalSubTotalCost' => $MetalSubTotalCost,
+            'PlasterFinishSubTotalCost' => $PlasterFinishSubTotalCost,
             'EquipmentCost' => $EquipmentCost,
         ])->sum(),
     ];

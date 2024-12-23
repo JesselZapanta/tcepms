@@ -109,17 +109,42 @@ export default function Summary({ costs, formatPeso }) {
         },
         //
         {
-            label: "Plaster Finish Cost",
-            children: formatPeso(costs.PlasterFinishCost),
+            label: "Plaster and Finish Works Cost",
+            children: formatPeso(costs.PlasterFinishWorksCost),
         },
         {
-            label: "Plaster Finish Labor Cost",
-            children: formatPeso(costs.PlasterFinishLabor),
+            label: (
+                <>
+                    <div>Plaster and Finish Labor Budget</div>
+                    <div>
+                        Plaster and Finish Actual PlasterFinish Labor Cost
+                    </div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.PlasterFinishLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualPlasterFinishLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Plaster Finish SubTotal Cost",
-            children: formatPeso(costs.PlasterFinishSubTotal),
+            label: (
+                <>
+                    <div>Plaster and Finish Estimated Subtotal Cost</div>
+                    <div>Plaster and Finish Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>
+                        {formatPeso(costs.PlasterFinishEstimatedSubTotalCost)}
+                    </div>
+                    <div>{formatPeso(costs.PlasterFinishSubTotalCost)}</div>
+                </>
+            ),
         },
+        //
         {
             label: "Equipment Cost",
             span: 4,
@@ -131,9 +156,20 @@ export default function Summary({ costs, formatPeso }) {
             children: formatPeso(costs.EstimatedBudget),
         },
         {
-            label: "Project Estimated Total Cost",
+            // label: "Project Estimated Total Cost",
+            label: (
+                <>
+                    <div>Project Estimated Total Cost</div>
+                    <div>Project Actual Total Cost</div>
+                </>
+            ),
             span: 2,
-            children: formatPeso(costs.EstimatedTotalCost),
+            children: (
+                <>
+                    <div>{formatPeso(costs.EstimatedTotalCost)}</div>
+                    <div>{formatPeso(costs.ActualTotalCost)}</div>
+                </>
+            ),
         },
     ];
 

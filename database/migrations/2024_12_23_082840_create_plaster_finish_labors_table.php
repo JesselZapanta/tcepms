@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('plaster_finish_labors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project')->constrained('projects')->onDelete('cascade');
+            $table->string('position');
+            $table->integer('quantity');
+            $table->integer('no_of_days');
+            $table->decimal('rate', 15, 2);
+            $table->decimal('cost', 15, 2);
             $table->timestamps();
         });
     }
