@@ -18,6 +18,7 @@ use App\Http\Controllers\StaffTwo\LaborController;
 use App\Http\Controllers\StaffOne\MetalController;
 use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
 use App\Http\Controllers\StaffTwo\StaffTwoProjectController;
+use App\Http\Controllers\StaffTwo\WaterLaborController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -111,6 +112,11 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::post('/stafftwo/labor/concrete/store', [ConcreteLaborConroller::class, 'store']);
     Route::put('/stafftwo/labor/concrete/update/{id}', [ConcreteLaborConroller::class, 'update']);
     Route::delete('/stafftwo/labor/concrete/destroy/{id}', [ConcreteLaborConroller::class, 'destroy']);
+    
+    Route::get('/stafftwo/labor/water/getdata', [WaterLaborController::class, 'getdata']);
+    Route::post('/stafftwo/labor/water/store', [WaterLaborController::class, 'store']);
+    Route::put('/stafftwo/labor/water/update/{id}', [WaterLaborController::class, 'update']);
+    Route::delete('/stafftwo/labor/water/destroy/{id}', [WaterLaborController::class, 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

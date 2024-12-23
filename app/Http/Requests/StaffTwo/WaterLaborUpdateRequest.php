@@ -11,7 +11,7 @@ class WaterLaborUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class WaterLaborUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'position' => ['required', 'string', 'max:255'],
+            'quantity' => ['required', 'numeric', 'min:0'],
+            'no_of_days' => ['required', 'numeric', 'min:0'],
+            'rate' => ['required', 'numeric', 'min:0'],
+            'cost' => ['required', 'numeric', 'min:0'],
         ];
     }
 }

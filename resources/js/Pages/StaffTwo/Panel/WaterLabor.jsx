@@ -25,7 +25,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 const { RangePicker } = DatePicker;
 
-export default function ConcreteLabor({ project, setCostChange, costs }) {
+export default function WaterLabor({ project, setCostChange, costs }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -51,7 +51,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
 
         try {
             const res = await axios.get(
-                `/stafftwo/labor/concrete/getdata?${params}`
+                `/stafftwo/labor/water/getdata?${params}`
             );
             setData(res.data.data);
             setTotal(res.data.total);
@@ -74,7 +74,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
         getData(false);
     }, [page, sortField, sortOrder]);
 
-    const [concreteLabor, setConcreteLabor] = useState(false);
+    const [waterLabor, setWaterLabor] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
@@ -95,26 +95,26 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
         form.resetFields();
     };
 
-    const showEditModal = (concreteLabor) => {
+    const showEditModal = (waterLabor) => {
         setIsModalOpen(true);
-        setConcreteLabor(concreteLabor);
+        setWaterLabor(waterLabor);
 
-        setQuantity(concreteLabor.quantity);
-        setNoOfDays(concreteLabor.no_of_days);
-        setRate(concreteLabor.rate);
+        setQuantity(waterLabor.quantity);
+        setNoOfDays(waterLabor.no_of_days);
+        setRate(waterLabor.rate);
 
         form.setFieldsValue({
-            position: concreteLabor.position,
-            quantity: concreteLabor.quantity,
-            no_of_days: concreteLabor.no_of_days,
-            rate: concreteLabor.rate,
-            cost: concreteLabor.cost,
+            position: waterLabor.position,
+            quantity: waterLabor.quantity,
+            no_of_days: waterLabor.no_of_days,
+            rate: waterLabor.rate,
+            cost: waterLabor.cost,
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setConcreteLabor(false);
+        setWaterLabor(false);
         form.resetFields();
         setErrors({});
         getData(false);
@@ -126,10 +126,10 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (concreteLabor) {
+        if (waterLabor) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/labor/concrete/update/${concreteLabor.id}`,
+                    `/stafftwo/labor/water/update/${waterLabor.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -139,7 +139,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The concrete labor has been updated successfully."
+                        "The water labor has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -159,7 +159,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
 
             try {
                 const res = await axios.post(
-                    "/stafftwo/labor/concrete/store",
+                    "/stafftwo/labor/water/store",
                     values
                 );
                 if (res.data.status === "created") {
@@ -169,7 +169,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The concrete labor has been created successfully."
+                        "The water labor has been created successfully."
                     );
                 }
             } catch (err) {
@@ -192,7 +192,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
 
         try {
             const res = await axios.delete(
-                `/stafftwo/labor/concrete/destroy/${id}`
+                `/stafftwo/labor/water/destroy/${id}`
             );
 
             if (res.data.status === "deleted") {
@@ -202,7 +202,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
                     "success",
                     "bottomRight",
                     "Deleted!",
-                    "The concrete labor has been deleted successfully."
+                    "The water labor has been deleted successfully."
                 );
             }
         } catch (err) {
@@ -232,10 +232,10 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Concrete Labor</div>
+            <div className="py-2">List of Water Labor</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input concrete labor position"
+                    placeholder="Input water labor position"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -266,11 +266,11 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
                         <div>
                             <div>
                                 Total Concrete Labor Budget:
-                                {formatPeso(costs.ConcreteLaborBudget)}
+                                {formatPeso(costs.WaterLaborBudget)}
                             </div>
                             <div>
                                 Total Concrete Labor Cost:
-                                {formatPeso(costs.ActualConcreteLaborCost)}
+                                {formatPeso(costs.ActualWaterLaborCost)}
                             </div>
                         </div>
                     )}
@@ -331,7 +331,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
                                             title: "Delete?",
                                             icon: <QuestionCircleOutlined />,
                                             content:
-                                                "Are you sure you want to delete this concrete labor?",
+                                                "Are you sure you want to delete this water labor?",
                                             okText: "Yes",
                                             cancelText: "No",
                                             onOk() {
@@ -347,7 +347,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
             </div>
             <Modal
                 title={
-                    concreteLabor ? "UPDATE CONCRETE LABOR" : "CONCRETE LABOR"
+                    waterLabor ? "UPDATE WATER LABOR" : "WATER LABOR"
                 }
                 width={800}
                 open={isModalOpen}
@@ -463,7 +463,7 @@ export default function ConcreteLabor({ project, setCostChange, costs }) {
                                 disabled={processing}
                                 loading={processing}
                             >
-                                {concreteLabor ? "Update" : "Save"}
+                                {waterLabor ? "Update" : "Save"}
                             </Button>
                         </Space>
                     </Row>

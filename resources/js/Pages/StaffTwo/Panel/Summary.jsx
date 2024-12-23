@@ -8,6 +8,7 @@ export default function Summary({ costs, formatPeso }) {
             span: 4,
             children: formatPeso(costs.ExcavationCost),
         },
+
         {
             label: "Concrete Works Cost",
             children: formatPeso(costs.ConcreteWorksCost),
@@ -40,18 +41,40 @@ export default function Summary({ costs, formatPeso }) {
                 </>
             ),
         },
+        //
         {
-            label: "Water Cost",
-            children: formatPeso(costs.WaterCost),
+            label: "Water Works Cost",
+            children: formatPeso(costs.WaterWorksCost),
         },
         {
-            label: "Water Labor Cost",
-            children: formatPeso(costs.WaterLabor),
+            label: (
+                <>
+                    <div>Water Labor Budget</div>
+                    <div>Water Actual Water Labor Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.WaterLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualWaterLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Water Subtotal  Cost",
-            children: formatPeso(costs.WaterEstimatedSubTotalCost),
+            label: (
+                <>
+                    <div>Water Estimated Subtotal Cost</div>
+                    <div>Water Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.WaterEstimatedSubTotalCost)}</div>
+                    <div>{formatPeso(costs.WaterSubTotalCost)}</div>
+                </>
+            ),
         },
+        //
         {
             label: "Metal Cost",
             children: formatPeso(costs.MetalCost),

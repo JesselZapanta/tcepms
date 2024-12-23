@@ -48,9 +48,11 @@ class LaborController extends Controller
         $ConcreteSubTotalCost = $ConcreteWorksCost + $ActualConcreteLaborCost;
 
         // Water-related calculations
-        $WaterCost = $project->water->sum('cost');
-        $WaterLabor = $WaterCost * 0.4;
-        $WaterSubTotal = $WaterCost + $WaterLabor;
+        $WaterWorksCost = $project->water->sum('cost');
+        $WaterLaborBudget = $WaterWorksCost * 0.4;
+        $ActualWaterLaborCost = $project->waterLabor->sum('cost');
+        $WaterEstimatedSubTotalCost = $WaterWorksCost + $WaterLaborBudget;
+        $WaterSubTotalCost = $WaterWorksCost + $ActualWaterLaborCost;
 
         // Metal-related calculations
         $MetalCost = $project->metal->sum('cost');
@@ -69,16 +71,20 @@ class LaborController extends Controller
         'projectDetails' => $project,
 
         'ExcavationCost' => $ExcavationCost,
-
+        
+        // Concrete-related calculations
         'ConcreteWorksCost' => $ConcreteWorksCost,
         'ConcreteLaborBudget' => $ConcreteLaborBudget,
         'ActualConcreteLaborCost' => $ActualConcreteLaborCost,
         'ConcreteEstimatedSubTotalCost' => $ConcreteEstimatedSubTotalCost,
         'ConcreteSubTotalCost' => $ConcreteSubTotalCost,
 
-        'WaterCost' => $WaterCost,
-        'WaterLabor' => $WaterLabor,
-        'WaterSubTotal' => $WaterSubTotal,
+       // Water-related calculations
+        'WaterWorksCost' => $WaterWorksCost,
+        'WaterLaborBudget' => $WaterLaborBudget,
+        'ActualWaterLaborCost' => $ActualWaterLaborCost,
+        'WaterEstimatedSubTotalCost' => $WaterEstimatedSubTotalCost,
+        'WaterSubTotalCost' => $WaterSubTotalCost,
 
         'MetalCost' => $MetalCost,
         'MetalLabor' => $MetalLabor,
@@ -95,7 +101,7 @@ class LaborController extends Controller
         'EstimatedTotalCost' => collect([
             'ExcavationCost' => $ExcavationCost,
             'ConcreteEstimatedSubTotalCost' => $ConcreteEstimatedSubTotalCost,
-            'WaterSubTotal' => $WaterSubTotal,
+            'WaterEstimatedSubTotalCost' => $WaterEstimatedSubTotalCost,
             'MetalSubTotal' => $MetalSubTotal,
             'PlasterFinishSubTotal' => $PlasterFinishSubTotal,
             'EquipmentCost' => $EquipmentCost,

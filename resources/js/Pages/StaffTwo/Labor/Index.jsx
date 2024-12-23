@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Details from "../Panel/Details";
 import ConcreteLabor from "../Panel/ConcreteLabor";
 import Summary from "../Panel/Summary";
+import WaterLabor from "../Panel/WaterLabor";
 
 export default function Index({ auth, project }) {
     const formatPeso = (value) => {
@@ -54,6 +55,18 @@ export default function Index({ auth, project }) {
         },
         {
             key: "3",
+            label: "Water Labor Details",
+            children: (
+                <WaterLabor
+                    costs={costs}
+                    formatPeso={formatPeso}
+                    project={project}
+                    setCostChange={setCostChange}
+                />
+            ),
+        },
+        {
+            key: "7",
             label: "Cost",
             children: <Summary costs={costs} formatPeso={formatPeso} />,
         },
