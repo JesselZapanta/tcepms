@@ -10,7 +10,14 @@ class LaborController extends Controller
 {
     public function index($id)
     {
-        $project = Project::with(['excavation', 'concrete', 'water', 'metal', 'plasterFinish', 'equipment'])->findOrFail($id);
+        $project = Project::with([
+            'excavation',
+            'concrete',
+            'water',
+            'metal',
+            'plasterFinish',
+            'equipment'
+        ])->findOrFail($id);
 
         return inertia('StaffTwo/Labor/Index', [
             'project' => $project,
@@ -18,15 +25,27 @@ class LaborController extends Controller
     }
     public function getCost($id)
     {
-        $project = Project::with(['siteEngineer','contructor','excavation', 'concrete', 'water', 'metal', 'plasterFinish', 'equipment'])->findOrFail($id);
+        $project = Project::with([
+            'siteEngineer',
+            'contructor',
+            'excavation',
+            'concrete', 
+            'concreteLabor', 
+            'water', 
+            'metal', 
+            'plasterFinish', 
+            'equipment'
+        ])->findOrFail($id);
 
         // Equipment-related calculations
         $ExcavationCost = $project->excavation->sum('cost');
 
         // Concrete-related calculations
         $ConcreteWorksCost = $project->concrete->sum('cost');
-        $ConcreteLabor = $ConcreteWorksCost * 0.4;
-        $ConcreteSubTotal = $ConcreteWorksCost + $ConcreteLabor;
+        $ConcreteLaborBudget = $ConcreteWorksCost * 0.4;
+        $ActualConcreteLaborCost = $project->concreteLabor->sum('cost');
+        $ConcreteEstimatedSubTotalCost = $ConcreteWorksCost + $ConcreteLaborBudget;
+        $ConcreteSubTotalCost = $ConcreteWorksCost + $ActualConcreteLaborCost;
 
         // Water-related calculations
         $WaterCost = $project->water->sum('cost');
@@ -48,25 +67,34 @@ class LaborController extends Controller
 
         $costs = [
         'projectDetails' => $project,
+
         'ExcavationCost' => $ExcavationCost,
+
         'ConcreteWorksCost' => $ConcreteWorksCost,
-        'ConcreteLabor' => $ConcreteLabor,
-        'ConcreteSubTotal' => $ConcreteSubTotal,
+        'ConcreteLaborBudget' => $ConcreteLaborBudget,
+        'ActualConcreteLaborCost' => $ActualConcreteLaborCost,
+        'ConcreteEstimatedSubTotalCost' => $ConcreteEstimatedSubTotalCost,
+        'ConcreteSubTotalCost' => $ConcreteSubTotalCost,
+
         'WaterCost' => $WaterCost,
         'WaterLabor' => $WaterLabor,
         'WaterSubTotal' => $WaterSubTotal,
+
         'MetalCost' => $MetalCost,
         'MetalLabor' => $MetalLabor,
         'MetalSubTotal' => $MetalSubTotal,
+
         'PlasterFinishCost' => $PlasterFinishCost,
         'PlasterFinishLabor' => $PlasterFinishLabor,
         'PlasterFinishSubTotal' => $PlasterFinishSubTotal,
+
         'EquipmentCost' => $EquipmentCost,
 
         'EstimatedBudget' => $project->budget,
-        'TotalCost' => collect([
+
+        'EstimatedTotalCost' => collect([
             'ExcavationCost' => $ExcavationCost,
-            'ConcreteSubTotal' => $ConcreteSubTotal,
+            'ConcreteEstimatedSubTotalCost' => $ConcreteEstimatedSubTotalCost,
             'WaterSubTotal' => $WaterSubTotal,
             'MetalSubTotal' => $MetalSubTotal,
             'PlasterFinishSubTotal' => $PlasterFinishSubTotal,

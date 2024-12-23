@@ -13,12 +13,32 @@ export default function Summary({ costs, formatPeso }) {
             children: formatPeso(costs.ConcreteWorksCost),
         },
         {
-            label: "Concrete Labor Cost",
-            children: formatPeso(costs.ConcreteLabor),
+            label: (
+                <>
+                    <div>Concrete Labor Budget</div>
+                    <div>Concrete Actual Concrete Labor Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.ConcreteLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualConcreteLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Concrete Sub Total Cost",
-            children: formatPeso(costs.ConcreteSubTotal),
+            label: (
+                <>
+                    <div>Concrete Estimated Subtotal Cost</div>
+                    <div>Concrete Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.ConcreteEstimatedSubTotalCost)}</div>
+                    <div>{formatPeso(costs.ConcreteSubTotalCost)}</div>
+                </>
+            ),
         },
         {
             label: "Water Cost",
@@ -29,8 +49,8 @@ export default function Summary({ costs, formatPeso }) {
             children: formatPeso(costs.WaterLabor),
         },
         {
-            label: "Water Sub Total Cost",
-            children: formatPeso(costs.WaterSubTotal),
+            label: "Water Subtotal  Cost",
+            children: formatPeso(costs.WaterEstimatedSubTotalCost),
         },
         {
             label: "Metal Cost",
@@ -41,7 +61,7 @@ export default function Summary({ costs, formatPeso }) {
             children: formatPeso(costs.MetalLabor),
         },
         {
-            label: "Metal Sub Total Cost",
+            label: "Metal Subtotal  Cost",
             children: formatPeso(costs.MetalSubTotal),
         },
         {
@@ -62,19 +82,19 @@ export default function Summary({ costs, formatPeso }) {
             children: formatPeso(costs.EquipmentCost),
         },
         {
-            label: "Estimated Budget",
+            label: "Project Estimated Budget",
             span: 2,
             children: formatPeso(costs.EstimatedBudget),
         },
         {
-            label: "Total Cost",
+            label: "Project Estimated Total Cost",
             span: 2,
-            children: formatPeso(costs.TotalCost),
+            children: formatPeso(costs.EstimatedTotalCost),
         },
     ];
 
     // Determine the background color based on the condition
-    const isBudgetExceeded = costs.EstimatedBudget <= costs.TotalCost;
+    const isBudgetExceeded = costs.EstimatedBudget <= costs.EstimatedTotalCost;
     const backgroundColor = isBudgetExceeded ? "rgba(255, 204, 204, 0.3)" : "rgba(204, 255, 204, 0.3)";
 
     return (

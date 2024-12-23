@@ -43,9 +43,18 @@ class Project extends Model
     {
         return $this->hasMany(Concrete::class, 'project');
     }
+    public function concreteLabor()
+    {
+        return $this->hasMany(ConcreteLabor::class, 'project');
+    }
     public function water()
     {
         return $this->hasMany(Water::class, 'project');
+    }
+    
+    public function waterLabor()
+    {
+        return $this->hasMany(WaterLabor::class, 'project');
     }
     public function metal()
     {

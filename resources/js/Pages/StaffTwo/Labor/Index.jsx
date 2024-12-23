@@ -3,6 +3,7 @@ import { Head } from "@inertiajs/react";
 import { Collapse } from "antd";
 import { useEffect, useState } from "react";
 import Details from "../Panel/Details";
+import ConcreteLabor from "../Panel/ConcreteLabor";
 import Summary from "../Panel/Summary";
 
 export default function Index({ auth, project }) {
@@ -40,20 +41,32 @@ export default function Index({ auth, project }) {
             children: <Details costs={costs} formatPeso={formatPeso} />,
         },
         {
-            key: "8",
+            key: "2",
+            label: "Concrete Labor Details",
+            children: (
+                <ConcreteLabor
+                    costs={costs}
+                    formatPeso={formatPeso}
+                    project={project}
+                    setCostChange={setCostChange}
+                />
+            ),
+        },
+        {
+            key: "3",
             label: "Cost",
             children: <Summary costs={costs} formatPeso={formatPeso} />,
         },
     ];
 
     return (
-        <AuthenticatedLayout header="Material" auth={auth}>
-            <Head title="Material" />
+        <AuthenticatedLayout header="Labors" auth={auth}>
+            <Head title="Labors" />
             {/* <pre className="text-gray-900">
                 {JSON.stringify(costs, null, 2)}
             </pre> */}
             <div className="py-2">
-                <Collapse defaultActiveKey={["1"]} items={collapseItems} />
+                <Collapse defaultActiveKey={["1", "3"]} items={collapseItems} />
             </div>
         </AuthenticatedLayout>
     );

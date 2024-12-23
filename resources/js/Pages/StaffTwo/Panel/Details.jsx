@@ -90,5 +90,7 @@ export default function Details({ costs, formatPeso }) {
         },
     ];
 
+    // <pre className="text-gray-900">{JSON.stringify(costs, null, 2)}</pre>;
+
     return <Descriptions bordered items={items} />;
 }

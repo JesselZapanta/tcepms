@@ -13,6 +13,7 @@ use App\Http\Controllers\StaffOne\EquipmentController;
 use App\Http\Controllers\StaffOne\ExcavationController;
 use App\Http\Controllers\StaffOne\MaterialController;
 use App\Http\Controllers\StaffOne\WaterController;
+use App\Http\Controllers\StaffTwo\ConcreteLaborConroller;
 use App\Http\Controllers\StaffTwo\LaborController;
 use App\Http\Controllers\StaffOne\MetalController;
 use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
@@ -106,6 +107,10 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::get('/stafftwo/labor/index/{id}', [LaborController::class, 'index'])->name('stafftwo.labor');
     Route::get('/stafftwo/labor/getcost/{id}', action: [LaborController::class, 'getCost']);
 
+    Route::get('/stafftwo/labor/concrete/getdata', [ConcreteLaborConroller::class, 'getdata']);
+    Route::post('/stafftwo/labor/concrete/store', [ConcreteLaborConroller::class, 'store']);
+    Route::put('/stafftwo/labor/concrete/update/{id}', [ConcreteLaborConroller::class, 'update']);
+    Route::delete('/stafftwo/labor/concrete/destroy/{id}', [ConcreteLaborConroller::class, 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {
