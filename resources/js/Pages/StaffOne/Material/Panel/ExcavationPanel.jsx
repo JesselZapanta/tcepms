@@ -17,14 +17,12 @@ import {
     QuestionCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
-import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
-const { RangePicker } = DatePicker;
 
-export default function ExcavationPanel({ project, setCostChange }) {
+export default function ExcavationPanel({ project,costs, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -204,11 +202,6 @@ export default function ExcavationPanel({ project, setCostChange }) {
     // Calculate cost dynamically
     const cost = quantity * noOfDays * rate;
 
-    const totalAmount = data.reduce(
-        (total, item) => total + parseFloat(item.cost || 0),
-        0
-    );
-
     useEffect(() => {
         form.setFieldsValue({ cost });
     }, [cost]);
@@ -254,7 +247,7 @@ export default function ExcavationPanel({ project, setCostChange }) {
                         onChange: (page) => setPage(page),
                     }}
                     footer={() =>
-                        `Total Material Cost: ${formatPeso(totalAmount)}`
+                        `Total Material Cost: ${formatPeso(costs.ExcavationCost)}`
                     }
                     onChange={handleTableChange}
                 >

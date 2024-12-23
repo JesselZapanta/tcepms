@@ -1,7 +1,6 @@
 import {
     Button,
     Form,
-    DatePicker,
     notification,
     Row,
     Select,
@@ -23,7 +22,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function MetalPanel({ project, setCostChange }) {
+export default function MetalPanel({ project, costs, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -200,15 +199,6 @@ export default function MetalPanel({ project, setCostChange }) {
     // Calculate cost dynamically
     const cost = quantity * unitCost;
 
-    const totalAmount = data.reduce(
-        (total, item) => total + parseFloat(item.cost || 0),
-        0
-    );
-
-    const laborCost = totalAmount * 0.4;
-
-    const subTotalCost = totalAmount + laborCost;
-
     useEffect(() => {
         form.setFieldsValue({ cost });
     }, [cost]);
@@ -255,11 +245,16 @@ export default function MetalPanel({ project, setCostChange }) {
                     footer={() => (
                         <div>
                             <div>
-                                Total Material Cost: {formatPeso(totalAmount)}
+                                Total Material Cost:{" "}
+                                {formatPeso(costs.MetalWorksCost)}
                             </div>
-                            <div>Labor Cost (40%): {formatPeso(laborCost)}</div>
                             <div>
-                                Sub Total Cost: {formatPeso(subTotalCost)}
+                                Labor Cost (40%):{" "}
+                                {formatPeso(costs.MetalLaborBudget)}
+                            </div>
+                            <div>
+                                Sub Total Cost:{" "}
+                                {formatPeso(costs.MetalEstimatedSubTotalCost)}
                             </div>
                         </div>
                     )}

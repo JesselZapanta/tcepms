@@ -1,11 +1,4 @@
-import {
-    Button,
-    Form,
-    notification,
-    Row,
-    Space,
-    Table,
-} from "antd";
+import { Button, Form, notification, Row, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
@@ -21,7 +14,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function EquipmentPanel({ project, setCostChange }) {
+export default function EquipmentPanel({ project, costs, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -201,11 +194,6 @@ export default function EquipmentPanel({ project, setCostChange }) {
     // Calculate cost dynamically
     const cost = quantity * noOfDays * rate;
 
-    const totalAmount = data.reduce(
-        (total, item) => total + parseFloat(item.cost || 0),
-        0
-    );
-
     useEffect(() => {
         form.setFieldsValue({ cost });
     }, [cost]);
@@ -250,7 +238,9 @@ export default function EquipmentPanel({ project, setCostChange }) {
                         onChange: (page) => setPage(page),
                     }}
                     footer={() =>
-                        `Total Material Cost: ${formatPeso(totalAmount)}`
+                        `Total Material Cost: ${formatPeso(
+                            costs.EquipmentCost
+                        )}`
                     }
                     onChange={handleTableChange}
                 >

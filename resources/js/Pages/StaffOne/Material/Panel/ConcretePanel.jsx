@@ -1,6 +1,3 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import dayjs from "dayjs";
 import {
     Button,
     Divider,
@@ -15,8 +12,6 @@ import {
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
-    LockOutlined,
-    MailOutlined,
     PlusOutlined,
     UserOutlined,
     EditOutlined,
@@ -24,14 +19,12 @@ import {
     QuestionCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
-import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
-const { RangePicker } = DatePicker;
 
-export default function ConcretePanel({ project, setCostChange }) {
+export default function ConcretePanel({ project,costs, setCostChange }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -208,14 +201,6 @@ export default function ConcretePanel({ project, setCostChange }) {
     // Calculate cost dynamically
     const cost = quantity * unitCost;
 
-    const totalAmount = data.reduce(
-        (total, item) => total + parseFloat(item.cost || 0),
-        0
-    );
-
-    const laborCost = totalAmount * 0.4;
-
-    const subTotalCost = totalAmount + laborCost;
 
     useEffect(() => {
         form.setFieldsValue({ cost });
@@ -263,11 +248,18 @@ export default function ConcretePanel({ project, setCostChange }) {
                     footer={() => (
                         <div>
                             <div>
-                                Total Material Cost: {formatPeso(totalAmount)}
+                                Total Material Cost:{" "}
+                                {formatPeso(costs.ConcreteWorksCost)}
                             </div>
-                            <div>Labor Cost (40%): {formatPeso(laborCost)}</div>
                             <div>
-                                Sub Total Cost: {formatPeso(subTotalCost)}
+                                Labor Cost (40%):{" "}
+                                {formatPeso(costs.ConcreteLaborBudget)}
+                            </div>
+                            <div>
+                                Sub Total Cost:{" "}
+                                {formatPeso(
+                                    costs.ConcreteEstimatedSubTotalCost
+                                )}
                             </div>
                         </div>
                     )}

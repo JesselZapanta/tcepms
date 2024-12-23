@@ -51,6 +51,7 @@ export default function Index({ auth, project }) {
             children: (
                 <ExcavationPanel
                     project={project}
+                    costs={costs}
                     setCostChange={setCostChange}
                 />
             ),
@@ -61,6 +62,7 @@ export default function Index({ auth, project }) {
             children: (
                 <ConcretePanel
                     project={project}
+                    costs={costs}
                     setCostChange={setCostChange}
                 />
             ),
@@ -69,14 +71,22 @@ export default function Index({ auth, project }) {
             key: "4",
             label: "Water Works",
             children: (
-                <WaterPanel project={project} setCostChange={setCostChange} />
+                <WaterPanel
+                    project={project}
+                    costs={costs}
+                    setCostChange={setCostChange}
+                />
             ),
         },
         {
             key: "5",
             label: "Metal Structure",
             children: (
-                <MetalPanel project={project} setCostChange={setCostChange} />
+                <MetalPanel
+                    project={project}
+                    costs={costs}
+                    setCostChange={setCostChange}
+                />
             ),
         },
         {
@@ -85,6 +95,7 @@ export default function Index({ auth, project }) {
             children: (
                 <PlasterFinishPanel
                     project={project}
+                    costs={costs}
                     setCostChange={setCostChange}
                 />
             ),
@@ -95,6 +106,7 @@ export default function Index({ auth, project }) {
             children: (
                 <EquipmentPanel
                     project={project}
+                    costs={costs}
                     setCostChange={setCostChange}
                 />
             ),

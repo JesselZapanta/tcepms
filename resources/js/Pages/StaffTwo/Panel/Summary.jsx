@@ -156,7 +156,6 @@ export default function Summary({ costs, formatPeso }) {
             children: formatPeso(costs.EstimatedBudget),
         },
         {
-            // label: "Project Estimated Total Cost",
             label: (
                 <>
                     <div>Project Estimated Total Cost</div>

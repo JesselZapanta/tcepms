@@ -8,74 +8,175 @@ export default function Summary({ costs, formatPeso }) {
             span: 4,
             children: formatPeso(costs.ExcavationCost),
         },
+
         {
             label: "Concrete Works Cost",
             children: formatPeso(costs.ConcreteWorksCost),
         },
         {
-            label: "Concrete Labor Cost",
-            children: formatPeso(costs.ConcreteLabor),
+            label: (
+                <>
+                    <div>Concrete Labor Budget</div>
+                    <div>Concrete Actual Concrete Labor Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.ConcreteLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualConcreteLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Concrete Sub Total Cost",
-            children: formatPeso(costs.ConcreteSubTotal),
+            label: (
+                <>
+                    <div>Concrete Estimated Subtotal Cost</div>
+                    <div>Concrete Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.ConcreteEstimatedSubTotalCost)}</div>
+                    <div>{formatPeso(costs.ConcreteSubTotalCost)}</div>
+                </>
+            ),
+        },
+        //
+        {
+            label: "Water Works Cost",
+            children: formatPeso(costs.WaterWorksCost),
         },
         {
-            label: "Water Cost",
-            children: formatPeso(costs.WaterCost),
+            label: (
+                <>
+                    <div>Water Labor Budget</div>
+                    <div>Water Actual Water Labor Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.WaterLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualWaterLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Water Labor Cost",
-            children: formatPeso(costs.WaterLabor),
+            label: (
+                <>
+                    <div>Water Estimated Subtotal Cost</div>
+                    <div>Water Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.WaterEstimatedSubTotalCost)}</div>
+                    <div>{formatPeso(costs.WaterSubTotalCost)}</div>
+                </>
+            ),
+        },
+        //
+        {
+            label: "Metal Works Cost",
+            children: formatPeso(costs.MetalWorksCost),
         },
         {
-            label: "Water Sub Total Cost",
-            children: formatPeso(costs.WaterSubTotal),
+            label: (
+                <>
+                    <div>Metal Labor Budget</div>
+                    <div>Metal Actual Metal Labor Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.MetalLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualMetalLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Metal Cost",
-            children: formatPeso(costs.MetalCost),
+            label: (
+                <>
+                    <div>Metal Estimated Subtotal Cost</div>
+                    <div>Metal Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.MetalEstimatedSubTotalCost)}</div>
+                    <div>{formatPeso(costs.MetalSubTotalCost)}</div>
+                </>
+            ),
+        },
+        //
+        {
+            label: "Plaster and Finish Works Cost",
+            children: formatPeso(costs.PlasterFinishWorksCost),
         },
         {
-            label: "Metal Labor Cost",
-            children: formatPeso(costs.MetalLabor),
+            label: (
+                <>
+                    <div>Plaster and Finish Labor Budget</div>
+                    <div>
+                        Plaster and Finish Actual PlasterFinish Labor Cost
+                    </div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.PlasterFinishLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualPlasterFinishLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Metal Sub Total Cost",
-            children: formatPeso(costs.MetalSubTotal),
+            label: (
+                <>
+                    <div>Plaster and Finish Estimated Subtotal Cost</div>
+                    <div>Plaster and Finish Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>
+                        {formatPeso(costs.PlasterFinishEstimatedSubTotalCost)}
+                    </div>
+                    <div>{formatPeso(costs.PlasterFinishSubTotalCost)}</div>
+                </>
+            ),
         },
-        {
-            label: "Plaster Finish Cost",
-            children: formatPeso(costs.PlasterFinishCost),
-        },
-        {
-            label: "Plaster Finish Labor Cost",
-            children: formatPeso(costs.PlasterFinishLabor),
-        },
-        {
-            label: "Plaster Finish SubTotal Cost",
-            children: formatPeso(costs.PlasterFinishSubTotal),
-        },
+        //
         {
             label: "Equipment Cost",
             span: 4,
             children: formatPeso(costs.EquipmentCost),
         },
         {
-            label: "Estimated Budget",
+            label: "Project Estimated Budget",
             span: 2,
             children: formatPeso(costs.EstimatedBudget),
         },
         {
-            label: "Total Cost",
+            label: (
+                <>
+                    <div>Project Estimated Total Cost</div>
+                    <div>Project Actual Total Cost</div>
+                </>
+            ),
             span: 2,
-            children: formatPeso(costs.TotalCost),
+            children: (
+                <>
+                    <div>{formatPeso(costs.EstimatedTotalCost)}</div>
+                    <div>{formatPeso(costs.ActualTotalCost)}</div>
+                </>
+            ),
         },
     ];
 
     // Determine the background color based on the condition
     const isBudgetExceeded = costs.EstimatedBudget <= costs.TotalCost;
-    const backgroundColor = isBudgetExceeded ? "rgba(255, 204, 204, 0.3)" : "rgba(204, 255, 204, 0.3)";
+    const backgroundColor = isBudgetExceeded
+        ? "rgba(255, 204, 204, 0.3)"
+        : "rgba(204, 255, 204, 0.3)";
 
     return (
         <div style={{ backgroundColor, padding: "16px", borderRadius: "8px" }}>
