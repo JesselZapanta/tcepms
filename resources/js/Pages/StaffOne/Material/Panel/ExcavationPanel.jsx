@@ -116,7 +116,7 @@ export default function ExcavationPanel({ project, setCostChange }) {
         setExcavation(false);
         form.resetFields();
         setErrors({});
-        getData();
+        getData(false);
         setQuantity(0);
         setNoOfDays(0);
         setRate(0);

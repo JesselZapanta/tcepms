@@ -18,7 +18,7 @@ class StaffOneMaterialController extends Controller
     }
     public function getCost($id)
     {
-        $project = Project::with(['excavation', 'concrete', 'water', 'metal', 'plasterFinish', 'equipment'])->findOrFail($id);
+        $project = Project::with(['siteEngineer','contructor','excavation', 'concrete', 'water', 'metal', 'plasterFinish', 'equipment'])->findOrFail($id);
 
         // Equipment-related calculations
         $ExcavationCost = $project->excavation->sum('cost');
