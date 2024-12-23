@@ -76,17 +76,38 @@ export default function Summary({ costs, formatPeso }) {
         },
         //
         {
-            label: "Metal Cost",
-            children: formatPeso(costs.MetalCost),
+            label: "Metal Works Cost",
+            children: formatPeso(costs.MetalWorksCost),
         },
         {
-            label: "Metal Labor Cost",
-            children: formatPeso(costs.MetalLabor),
+            label: (
+                <>
+                    <div>Metal Labor Budget</div>
+                    <div>Metal Actual Metal Labor Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.MetalLaborBudget)}</div>
+                    <div>{formatPeso(costs.ActualMetalLaborCost)}</div>
+                </>
+            ),
         },
         {
-            label: "Metal Subtotal  Cost",
-            children: formatPeso(costs.MetalSubTotal),
+            label: (
+                <>
+                    <div>Metal Estimated Subtotal Cost</div>
+                    <div>Metal Actual Subtotal Cost</div>
+                </>
+            ),
+            children: (
+                <>
+                    <div>{formatPeso(costs.MetalEstimatedSubTotalCost)}</div>
+                    <div>{formatPeso(costs.MetalSubTotalCost)}</div>
+                </>
+            ),
         },
+        //
         {
             label: "Plaster Finish Cost",
             children: formatPeso(costs.PlasterFinishCost),

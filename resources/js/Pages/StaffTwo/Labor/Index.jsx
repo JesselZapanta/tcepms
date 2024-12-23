@@ -6,6 +6,7 @@ import Details from "../Panel/Details";
 import ConcreteLabor from "../Panel/ConcreteLabor";
 import Summary from "../Panel/Summary";
 import WaterLabor from "../Panel/WaterLabor";
+import MetalLabor from "../Panel/MetalLabor";
 
 export default function Index({ auth, project }) {
     const formatPeso = (value) => {
@@ -66,6 +67,18 @@ export default function Index({ auth, project }) {
             ),
         },
         {
+            key: "4",
+            label: "Metal Labor Details",
+            children: (
+                <MetalLabor
+                    costs={costs}
+                    formatPeso={formatPeso}
+                    project={project}
+                    setCostChange={setCostChange}
+                />
+            ),
+        },
+        {
             key: "7",
             label: "Cost",
             children: <Summary costs={costs} formatPeso={formatPeso} />,
@@ -79,7 +92,7 @@ export default function Index({ auth, project }) {
                 {JSON.stringify(costs, null, 2)}
             </pre> */}
             <div className="py-2">
-                <Collapse defaultActiveKey={["1", "3"]} items={collapseItems} />
+                <Collapse defaultActiveKey={["1","7"]} items={collapseItems} />
             </div>
         </AuthenticatedLayout>
     );

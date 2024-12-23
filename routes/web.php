@@ -16,6 +16,7 @@ use App\Http\Controllers\StaffOne\WaterController;
 use App\Http\Controllers\StaffTwo\ConcreteLaborConroller;
 use App\Http\Controllers\StaffTwo\LaborController;
 use App\Http\Controllers\StaffOne\MetalController;
+use App\Http\Controllers\StaffTwo\MetalLaborController;
 use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
 use App\Http\Controllers\StaffTwo\StaffTwoProjectController;
 use App\Http\Controllers\StaffTwo\WaterLaborController;
@@ -117,6 +118,11 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::post('/stafftwo/labor/water/store', [WaterLaborController::class, 'store']);
     Route::put('/stafftwo/labor/water/update/{id}', [WaterLaborController::class, 'update']);
     Route::delete('/stafftwo/labor/water/destroy/{id}', [WaterLaborController::class, 'destroy']);
+
+    Route::get('/stafftwo/labor/metal/getdata', [MetalLaborController::class, 'getdata']);
+    Route::post('/stafftwo/labor/metal/store', [MetalLaborController::class, 'store']);
+    Route::put('/stafftwo/labor/metal/update/{id}', [MetalLaborController::class, 'update']);
+    Route::delete('/stafftwo/labor/metal/destroy/{id}', [MetalLaborController::class, 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

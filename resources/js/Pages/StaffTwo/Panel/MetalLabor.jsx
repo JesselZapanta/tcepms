@@ -25,7 +25,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 const { RangePicker } = DatePicker;
 
-export default function WaterLabor({ project, setCostChange, costs }) {
+export default function MetalLabor({ project, setCostChange, costs }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -51,7 +51,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
 
         try {
             const res = await axios.get(
-                `/stafftwo/labor/water/getdata?${params}`
+                `/stafftwo/labor/metal/getdata?${params}`
             );
             setData(res.data.data);
             setTotal(res.data.total);
@@ -74,7 +74,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
         getData(false);
     }, [page, sortField, sortOrder]);
 
-    const [waterLabor, setWaterLabor] = useState(false);
+    const [metalLabor, setMetalLabor] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
@@ -95,26 +95,26 @@ export default function WaterLabor({ project, setCostChange, costs }) {
         form.resetFields();
     };
 
-    const showEditModal = (waterLabor) => {
+    const showEditModal = (metalLabor) => {
         setIsModalOpen(true);
-        setWaterLabor(waterLabor);
+        setMetalLabor(metalLabor);
 
-        setQuantity(waterLabor.quantity);
-        setNoOfDays(waterLabor.no_of_days);
-        setRate(waterLabor.rate);
+        setQuantity(metalLabor.quantity);
+        setNoOfDays(metalLabor.no_of_days);
+        setRate(metalLabor.rate);
 
         form.setFieldsValue({
-            position: waterLabor.position,
-            quantity: waterLabor.quantity,
-            no_of_days: waterLabor.no_of_days,
-            rate: waterLabor.rate,
-            cost: waterLabor.cost,
+            position: metalLabor.position,
+            quantity: metalLabor.quantity,
+            no_of_days: metalLabor.no_of_days,
+            rate: metalLabor.rate,
+            cost: metalLabor.cost,
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setWaterLabor(false);
+        setMetalLabor(false);
         form.resetFields();
         setErrors({});
         getData(false);
@@ -126,10 +126,10 @@ export default function WaterLabor({ project, setCostChange, costs }) {
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (waterLabor) {
+        if (metalLabor) {
             try {
                 const res = await axios.put(
-                    `/stafftwo/labor/water/update/${waterLabor.id}`,
+                    `/stafftwo/labor/metal/update/${metalLabor.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -139,7 +139,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The water labor has been updated successfully."
+                        "The metal labor has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -159,7 +159,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
 
             try {
                 const res = await axios.post(
-                    "/stafftwo/labor/water/store",
+                    "/stafftwo/labor/metal/store",
                     values
                 );
                 if (res.data.status === "created") {
@@ -169,7 +169,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The water labor has been created successfully."
+                        "The metal labor has been created successfully."
                     );
                 }
             } catch (err) {
@@ -192,7 +192,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
 
         try {
             const res = await axios.delete(
-                `/stafftwo/labor/water/destroy/${id}`
+                `/stafftwo/labor/metal/destroy/${id}`
             );
 
             if (res.data.status === "deleted") {
@@ -202,7 +202,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                     "success",
                     "bottomRight",
                     "Deleted!",
-                    "The water labor has been deleted successfully."
+                    "The metal labor has been deleted successfully."
                 );
             }
         } catch (err) {
@@ -232,10 +232,10 @@ export default function WaterLabor({ project, setCostChange, costs }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Water Labor</div>
+            <div className="py-2">List of Metal Labor</div>
             <div className="flex gap-2 mb-2">
                 <Search
-                    placeholder="Input water labor position"
+                    placeholder="Input metal labor position"
                     allowClear
                     enterButton="Search"
                     loading={searching}
@@ -265,12 +265,12 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                     footer={() => (
                         <div>
                             <div>
-                                Total Water Labor Budget:
-                                {formatPeso(costs.WaterLaborBudget)}
+                                Total Metal Labor Budget:
+                                {formatPeso(costs.MetalLaborBudget)}
                             </div>
                             <div>
-                                Total Water Labor Cost:
-                                {formatPeso(costs.ActualWaterLaborCost)}
+                                Total Metal Labor Cost:
+                                {formatPeso(costs.ActualMetalLaborCost)}
                             </div>
                         </div>
                     )}
@@ -331,7 +331,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                                             title: "Delete?",
                                             icon: <QuestionCircleOutlined />,
                                             content:
-                                                "Are you sure you want to delete this water labor?",
+                                                "Are you sure you want to delete this metal labor?",
                                             okText: "Yes",
                                             cancelText: "No",
                                             onOk() {
@@ -347,7 +347,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
             </div>
             <Modal
                 title={
-                    waterLabor ? "UPDATE WATER LABOR" : "WATER LABOR"
+                    metalLabor ? "UPDATE METAL LABOR" : "METAL LABOR"
                 }
                 width={800}
                 open={isModalOpen}
@@ -463,7 +463,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                                 disabled={processing}
                                 loading={processing}
                             >
-                                {waterLabor ? "Update" : "Save"}
+                                {metalLabor ? "Update" : "Save"}
                             </Button>
                         </Space>
                     </Row>

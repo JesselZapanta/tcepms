@@ -10,14 +10,7 @@ class LaborController extends Controller
 {
     public function index($id)
     {
-        $project = Project::with([
-            'excavation',
-            'concrete',
-            'water',
-            'metal',
-            'plasterFinish',
-            'equipment'
-        ])->findOrFail($id);
+        $project = Project::findOrFail($id);
 
         return inertia('StaffTwo/Labor/Index', [
             'project' => $project,
@@ -30,7 +23,6 @@ class LaborController extends Controller
             'contructor',
             'excavation',
             'concrete', 
-            'concreteLabor', 
             'water', 
             'metal', 
             'plasterFinish', 
@@ -55,9 +47,11 @@ class LaborController extends Controller
         $WaterSubTotalCost = $WaterWorksCost + $ActualWaterLaborCost;
 
         // Metal-related calculations
-        $MetalCost = $project->metal->sum('cost');
-        $MetalLabor = $MetalCost *  0.4;
-        $MetalSubTotal = $MetalCost + $MetalLabor;
+        $MetalWorksCost = $project->metal->sum('cost');
+        $MetalLaborBudget = $MetalWorksCost * 0.4;
+        $ActualMetalLaborCost = $project->metalLabor->sum('cost');
+        $MetalEstimatedSubTotalCost = $MetalWorksCost + $MetalLaborBudget;
+        $MetalSubTotalCost = $MetalWorksCost + $ActualMetalLaborCost;
 
         // Plaster Finish-related calculations
         $PlasterFinishCost = $project->plasterFinish->sum('cost');
@@ -86,9 +80,12 @@ class LaborController extends Controller
         'WaterEstimatedSubTotalCost' => $WaterEstimatedSubTotalCost,
         'WaterSubTotalCost' => $WaterSubTotalCost,
 
-        'MetalCost' => $MetalCost,
-        'MetalLabor' => $MetalLabor,
-        'MetalSubTotal' => $MetalSubTotal,
+         // Metal-related calculations
+        'MetalWorksCost' => $MetalWorksCost,
+        'MetalLaborBudget' => $MetalLaborBudget,
+        'ActualMetalLaborCost' => $ActualMetalLaborCost,
+        'MetalEstimatedSubTotalCost' => $MetalEstimatedSubTotalCost,
+        'MetalSubTotalCost' => $MetalSubTotalCost,
 
         'PlasterFinishCost' => $PlasterFinishCost,
         'PlasterFinishLabor' => $PlasterFinishLabor,
@@ -102,7 +99,7 @@ class LaborController extends Controller
             'ExcavationCost' => $ExcavationCost,
             'ConcreteEstimatedSubTotalCost' => $ConcreteEstimatedSubTotalCost,
             'WaterEstimatedSubTotalCost' => $WaterEstimatedSubTotalCost,
-            'MetalSubTotal' => $MetalSubTotal,
+            'MetalEstimatedSubTotalCost' => $MetalEstimatedSubTotalCost,
             'PlasterFinishSubTotal' => $PlasterFinishSubTotal,
             'EquipmentCost' => $EquipmentCost,
         ])->sum(),
