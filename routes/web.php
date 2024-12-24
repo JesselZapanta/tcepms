@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\AdminContructorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Engineer\EngineerDashboardController;
+use App\Http\Controllers\Engineer\EngineerProjectMonitoringController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffOne\PlasterFinishController;
 use App\Http\Controllers\StaffOne\StaffOneProjectController;//
@@ -129,6 +131,13 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::post('/stafftwo/labor/plaster-finish/store', [PlasterFinishLaborController::class, 'store']);
     Route::put('/stafftwo/labor/plaster-finish/update/{id}', [PlasterFinishLaborController::class, 'update']);
     Route::delete('/stafftwo/labor/plaster-finish/destroy/{id}', [PlasterFinishLaborController::class, 'destroy']);
+});
+
+Route::middleware(['auth', 'enginner'])->group(function() {
+    Route::get('/engineer/dashboard', [EngineerDashboardController::class, 'index'])->name('engineer.dashboard');
+
+    Route::get('/engineer/project-monitoring', [EngineerProjectMonitoringController::class, 'index'])->name('engineer.project-monitoring');
+
 });
 
 Route::middleware('auth')->group(function () {

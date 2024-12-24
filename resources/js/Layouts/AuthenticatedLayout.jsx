@@ -55,12 +55,25 @@ export default function AuthenticatedLayout({ auth, header, children }) {
     const staffTwoLinks = [
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
-            key: "stafftwo.dashboard",
+            key: "engineer.dashboard",
             icon: <AppstoreOutlined />,
         },
         {
             label: <Link href={route("stafftwo.project")}>Project</Link>,
             key: "stafftwo.project",
+            icon: <AppstoreOutlined />,
+        },
+    ];
+    
+    const engineerLinks = [
+        {
+            label: <Link href={route("dashboard")}>Dashboard</Link>,
+            key: "engineer.dashboard",
+            icon: <AppstoreOutlined />,
+        },
+        {
+            label: <Link href={route("engineer.project-monitoring")}>Project Monitoring</Link>,
+            key: "engineer.project-monitoring",
             icon: <AppstoreOutlined />,
         },
     ];  
@@ -103,6 +116,15 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         defaultSelectedKeys={["1"]}
                         selectedKeys={[currentRoute]}
                         items={staffTwoLinks}
+                    />
+                )}
+                {auth.user.role === 3 && (
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={["1"]}
+                        selectedKeys={[currentRoute]}
+                        items={engineerLinks}
                     />
                 )}
             </Sider>

@@ -18,6 +18,8 @@ class DashboardController extends Controller
                 return redirect()->route('staffone.dashboard');
             }else if($role === 2){
                 return redirect()->route('stafftwo.dashboard');
+            }else if($role === 3){
+                return redirect()->route('engineer.dashboard');
             }
         }
     }
