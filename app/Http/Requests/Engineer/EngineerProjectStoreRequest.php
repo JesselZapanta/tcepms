@@ -30,6 +30,9 @@ class EngineerProjectStoreRequest extends FormRequest
             'water_works_progress' => ['required', 'numeric', 'min:0', 'max:100'],
             'metal_works_progress' => ['required', 'numeric', 'min:0', 'max:100'],
             'cement_plaster_and_finishes_progress' => ['required', 'numeric', 'min:0', 'max:100'],
+
+            'project_images' => 'required|array|min:1', // Ensure it's an array and at least one image is provided
+            'project_images.*.response' => 'required|string|max:255', 
         ];
     }
 }

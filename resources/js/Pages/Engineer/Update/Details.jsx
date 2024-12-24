@@ -3,7 +3,7 @@ const { Panel } = Collapse;
 import dayjs from "dayjs";
 import React from "react";
 
-export default function Details({ projectDetails }) {
+export default function Details({ data }) {
     const formatPeso = (value) => {
         const num = parseFloat(value);
         if (isNaN(num)) return "₱0.00";
@@ -11,31 +11,31 @@ export default function Details({ projectDetails }) {
     };
 
     const items = [
-        { label: "Name", span: 3, children: projectDetails.name },
+        { label: "Name", span: 3, children: data.name },
         {
             label: "Description",
             span: 3,
-            children: projectDetails.description,
+            children: data.description,
         },
         {
             label: "Start Date",
             span: 2,
-            children: projectDetails.start_date
-                ? dayjs(projectDetails.start_date).format("YYYY-MM-DD")
+            children: data.start_date
+                ? dayjs(data.start_date).format("YYYY-MM-DD")
                 : "N/A",
         },
         {
             label: "End Date",
             span: 1,
-            children: projectDetails.end_date
-                ? dayjs(projectDetails.end_date).format("YYYY-MM-DD")
+            children: data.end_date
+                ? dayjs(data.end_date).format("YYYY-MM-DD")
                 : "N/A",
         },
         {
             label: "Actual Start Date",
             span: 2,
-            children: projectDetails.actual_start_date
-                ? dayjs(projectDetails.actual_start_date).format(
+            children: data.actual_start_date
+                ? dayjs(data.actual_start_date).format(
                       "YYYY-MM-DD"
                   )
                 : "N/A",
@@ -43,8 +43,8 @@ export default function Details({ projectDetails }) {
         {
             label: "Actual End Date",
             span: 1,
-            children: projectDetails.actual_end_date
-                ? dayjs(projectDetails.actual_end_date).format(
+            children: data.actual_end_date
+                ? dayjs(data.actual_end_date).format(
                       "YYYY-MM-DD"
                   )
                 : "N/A",
@@ -52,48 +52,48 @@ export default function Details({ projectDetails }) {
         {
             label: "Budget",
             span: 3,
-            children: formatPeso(projectDetails.budget),
+            children: formatPeso(data.budget),
         },
         {
             label: "Cost",
             span: 3,
-            children: formatPeso(projectDetails.cost),
+            children: formatPeso(data.cost),
         },
         {
             label: "Source",
             span: 3,
-            children: projectDetails.source || "N/A",
+            children: data.source || "N/A",
         },
         {
             label: "Location",
             span: 3,
-            children: projectDetails.location,
+            children: data.location,
         },
         {
             label: "Latitude",
             span: 2,
-            children: projectDetails.latitude || "N/A",
+            children: data.latitude || "N/A",
         },
         {
             label: "Longitude",
             span: 1,
-            children: projectDetails.longitude || "N/A",
+            children: data.longitude || "N/A",
         },
         {
             label: "Engineer",
             span: 2,
-            children: projectDetails.site_engineer?.name,
+            children: data.site_engineer?.name,
         },
         {
             label: "Constructor",
             span: 1,
-            children: projectDetails.contructor?.company_name,
+            children: data.contructor?.company_name,
         },
-        { label: "Status", span: 2, children: projectDetails.status },
+        { label: "Status", span: 2, children: data.status },
         {
             label: "Priority",
             span: 2,
-            children: projectDetails.priority,
+            children: data.priority,
         },
     ];
 

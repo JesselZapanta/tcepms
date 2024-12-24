@@ -141,10 +141,12 @@ Route::middleware(['auth', 'enginner'])->group(function() {
     Route::get('/engineer/project-monitoring/getdata', [EngineerProjectMonitoringController::class, 'getData']);
 
     Route::get('/engineer/project-update/{id}', [EngineerProjectUpdateController::class, 'index'])->name('engineer.project-update');
+
+    Route::get('/engineer/project-update/gedData/{id}', [EngineerProjectUpdateController::class, 'getData']);
     Route::post('/engineer/project-images/temp-upload', [EngineerProjectUpdateController::class, 'tempUpload']);
     Route::post('/engineer/project-images/remove-upload/{filename}', [EngineerProjectUpdateController::class, 'removeUpload']);
     Route::post('/engineer/project-update/store', [EngineerProjectUpdateController::class, 'store']);
-
+    Route::delete('/engineer/project-update/destroy/{id}', [EngineerProjectUpdateController::class, 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

@@ -15,16 +15,27 @@ class EngineerProjectUpdateController extends Controller
 {
     public function index($id)
     {
-        // Fetch the project details
+        $currentProject = Project::findOrFail($id);
+
+        return inertia('Engineer/Update/Index', [
+            'currentProject' => $currentProject, 
+        ]);
+    }
+
+
+    public function getData($id)
+    {
         $projectDetails = Project::with(['updates' => function($query) {
-            $query->orderBy('update_date', 'desc');
+            $query->orderBy('update_date', 'desc')
+                ->with('images'); // Include the images relationship of updates
         }])->findOrFail($id);
+
 
         // Retrieve the latest update
         $latestUpdate = $projectDetails->updates()->latest('created_at')->first();
 
         // Extract the progress values if a latest update exists
-        $progressValues = $latestUpdate ? [
+        $latestUpdate = $latestUpdate ? [
             'excavation_progress' => $latestUpdate->excavation_progress,
             'concrete_works_progress' => $latestUpdate->concrete_works_progress,
             'water_works_progress' => $latestUpdate->water_works_progress,
@@ -32,19 +43,10 @@ class EngineerProjectUpdateController extends Controller
             'cement_plaster_and_finishes_progress' => $latestUpdate->cement_plaster_and_finishes_progress,
         ] : null;
 
-        return inertia('Engineer/Update/Index', [
-            'projectDetails' => $projectDetails, // All project details
-            'latestProgress' => $progressValues  // Only the latest progress
-        ]);
-    }
-
-
-
-    public function getData(Request $request)
-    {
-        return Project::with('siteEngineer:id,name')
-                        ->where('name', 'like', "{$request->search}%")
-                        ->paginate(10);
+        return response()->json([
+            'projectDetails' => $projectDetails,
+            'latestUpdate' => $latestUpdate,
+        ], 200);
     }
 
     public function tempUpload(Request $request){
@@ -106,6 +108,25 @@ class EngineerProjectUpdateController extends Controller
         ], 200);
     }
 
-    //for images
-    
+    public function destroy($id)
+    {
+        $projectUpdate = ProjectUpdate::findOrFail($id);
+
+        $images = $projectUpdate->images;
+
+        // Remove all associated images
+        foreach ($images as $image) {
+            // Delete the physical file from storage
+            if (Storage::disk('public')->exists('project_images/' . $image->file_path)) {
+                Storage::disk('public')->delete('project_images/' . $image->file_path);
+            }
+        }
+
+        $projectUpdate->delete();
+
+        return response()->json([
+            'status' => 'deleted'
+        ], 200);
+    }
+
 }

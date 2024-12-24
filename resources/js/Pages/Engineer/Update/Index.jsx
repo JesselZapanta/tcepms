@@ -14,20 +14,53 @@ import {
     Space,
     Slider,
     message,
+    Spin,
+    Empty,
+    Avatar,
+    Divider,
+    Typography,
 } from "antd";
 
 import {
     DatabaseOutlined,
+    DeleteOutlined,
+    EditOutlined,
     PlusOutlined,
+    QuestionCircleOutlined,
     UploadOutlined,
 } from "@ant-design/icons";
 import Details from "./Details";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+const { Text } = Typography;
+import axios from "axios";
 
-export default function Index({ auth, projectDetails, latestProgress }) {
+export default function Index({ auth, currentProject }) {
+    const [latestUpdate, setLatestUpdate] = useState([]);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const getData = async () => {
+        setLoading(true);
+        try {
+            const res = await axios.get(
+                `/engineer/project-update/gedData/${currentProject.id}`
+            );
+            setData(res.data.projectDetails);
+            setLatestUpdate(res.data.latestUpdate);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, [])
+    
     //modals and forms
-    const [user, setUser] = useState(null);
+    const [project, setProject] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [form] = Form.useForm();
@@ -35,20 +68,18 @@ export default function Index({ auth, projectDetails, latestProgress }) {
     const [errors, setErrors] = useState({});
 
     const showCreateModal = () => {
-        setUser(null);
+        setProject(null);
         setIsModalOpen(true);
         form.setFieldsValue({
             name: "",
         });
     };
 
-    console.log(latestProgress);
-
     const handleSubmit = async (values) => {
         setProcessing(true);
 
-        if (!user) {
-            values.project = projectDetails.id;
+        if (!project) {
+            values.project = currentProject.id;
             try {
                 console.log(values);
                 const res = await axios.post(
@@ -57,15 +88,12 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                 );
 
                 if (res.data.status === "created") {
-                    setIsModalOpen(false);
-                    form.resetFields();
-                    setErrors({});
-                    getData();
+                    handleCancel();
                     openNotification(
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The user has been created successfully."
+                        "The project update has been created successfully."
                     );
                 }
             } catch (err) {
@@ -77,7 +105,7 @@ export default function Index({ auth, projectDetails, latestProgress }) {
         } else {
             try {
                 const res = await axios.put(
-                    `/admin/user/update/${user.id}`,
+                    `/admin/project/update/${project.id}`,
                     values
                 );
 
@@ -90,7 +118,7 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The user has been updated successfully."
+                        "The project has been updated successfully."
                     );
                 }
             } catch (err) {
@@ -112,7 +140,6 @@ export default function Index({ auth, projectDetails, latestProgress }) {
             .then((res) => {
                 if (res.data.status === "remove") {
                     message.success("Image removed.");
-                    setIsUpload(false);
                 }
                 if (res.data.status === "error") {
                     alert("error");
@@ -147,27 +174,68 @@ export default function Index({ auth, projectDetails, latestProgress }) {
         },
 
         onRemove(info) {
-            removeProjectImage(info.response);
+            removeProjectImage(info.response); // Remove from server
             setUploadedImages((prev) =>
                 prev.filter((image) => image !== info.response)
-            );
+            ); // Remove from state immediately
             return true;
         },
     };
 
     const handleCancel = () => {
-        uploadedImages.forEach((image) => removeProjectImage(image));
-        setUploadedImages([]);
+        // Clear uploaded images and remove them from the server
+        uploadedImages.forEach(removeProjectImage);
+        setUploadedImages([]); // Clear state immediately
         setIsModalOpen(false);
+        form.resetFields();
         setErrors({});
-        setUser(null);
+        setProject(null);
+        getData();
     };
+
+    
+    const handleDelete = async (id) => {
+        setLoading(true);
+
+        try {
+            const res = await axios.delete(
+                `/engineer/project-update/destroy/${id}`
+            );
+
+            if (res.data.status === "deleted") {
+                handleCancel();
+                openNotification(
+                    "success",
+                    "bottomRight",
+                    "Deleted!",
+                    "The project has been deleted successfully."
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    function formatDate(updateDate) {
+        const date = new Date(updateDate);
+
+        return date.toLocaleString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric", // Add year
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
+    }
 
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
             <div className="py-2">
-                <Details projectDetails={projectDetails} />
+                <Details data={data} />
             </div>
             <div className="flex py-4 justify-start">
                 <Button
@@ -178,97 +246,140 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                     New Update
                 </Button>
             </div>
+            {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
-                <Timeline mode="left">
-                    {projectDetails.updates.map((update) => (
-                        <Timeline.Item key={update.id}>
-                            <div className="p-4 bg-gray-100 rounded">
-                                <h3>{update.name}</h3>
-                                <p>{update.update_date}</p>
-                                <p>{update.description}</p>
-                                <div className="my-4 max-w-96">
-                                    <Flex wrap="wrap" vertical gap="small">
-                                        <Tooltip
-                                            title={`Progress is at ${update.excavation_progress}`}
-                                        >
-                                            <div>Excavation Progress</div>
-                                            <Progress
-                                                percent={
-                                                    update.excavation_progress
+                {loading ? (
+                    <div className="flex justify-center items-center h-64">
+                        <Spin />
+                    </div>
+                ) : data.length === 0 ? (
+                    <div className="flex justify-center items-center h-64">
+                        <Empty description="No Project found" />
+                    </div>
+                ) : (
+                    <Timeline mode="left">
+                        {data.updates.map((update) => (
+                            <Timeline.Item key={update.id}>
+                                <div className="p-4 bg-gray-100 rounded">
+                                    <div className="flex justify-between">
+                                        <Space direction="vertical">
+                                            <Text>
+                                                {formatDate(update.update_date)}
+                                            </Text>
+                                            <Text>{update.name}</Text>
+                                        </Space>
+                                        <Space>
+                                            <Button
+                                                type="primary"
+                                                shape="circle"
+                                                icon={<EditOutlined />}
+                                                onClick={() =>
+                                                    showEditModal(update)
+                                                }
+                                            ></Button>
+                                            <Button
+                                                danger
+                                                shape="circle"
+                                                icon={<DeleteOutlined />}
+                                                onClick={() =>
+                                                    Modal.confirm({
+                                                        title: "Delete?",
+                                                        icon: (
+                                                            <QuestionCircleOutlined />
+                                                        ),
+                                                        content:
+                                                            "Are you sure you want to delete this data?",
+                                                        okText: "Yes",
+                                                        cancelText: "No",
+                                                        onOk() {
+                                                            handleDelete(
+                                                                update.id
+                                                            );
+                                                        },
+                                                    })
                                                 }
                                             />
-                                        </Tooltip>
-                                        <Tooltip
-                                            title={`Progress is at ${update.concrete_works_progress}`}
-                                        >
-                                            <div>Concrete Works Progress</div>
-                                            <Progress
-                                                percent={
-                                                    update.concrete_works_progress
-                                                }
+                                        </Space>
+                                    </div>
+                                    <Divider />
+
+                                    <div>{update.description}</div>
+                                    <Divider />
+                                    <div className="my-4 max-w-96">
+                                        <Flex wrap="wrap" vertical gap="small">
+                                            <Tooltip
+                                                title={`Progress is at ${update.excavation_progress}`}
+                                            >
+                                                <div>Excavation Progress</div>
+                                                <Progress
+                                                    percent={
+                                                        update.excavation_progress
+                                                    }
+                                                />
+                                            </Tooltip>
+                                            <Tooltip
+                                                title={`Progress is at ${update.concrete_works_progress}`}
+                                            >
+                                                <div>
+                                                    Concrete Works Progress
+                                                </div>
+                                                <Progress
+                                                    percent={
+                                                        update.concrete_works_progress
+                                                    }
+                                                />
+                                            </Tooltip>
+                                            <Tooltip
+                                                title={`Progress is at ${update.water_works_progress}`}
+                                            >
+                                                <div>Water Works Progress</div>
+                                                <Progress
+                                                    percent={
+                                                        update.water_works_progress
+                                                    }
+                                                />
+                                            </Tooltip>
+                                            <Tooltip
+                                                title={`Progress is at ${update.metal_works_progress}`}
+                                            >
+                                                <div>Metal Works Progress</div>
+                                                <Progress
+                                                    percent={
+                                                        update.metal_works_progress
+                                                    }
+                                                />
+                                            </Tooltip>
+                                            <Tooltip
+                                                title={`Progress is at ${update.cement_plaster_and_finishes_progress}`}
+                                            >
+                                                <div>
+                                                    Cement Plaster and Finishes
+                                                    Progress
+                                                </div>
+                                                <Progress
+                                                    percent={
+                                                        update.cement_plaster_and_finishes_progress
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        </Flex>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-4">
+                                        {update.images.map((image) => (
+                                            <Avatar
+                                                key={image.id}
+                                                shape="square"
+                                                size={92}
+                                                src={`/storage/project_images/${image.file_path}`}
                                             />
-                                        </Tooltip>
-                                        <Tooltip
-                                            title={`Progress is at ${update.water_works_progress}`}
-                                        >
-                                            <div>Water Works Progress</div>
-                                            <Progress
-                                                percent={
-                                                    update.water_works_progress
-                                                }
-                                            />
-                                        </Tooltip>
-                                        <Tooltip
-                                            title={`Progress is at ${update.metal_works_progress}`}
-                                        >
-                                            <div>Metal Works Progress</div>
-                                            <Progress
-                                                percent={
-                                                    update.metal_works_progress
-                                                }
-                                            />
-                                        </Tooltip>
-                                        <Tooltip
-                                            title={`Progress is at ${update.cement_plaster_and_finishes_progress}`}
-                                        >
-                                            <div>
-                                                Cement Plaster and Finishes
-                                                Progress
-                                            </div>
-                                            <Progress
-                                                percent={
-                                                    update.cement_plaster_and_finishes_progress
-                                                }
-                                            />
-                                        </Tooltip>
-                                    </Flex>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="flex flex-wrap gap-4">
-                                    <img
-                                        src="https://via.placeholder.com/150"
-                                        alt="Planning stage"
-                                        className="w-[100px] rounded-md mt-2"
-                                    />
-                                    <img
-                                        src="https://via.placeholder.com/150"
-                                        alt="Planning stage"
-                                        className="w-[100px] rounded-md mt-2"
-                                    />
-                                    <img
-                                        src="https://via.placeholder.com/150"
-                                        alt="Planning stage"
-                                        className="w-[100px] rounded-md mt-2"
-                                    />
-                                    <img
-                                        src="https://via.placeholder.com/150"
-                                        alt="Planning stage"
-                                        className="w-[100px] rounded-md mt-2"
-                                    />
-                                </div>
-                            </div>
-                        </Timeline.Item>
-                    ))}
-                </Timeline>
+                            </Timeline.Item>
+                        ))}
+                    </Timeline>
+                )}
             </div>
             {/* Modal */}
             <Modal
@@ -324,21 +435,21 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                     >
                         <Slider
                             defaultValue={
-                                latestProgress
-                                    ? latestProgress?.excavation_progress
+                                latestUpdate
+                                    ? latestUpdate?.excavation_progress
                                     : 0
                             }
                             min={
-                                latestProgress
-                                    ? latestProgress?.excavation_progress
+                                latestUpdate
+                                    ? latestUpdate?.excavation_progress
                                     : 0
                             }
                             max={100}
                             marks={{
-                                [latestProgress
-                                    ? latestProgress.excavation_progress
-                                    : 0]: latestProgress
-                                    ? `${latestProgress.excavation_progress}%`
+                                [latestUpdate
+                                    ? latestUpdate.excavation_progress
+                                    : 0]: latestUpdate
+                                    ? `${latestUpdate.excavation_progress}%`
                                     : "0%",
                                 100: "100%",
                             }}
@@ -359,16 +470,16 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                     >
                         <Slider
                             min={
-                                latestProgress
-                                    ? latestProgress?.concrete_works_progress
+                                latestUpdate
+                                    ? latestUpdate?.concrete_works_progress
                                     : 0
                             }
                             max={100}
                             marks={{
-                                [latestProgress
-                                    ? latestProgress.concrete_works_progress
-                                    : 0]: latestProgress
-                                    ? `${latestProgress.concrete_works_progress}%`
+                                [latestUpdate
+                                    ? latestUpdate.concrete_works_progress
+                                    : 0]: latestUpdate
+                                    ? `${latestUpdate.concrete_works_progress}%`
                                     : "0%",
                                 100: "100%",
                             }}
@@ -389,16 +500,16 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                     >
                         <Slider
                             min={
-                                latestProgress
-                                    ? latestProgress?.water_works_progress
+                                latestUpdate
+                                    ? latestUpdate?.water_works_progress
                                     : 0
                             }
                             max={100}
                             marks={{
-                                [latestProgress
-                                    ? latestProgress.water_works_progress
-                                    : 0]: latestProgress
-                                    ? `${latestProgress.water_works_progress}%`
+                                [latestUpdate
+                                    ? latestUpdate.water_works_progress
+                                    : 0]: latestUpdate
+                                    ? `${latestUpdate.water_works_progress}%`
                                     : "0%",
                                 100: "100%",
                             }}
@@ -419,16 +530,16 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                     >
                         <Slider
                             min={
-                                latestProgress
-                                    ? latestProgress?.metal_works_progress
+                                latestUpdate
+                                    ? latestUpdate?.metal_works_progress
                                     : 0
                             }
                             max={100}
                             marks={{
-                                [latestProgress
-                                    ? latestProgress.metal_works_progress
-                                    : 0]: latestProgress
-                                    ? `${latestProgress.metal_works_progress}%`
+                                [latestUpdate
+                                    ? latestUpdate.metal_works_progress
+                                    : 0]: latestUpdate
+                                    ? `${latestUpdate.metal_works_progress}%`
                                     : "0%",
                                 100: "100%",
                             }}
@@ -451,16 +562,16 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                     >
                         <Slider
                             min={
-                                latestProgress
-                                    ? latestProgress?.cement_plaster_and_finishes_progress
+                                latestUpdate
+                                    ? latestUpdate?.cement_plaster_and_finishes_progress
                                     : 0
                             }
                             max={100}
                             marks={{
-                                [latestProgress
-                                    ? latestProgress.cement_plaster_and_finishes_progress
-                                    : 0]: latestProgress
-                                    ? `${latestProgress.cement_plaster_and_finishes_progress}%`
+                                [latestUpdate
+                                    ? latestUpdate.cement_plaster_and_finishes_progress
+                                    : 0]: latestUpdate
+                                    ? `${latestUpdate.cement_plaster_and_finishes_progress}%`
                                     : "0%",
                                 100: "100%",
                             }}
@@ -498,8 +609,8 @@ export default function Index({ auth, projectDetails, latestProgress }) {
                                 htmlType="submit"
                                 type="primary"
                                 icon={<PlusOutlined />}
-                                // disabled={processing}
-                                // loading={processing}
+                                disabled={processing}
+                                loading={processing}
                             >
                                 Saved
                             </Button>
