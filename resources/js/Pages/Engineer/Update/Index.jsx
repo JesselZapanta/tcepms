@@ -13,6 +13,7 @@ import {
     Row,
     Space,
     Slider,
+    message,
 } from "antd";
 
 import {
@@ -103,21 +104,25 @@ export default function Index({ auth, projectDetails, latestProgress }) {
     const { props } = usePage();
     const csrfToken = props.auth.csrf_token || "";
 
+    const [uploadedImages, setUploadedImages] = useState([]);
+
     const removeProjectImage = (avatar) => {
-        axios.post(`/avatar-temp-remove/${avatar}`).then((res) => {
-            if (res.data.status === "remove") {
-                message.success("Avatar removed.");
-                setIsUpload(false);
-            }
-            if (res.data.status === "error") {
-                alert("error");
-            }
-        });
+        axios
+            .post(`/engineer/project-images/remove-upload/${avatar}`)
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success("Image removed.");
+                    setIsUpload(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
     };
 
     const Uploadprops = {
         name: "project_images",
-        action: "/project-images-temp-upload",
+        action: "/engineer/project-images/temp-upload",
         headers: {
             "X-CSRF-Token": csrfToken,
         },
@@ -135,27 +140,25 @@ export default function Index({ auth, projectDetails, latestProgress }) {
         onChange(info) {
             if (info.file.status === "done") {
                 message.success(`${info.file.name} uploaded successfully.`);
+                setUploadedImages((prev) => [...prev, info.file.response]);
             } else if (info.file.status === "error") {
                 message.error(`${info.file.name} upload failed.`);
             }
         },
 
         onRemove(info) {
-            if (user) {
-                message.error(
-                    "You cannot remove project images once uploaded."
-                );
-                return false; // Prevent file removal
-            }
-
-            removeProjectImage(info.response); // Adjust this to your handler for removing images
+            removeProjectImage(info.response);
+            setUploadedImages((prev) =>
+                prev.filter((image) => image !== info.response)
+            );
             return true;
         },
     };
 
     const handleCancel = () => {
+        uploadedImages.forEach((image) => removeProjectImage(image));
+        setUploadedImages([]);
         setIsModalOpen(false);
-        form.resetFields();
         setErrors({});
         setUser(null);
     };
