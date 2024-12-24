@@ -76,5 +76,10 @@ class Project extends Model
     {
         return $this->hasMany(Equipment::class, 'project');
     }
+    //updates
 
+    public function updates()
+    {
+        return $this->hasMany(ProjectUpdate::class,'project');
+    }
 }

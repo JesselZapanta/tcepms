@@ -1,20 +1,13 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import {
-    Avatar,
-    Button,
-    Card,
-    Carousel
-} from "antd";
+import {  Carousel, Spin, Empty, Pagination, Flex, Progress, Tooltip, Button, Modal } from "antd";
 import Search from "antd/es/input/Search";
 import {
-    PlusOutlined,
-    EditOutlined,
-    SettingOutlined,
-    EllipsisOutlined,
+    EyeOutlined,  
+    HistoryOutlined  ,
+    SignatureOutlined ,
 } from "@ant-design/icons";
-import Meta from "antd/es/card/Meta";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const contentStyle = {
     margin: 0,
@@ -26,25 +19,53 @@ const contentStyle = {
 };
 
 export default function Index({ auth }) {
-
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState("");
+    const [searching, setSearching] = useState(false);
 
-    const getData = async () => {
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pagesize: 10,
+        total: 0,
+    });
+
+    const handlePageChange = (page) => {
+        getData(false, page);
+    }
+
+    const getData = async (isSearch = false, page = 1) => {
+        if (isSearch) {
+            setSearching(true);
+        }
         setLoading(true);
 
-        try{
+        const params = [
+            `search=${search}`,
+            `page=${page}`
+        ].join("&");
 
-            const res = await axios.get('');
-
+        try {
+            const res = await axios.get(
+                `/engineer/project-monitoring/getdata?${params}`
+            );
             setData(res.data.data);
-
-        }catch(err){
-            console.log(err);
-        }finally{
+            setPagination({
+                current: res.data.current_page,
+                pageSize: res.data.per_page,
+                total: res.data.total,
+            });
+        } catch (err) {
+            console.error(err);
+        } finally {
             setLoading(false);
+            setSearching(false);
         }
-    }
+    };
+
+    useEffect(() => {
+        getData(false);
+    }, []);
 
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
@@ -56,51 +77,123 @@ export default function Index({ auth }) {
                         placeholder="Input project name"
                         allowClear
                         enterButton="Search"
-                        // loading={searching}
-                        // onChange={(e) => setSearch(e.target.value)}
-                        // onSearch={() => getData(true)}
+                        loading={searching}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onSearch={() => getData(true)}
                     />
                 </div>
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                    <Card
-                        style={{
-                            // width: 300,
-                            overflow: "hidden",
-                        }}
-                        cover={
-                            <>
-                                <Carousel arrows infinite={true}>
-                                    <div>
-                                        <h3 style={contentStyle}>1</h3>
-                                    </div>
-                                    <div>
-                                        <h3 style={contentStyle}>2</h3>
-                                    </div>
-                                    <div>
-                                        <h3 style={contentStyle}>3</h3>
-                                    </div>
-                                    <div>
-                                        <h3 style={contentStyle}>4</h3>
-                                    </div>
-                                </Carousel>
-                            </>
-                        }
-                        actions={[
-                            <SettingOutlined key="setting" />,
-                            <EditOutlined key="edit" />,
-                            <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                    >
-                        <Meta
-                            avatar={
-                                <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
-                            }
-                            title="Card title"
-                            description="This is the description"
-                        />
-                    </Card>
 
-                    
+                {loading ? (
+                    <div className="flex justify-center items-center h-64">
+                        <Spin />
+                    </div>
+                ) : data.length === 0 ? (
+                    <div className="flex justify-center items-center h-64">
+                        <Empty description="No Project found" />
+                    </div>
+                ) : (
+                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                        {data.map((project) => (
+                            <div
+                                key={project.id}
+                                className="bg-white shadow-lg flex flex-col justify-between rounded-lg overflow-hidden"
+                            >
+                                <div>
+                                    <div className="relative">
+                                        <Carousel arrows infinite={true}>
+                                            <div>
+                                                <h3 style={contentStyle}>1</h3>
+                                            </div>
+                                            <div>
+                                                <h3 style={contentStyle}>2</h3>
+                                            </div>
+                                            <div>
+                                                <h3 style={contentStyle}>3</h3>
+                                            </div>
+                                            <div>
+                                                <h3 style={contentStyle}>4</h3>
+                                            </div>
+                                        </Carousel>
+                                    </div>
+                                    <div className="p-4">
+                                        <div>{project.name}</div>
+                                        <div className="mt-4">
+                                            <Flex
+                                                wrap="wrap"
+                                                vertical
+                                                gap="small"
+                                            >
+                                                <Tooltip title="Progress is at 30%">
+                                                    <div>Phase 1</div>
+                                                    <Progress percent={30} />
+                                                </Tooltip>
+                                                <Tooltip title="Progress is at 30%">
+                                                    <div>Phase 1</div>
+                                                    <Progress percent={30} />
+                                                </Tooltip>
+                                                <Tooltip title="Progress is at 30%">
+                                                    <div>Phase 1</div>
+                                                    <Progress percent={100} />
+                                                </Tooltip>
+                                                <Tooltip title="Progress is at 30%">
+                                                    <div>Phase 1</div>
+                                                    <Progress percent={30} />
+                                                </Tooltip>
+                                                <Tooltip title="Progress is at 30%">
+                                                    <div>Phase 1</div>
+                                                    <Progress percent={30} />
+                                                </Tooltip>
+                                            </Flex>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
+                                    <Tooltip title="View Project Details">
+                                        <Button
+                                            shape="circle"
+                                            icon={<EyeOutlined />}
+                                            className="bg-yellow-500 hover:bg-yellow-700 text-white"
+                                        >
+                                            {/* Details */}
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip title="View Project Time Line">
+                                        <Button
+                                            shape="circle"
+                                            icon={<HistoryOutlined />}
+                                            className="bg-green-500 hover:bg-green-700 text-white"
+                                        >
+                                            {/* Time Line */}
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip title="Make Project Update">
+                                        <Link
+                                            href={route(
+                                                "engineer.project-update",
+                                                project.id
+                                            )}
+                                        >
+                                            <Button
+                                                shape="circle"
+                                                icon={<SignatureOutlined />}
+                                                className="bg-blue-500 hover:bg-blue-700 text-white"
+                                            >
+                                                {/* Update */}
+                                            </Button>
+                                        </Link>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <div className="flex justify-center mt-12">
+                    <Pagination
+                        current={pagination.current}
+                        pageSize={pagination.pageSize}
+                        total={pagination.total}
+                        onChange={handlePageChange}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

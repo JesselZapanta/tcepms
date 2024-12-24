@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Engineer\EngineerDashboardController;
 use App\Http\Controllers\Engineer\EngineerProjectMonitoringController;
+use App\Http\Controllers\Engineer\EngineerProjectUpdateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffOne\PlasterFinishController;
 use App\Http\Controllers\StaffOne\StaffOneProjectController;//
@@ -137,6 +138,10 @@ Route::middleware(['auth', 'enginner'])->group(function() {
     Route::get('/engineer/dashboard', [EngineerDashboardController::class, 'index'])->name('engineer.dashboard');
 
     Route::get('/engineer/project-monitoring', [EngineerProjectMonitoringController::class, 'index'])->name('engineer.project-monitoring');
+    Route::get('/engineer/project-monitoring/getdata', [EngineerProjectMonitoringController::class, 'getData']);
+
+    Route::get('/engineer/project-update/{id}', [EngineerProjectUpdateController::class, 'index'])->name('engineer.project-update');
+    Route::post('/engineer/project-update/store', [EngineerProjectUpdateController::class, 'store']);
 
 });
 

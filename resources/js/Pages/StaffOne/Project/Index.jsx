@@ -11,6 +11,9 @@ import {
     Select,
     Space,
     Table,
+    Slider,
+    Col,
+    InputNumber,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -202,6 +205,23 @@ export default function Index({ auth, contructors, engineers }) {
 
     // console.log(data);
 
+    // const [phases, setPhases] = useState({
+    //     phase1: 20,
+    //     phase2: 20,
+    //     phase3: 20,
+    //     phase4: 20,
+    //     phase5: 20,
+    // });
+
+    // const sliderTotal = Object.values(phases).reduce((sum, val) => sum + val, 0);
+    // const remaining = 100 - sliderTotal;
+
+    // const handleChange = (value, phaseKey) => {
+    //     setPhases((prevPhases) => ({
+    //         ...prevPhases,
+    //         [phaseKey]: value,
+    //     }));
+    // };
     return (
         <AuthenticatedLayout header="Project Management" auth={auth}>
             <Head title="Project Management" />
@@ -646,6 +666,120 @@ export default function Index({ auth, contructors, engineers }) {
                             </Form.Item>
                         </div>
                     </Form.Item>
+{/* 
+                    <div className="w-full">
+                        <div>
+                            <h2>Project Phases</h2>
+                            <div style={{ marginBottom: 16 }}>
+                                <span>Phase 1: </span>
+                                <Slider
+                                    value={phases.phase1}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase1")
+                                    }
+                                    min={0}
+                                    max={phases.phase1 + remaining}
+                                    step={1}
+                                />
+                                <InputNumber
+                                    value={phases.phase1}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase1")
+                                    }
+                                    min={0}
+                                    max={phases.phase1 + remaining}
+                                />
+                            </div>
+                            <div style={{ marginBottom: 16 }}>
+                                <span>Phase 2: </span>
+                                <Slider
+                                    value={phases.phase2}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase2")
+                                    }
+                                    min={0}
+                                    max={phases.phase2 + remaining}
+                                    step={1}
+                                />
+                                <InputNumber
+                                    value={phases.phase2}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase2")
+                                    }
+                                    min={0}
+                                    max={phases.phase2 + remaining}
+                                />
+                            </div>
+                            <div style={{ marginBottom: 16 }}>
+                                <span>Phase 3: </span>
+                                <Slider
+                                    value={phases.phase3}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase3")
+                                    }
+                                    min={0}
+                                    max={phases.phase3 + remaining}
+                                    step={1}
+                                />
+                                <InputNumber
+                                    value={phases.phase3}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase3")
+                                    }
+                                    min={0}
+                                    max={phases.phase3 + remaining}
+                                />
+                            </div>
+                            <div style={{ marginBottom: 16 }}>
+                                <span>Phase 4: </span>
+                                <Slider
+                                    value={phases.phase4}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase4")
+                                    }
+                                    min={0}
+                                    max={phases.phase4 + remaining}
+                                    step={1}
+                                />
+                                <InputNumber
+                                    value={phases.phase4}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase4")
+                                    }
+                                    min={0}
+                                    max={phases.phase4 + remaining}
+                                />
+                            </div>
+                            <div style={{ marginBottom: 16 }}>
+                                <span>Phase 5: </span>
+                                <Slider
+                                    value={phases.phase5}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase5")
+                                    }
+                                    min={0}
+                                    max={phases.phase5 + remaining}
+                                    step={1}
+                                />
+                                <InputNumber
+                                    value={phases.phase5}
+                                    onChange={(val) =>
+                                        handleChange(val, "phase5")
+                                    }
+                                    min={0}
+                                    max={phases.phase5 + remaining}
+                                />
+                            </div>
+                            <div style={{ marginTop: 16, fontWeight: "bold" }}>
+                                <span>Total: {sliderTotal}%</span>
+                                <br />
+                                <span>
+                                    Remaining: {remaining >= 0 ? remaining : 0}%
+                                </span>
+                            </div>
+                        </div>
+                    </div> */}
+
                     <Row justify="end">
                         <Space size="small">
                             <Button type="default" onClick={handleCancel}>
