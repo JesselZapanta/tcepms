@@ -36,6 +36,7 @@ class EngineerProjectUpdateController extends Controller
 
         // Extract the progress values if a latest update exists
         $latestUpdate = $latestUpdate ? [
+            'latestUpdateId' => $latestUpdate->id,
             'excavation_progress' => $latestUpdate->excavation_progress,
             'concrete_works_progress' => $latestUpdate->concrete_works_progress,
             'water_works_progress' => $latestUpdate->water_works_progress,
@@ -101,6 +102,10 @@ class EngineerProjectUpdateController extends Controller
                 }
             }
         }
+
+        //SEND NOTIF USING EMAIL OR SMS
+        //auto complete status if all === 100%
+        //todo
 
 
         return response()->json([

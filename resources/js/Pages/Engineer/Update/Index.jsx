@@ -19,6 +19,7 @@ import {
     Avatar,
     Divider,
     Typography,
+    notification,
 } from "antd";
 
 import {
@@ -58,6 +59,8 @@ export default function Index({ auth, currentProject }) {
     useEffect(() => {
         getData();
     }, [])
+
+    // console.log(latestUpdate);
     
     //modals and forms
     const [project, setProject] = useState(null);
@@ -67,13 +70,57 @@ export default function Index({ auth, currentProject }) {
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState({});
 
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (type, placement, title, msg) => {
+        api[type]({
+            message: title,
+            description: msg,
+            placement: placement,
+        });
+    };
+
+
     const showCreateModal = () => {
         setProject(null);
         setIsModalOpen(true);
         form.setFieldsValue({
             name: "",
+            description: "",
+            excavation_progress: latestUpdate ? latestUpdate?.excavation_progress : 0,
+            concrete_works_progress: latestUpdate ? latestUpdate?.concrete_works_progress : 0,
+            water_works_progress: latestUpdate ? latestUpdate?.water_works_progress : 0,
+            metal_works_progress: latestUpdate ? latestUpdate?.metal_works_progress : 0,
+            cement_plaster_and_finishes_progress: latestUpdate ? latestUpdate?.cement_plaster_and_finishes_progress : 0,
         });
     };
+
+    const showEditModal = (project) => {
+        const project_images = project.images
+            ? project.images.map((image) => ({
+                  uid: image.id.toString(),
+                  name: image.file_path,
+                  url: `/storage/project_images/${image.file_path}`,
+              }))
+            : [];
+
+        setIsModalOpen(true);
+        setProject(project);
+
+        console.log(project);
+
+        form.setFieldsValue({
+            name: project.name,
+            description: project.description,
+            excavation_progress: project.excavation_progress || 0,
+            concrete_works_progress: project.concrete_works_progress || 0,
+            water_works_progress: project.water_works_progress || 0,
+            metal_works_progress: project.metal_works_progress || 0,
+            cement_plaster_and_finishes_progress:
+                project.cement_plaster_and_finishes_progress || 0,
+            project_images: project_images,
+        });
+    };
+
 
     const handleSubmit = async (values) => {
         setProcessing(true);
@@ -81,7 +128,7 @@ export default function Index({ auth, currentProject }) {
         if (!project) {
             values.project = currentProject.id;
             try {
-                console.log(values);
+                // console.log(values);
                 const res = await axios.post(
                     "/engineer/project-update/store",
                     values
@@ -93,7 +140,7 @@ export default function Index({ auth, currentProject }) {
                         "success",
                         "bottomRight",
                         "Created!",
-                        "The project update has been created successfully."
+                        "The project update has been saved successfully."
                     );
                 }
             } catch (err) {
@@ -134,9 +181,9 @@ export default function Index({ auth, currentProject }) {
 
     const [uploadedImages, setUploadedImages] = useState([]);
 
-    const removeProjectImage = (avatar) => {
+    const removeProjectImage = ($filename) => {
         axios
-            .post(`/engineer/project-images/remove-upload/${avatar}`)
+            .post(`/engineer/project-images/remove-upload/${$filename}`)
             .then((res) => {
                 if (res.data.status === "remove") {
                     message.success("Image removed.");
@@ -234,6 +281,9 @@ export default function Index({ auth, currentProject }) {
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
+
+            {contextHolder}
+
             <div className="py-2">
                 <Details data={data} />
             </div>
@@ -269,36 +319,46 @@ export default function Index({ auth, currentProject }) {
                                             <Text>{update.name}</Text>
                                         </Space>
                                         <Space>
-                                            <Button
-                                                type="primary"
-                                                shape="circle"
-                                                icon={<EditOutlined />}
-                                                onClick={() =>
-                                                    showEditModal(update)
-                                                }
-                                            ></Button>
-                                            <Button
-                                                danger
-                                                shape="circle"
-                                                icon={<DeleteOutlined />}
-                                                onClick={() =>
-                                                    Modal.confirm({
-                                                        title: "Delete?",
-                                                        icon: (
-                                                            <QuestionCircleOutlined />
-                                                        ),
-                                                        content:
-                                                            "Are you sure you want to delete this data?",
-                                                        okText: "Yes",
-                                                        cancelText: "No",
-                                                        onOk() {
-                                                            handleDelete(
-                                                                update.id
-                                                            );
-                                                        },
-                                                    })
-                                                }
-                                            />
+                                            {latestUpdate.latestUpdateId ===
+                                                update.id && (
+                                                <>
+                                                    <Button
+                                                        type="primary"
+                                                        shape="circle"
+                                                        icon={<EditOutlined />}
+                                                        onClick={() =>
+                                                            showEditModal(
+                                                                update
+                                                            )
+                                                        }
+                                                    ></Button>
+                                                    <Button
+                                                        danger
+                                                        shape="circle"
+                                                        icon={
+                                                            <DeleteOutlined />
+                                                        }
+                                                        onClick={() =>
+                                                            Modal.confirm({
+                                                                title: "Delete?",
+                                                                icon: (
+                                                                    <QuestionCircleOutlined />
+                                                                ),
+                                                                content:
+                                                                    "Are you sure you want to delete this data?",
+                                                                okText: "Yes",
+                                                                cancelText:
+                                                                    "No",
+                                                                onOk() {
+                                                                    handleDelete(
+                                                                        update.id
+                                                                    );
+                                                                },
+                                                            })
+                                                        }
+                                                    />
+                                                </>
+                                            )}
                                         </Space>
                                     </div>
                                     <Divider />
@@ -367,12 +427,18 @@ export default function Index({ auth, currentProject }) {
 
                                     <div className="flex flex-wrap gap-4">
                                         {update.images.map((image) => (
-                                            <Avatar
+                                            <a
                                                 key={image.id}
-                                                shape="square"
-                                                size={92}
-                                                src={`/storage/project_images/${image.file_path}`}
-                                            />
+                                                href={`/storage/project_images/${image.file_path}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <Avatar
+                                                    shape="square"
+                                                    size={92}
+                                                    src={`/storage/project_images/${image.file_path}`}
+                                                />
+                                            </a>
                                         ))}
                                     </div>
                                 </div>

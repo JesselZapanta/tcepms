@@ -145,6 +145,7 @@ Route::middleware(['auth', 'enginner'])->group(function() {
     Route::get('/engineer/project-update/gedData/{id}', [EngineerProjectUpdateController::class, 'getData']);
     Route::post('/engineer/project-images/temp-upload', [EngineerProjectUpdateController::class, 'tempUpload']);
     Route::post('/engineer/project-images/remove-upload/{filename}', [EngineerProjectUpdateController::class, 'removeUpload']);
+    Route::post('/engineer/project-images/delete-upload/{id}', [EngineerProjectUpdateController::class, 'deleteUpload']);
     Route::post('/engineer/project-update/store', [EngineerProjectUpdateController::class, 'store']);
     Route::delete('/engineer/project-update/destroy/{id}', [EngineerProjectUpdateController::class, 'destroy']);
 });
