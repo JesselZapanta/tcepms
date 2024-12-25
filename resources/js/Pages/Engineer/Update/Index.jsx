@@ -106,7 +106,7 @@ export default function Index({ auth, currentProject }) {
         setIsModalOpen(true);
         setProject(project);
 
-        console.log(project);
+        // console.log(project);
 
         form.setFieldsValue({
             name: project.name,
@@ -152,7 +152,7 @@ export default function Index({ auth, currentProject }) {
         } else {
             try {
                 const res = await axios.put(
-                    `/admin/project/update/${project.id}`,
+                    `/engineer/project-update/update/${project.id}`,
                     values
                 );
 
@@ -181,17 +181,34 @@ export default function Index({ auth, currentProject }) {
 
     const [uploadedImages, setUploadedImages] = useState([]);
 
-    const removeProjectImage = ($filename) => {
-        axios
-            .post(`/engineer/project-images/remove-upload/${$filename}`)
-            .then((res) => {
-                if (res.data.status === "remove") {
-                    message.success("Image removed.");
-                }
-                if (res.data.status === "error") {
-                    alert("error");
-                }
-            });
+    const deleteProjectImage = async ($id) => {
+        try {
+            const res = await axios.post(
+                `/engineer/project-images/delete-upload/${$id}`
+            );
+            if (res.data.status === "deleted") {
+                message.success("Image deleted.");
+            }
+        } catch (err) {
+            console.log(err);
+            if (err.response.status === 422) {
+                message.error("Cannot delete the last image.");
+            }
+
+        }
+    };
+
+    const removeProjectImage = async ($filename) => {
+        try{
+            const res = await axios.post(`/engineer/project-images/remove-upload/${$filename}`);
+
+            if (res.data.status === "remove") {
+                message.success("Image removed.");
+            }
+
+        }catch(err){
+            console.log(err);
+        }
     };
 
     const Uploadprops = {
@@ -221,6 +238,13 @@ export default function Index({ auth, currentProject }) {
         },
 
         onRemove(info) {
+            if (project) {
+                deleteProjectImage(info.uid);
+                // console.log(info); 
+
+                // message.error("You cannot remove the project image.");
+                // return false; // Prevent file removal
+            }
             removeProjectImage(info.response); // Remove from server
             setUploadedImages((prev) =>
                 prev.filter((image) => image !== info.response)

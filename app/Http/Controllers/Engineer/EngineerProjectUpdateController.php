@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Engineer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Engineer\EngineerProjectStoreRequest;
+use App\Http\Requests\Engineer\EngineerProjectUpdateRequest;
 use App\Models\ImageUpdate;
 use App\Models\Project;
 use App\Models\ProjectUpdate;
@@ -75,6 +76,30 @@ class EngineerProjectUpdateController extends Controller
         }
     }
 
+    public function deleteUpload($id)
+    {
+        $image =  ImageUpdate::findOrFail($id);
+
+        $projectUpdate = $image->projectUpdate;
+        $imageCount = $projectUpdate->images()->count(); 
+
+        if ($imageCount === 1) {
+            return response()->json([
+                'status' => 'limit'
+            ], 422);
+        }
+
+        if (Storage::disk('public')->exists('project_images/' . $image->file_path)) {
+                Storage::disk('public')->delete('project_images/' . $image->file_path);
+            }
+
+        $image->delete();
+
+        return response()->json([
+            'status' => 'deleted'
+        ], 200);
+    }
+
     public function store(EngineerProjectStoreRequest $request)
     {
         $data = $request->validated();
@@ -112,6 +137,42 @@ class EngineerProjectUpdateController extends Controller
             'status' => 'created'
         ], 200);
     }
+
+    public function update(EngineerProjectUpdateRequest $request, $id)
+    {
+        // Validate the request
+        $data = $request->validated();
+
+        // Find the project update by ID
+        $project = ProjectUpdate::findOrFail($id);
+        
+
+        // Update the project update fields
+        $data['update_date'] = now('Asia/Manila');
+        $project->update($data);
+
+        $imageResponses = $request->input('project_images'); // Array of images
+
+        foreach ($imageResponses as $image) {
+            $imgFilename = $image['response'] ?? null;
+
+            if ($imgFilename) {
+                // Save each image in the database
+                ImageUpdate::create([
+                    'project_update' => $project->id,
+                    'file_path' => $imgFilename,
+                ]);
+
+                // Move each image from 'temp' to 'project_images'
+                if (Storage::disk('public')->exists('temp/' . $imgFilename)) {
+                    Storage::disk('public')->move('temp/' . $imgFilename, 'project_images/' . $imgFilename);
+                }
+            }
+        }
+
+        return response()->json(['status' => 'updated'], 200);
+    }
+
 
     public function destroy($id)
     {
