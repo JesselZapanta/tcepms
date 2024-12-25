@@ -11,6 +11,7 @@ class ImageUpdate extends Model
         'project_update',
         'file_path',
     ];
+    
     public function projectUpdate()
     {
         return $this->belongsTo(ProjectUpdate::class, 'project_update');

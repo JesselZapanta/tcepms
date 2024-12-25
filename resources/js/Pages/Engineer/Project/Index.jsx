@@ -1,11 +1,23 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import {  Carousel, Spin, Empty, Pagination, Flex, Progress, Tooltip, Button, Modal } from "antd";
+import {
+    Carousel,
+    Spin,
+    Empty,
+    Pagination,
+    Flex,
+    Progress,
+    Tooltip,
+    Button,
+    Modal,
+    Avatar,
+} from "antd";
 import Search from "antd/es/input/Search";
 import {
-    EyeOutlined,  
-    HistoryOutlined  ,
-    SignatureOutlined ,
+    EyeOutlined,
+    HistoryOutlined,
+    SignatureOutlined,
+    AppstoreAddOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
@@ -32,7 +44,7 @@ export default function Index({ auth }) {
 
     const handlePageChange = (page) => {
         getData(false, page);
-    }
+    };
 
     const getData = async (isSearch = false, page = 1) => {
         if (isSearch) {
@@ -40,10 +52,7 @@ export default function Index({ auth }) {
         }
         setLoading(true);
 
-        const params = [
-            `search=${search}`,
-            `page=${page}`
-        ].join("&");
+        const params = [`search=${search}`, `page=${page}`].join("&");
 
         try {
             const res = await axios.get(
@@ -83,6 +92,10 @@ export default function Index({ auth }) {
                     />
                 </div>
 
+                {/* <pre className="text-gray-900">
+                    {JSON.stringify(data, null, 2)}
+                </pre> */}
+
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <Spin />
@@ -100,20 +113,43 @@ export default function Index({ auth }) {
                             >
                                 <div>
                                     <div className="relative">
-                                        <Carousel arrows infinite={true}>
-                                            <div>
-                                                <h3 style={contentStyle}>1</h3>
+                                        {/* Carousel for images */}
+                                        {project.updates &&
+                                        project.updates.length > 0 ? (
+                                            <Carousel arrows infinite={true}>
+                                                {project.updates.map(
+                                                    (update, index) =>
+                                                        update.images.map(
+                                                            (
+                                                                image,
+                                                                imgIndex
+                                                            ) => (
+                                                                <div
+                                                                    key={`${index}-${imgIndex}`}
+                                                                >
+                                                                    <Avatar
+                                                                        className="w-full h-72"
+                                                                        shape="square"
+                                                                        src={`/storage/project_images/${image.file_path}`}
+                                                                        alt={`Project Update ${update.id} - Image ${imgIndex}`}
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        )
+                                                )}
+                                            </Carousel>
+                                        ) : (
+                                            // Placeholder when no updates
+                                            <div className="flex justify-center items-center">
+                                                <Avatar
+                                                    icon={
+                                                        <AppstoreAddOutlined />
+                                                    }
+                                                    shape="square"
+                                                    className="w-full h-72"
+                                                />
                                             </div>
-                                            <div>
-                                                <h3 style={contentStyle}>2</h3>
-                                            </div>
-                                            <div>
-                                                <h3 style={contentStyle}>3</h3>
-                                            </div>
-                                            <div>
-                                                <h3 style={contentStyle}>4</h3>
-                                            </div>
-                                        </Carousel>
+                                        )}
                                     </div>
                                     <div className="p-4">
                                         <div>{project.name}</div>
@@ -123,49 +159,150 @@ export default function Index({ auth }) {
                                                 vertical
                                                 gap="small"
                                             >
-                                                <Tooltip title="Progress is at 30%">
-                                                    <div>Phase 1</div>
-                                                    <Progress percent={30} />
-                                                </Tooltip>
-                                                <Tooltip title="Progress is at 30%">
-                                                    <div>Phase 1</div>
-                                                    <Progress percent={30} />
-                                                </Tooltip>
-                                                <Tooltip title="Progress is at 30%">
-                                                    <div>Phase 1</div>
-                                                    <Progress percent={100} />
-                                                </Tooltip>
-                                                <Tooltip title="Progress is at 30%">
-                                                    <div>Phase 1</div>
-                                                    <Progress percent={30} />
-                                                </Tooltip>
-                                                <Tooltip title="Progress is at 30%">
-                                                    <div>Phase 1</div>
-                                                    <Progress percent={30} />
-                                                </Tooltip>
+                                                {project.updates &&
+                                                project.updates.length > 0 ? (
+                                                    project.updates.map(
+                                                        (update) => (
+                                                            <>
+                                                                <Tooltip
+                                                                    title={`Progress is at ${update.excavation_progress}%`}
+                                                                >
+                                                                    <div>
+                                                                        Excavation
+                                                                        Progress
+                                                                    </div>
+                                                                    <Progress
+                                                                        percent={
+                                                                            update.excavation_progress
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                                <Tooltip
+                                                                    title={`Progress is at ${update.concrete_works_progress}%`}
+                                                                >
+                                                                    <div>
+                                                                        Concrete
+                                                                        Works
+                                                                        Progress
+                                                                    </div>
+                                                                    <Progress
+                                                                        percent={
+                                                                            update.concrete_works_progress
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                                <Tooltip
+                                                                    title={`Progress is at ${update.water_works_progress}%`}
+                                                                >
+                                                                    <div>
+                                                                        Water
+                                                                        Works
+                                                                        Progress
+                                                                    </div>
+                                                                    <Progress
+                                                                        percent={
+                                                                            update.water_works_progress
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                                <Tooltip
+                                                                    title={`Progress is at ${update.metal_works_progress}%`}
+                                                                >
+                                                                    <div>
+                                                                        Metal
+                                                                        Works
+                                                                        Progress
+                                                                    </div>
+                                                                    <Progress
+                                                                        percent={
+                                                                            update.metal_works_progress
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                                <Tooltip
+                                                                    title={`Progress is at ${update.cement_plaster_and_finishes_progress}%`}
+                                                                >
+                                                                    <div>
+                                                                        Cement
+                                                                        Plaster
+                                                                        and
+                                                                        Finishes
+                                                                        Progress
+                                                                    </div>
+                                                                    <Progress
+                                                                        percent={
+                                                                            update.cement_plaster_and_finishes_progress
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                            </>
+                                                        )
+                                                    )
+                                                ) : (
+                                                    <>
+                                                        <Tooltip
+                                                            title={`Progress is at 0%`}
+                                                        >
+                                                            <div>
+                                                                Excavation
+                                                                Progress
+                                                            </div>
+                                                            <Progress
+                                                                percent={0}
+                                                            />
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            title={`Progress is at 0%`}
+                                                        >
+                                                            <div>
+                                                                Concrete Works
+                                                                Progress
+                                                            </div>
+                                                            <Progress
+                                                                percent={0}
+                                                            />
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            title={`Progress is at 0`}
+                                                        >
+                                                            <div>
+                                                                Water Works
+                                                                Progress
+                                                            </div>
+                                                            <Progress
+                                                                percent={0}
+                                                            />
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            title={`Progress is at 0%`}
+                                                        >
+                                                            <div>
+                                                                Metal Works
+                                                                Progress
+                                                            </div>
+                                                            <Progress
+                                                                percent={0}
+                                                            />
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            title={`Progress is at 0%`}
+                                                        >
+                                                            <div>
+                                                                Cement Plaster
+                                                                and Finishes
+                                                                Progress
+                                                            </div>
+                                                            <Progress
+                                                                percent={0}
+                                                            />
+                                                        </Tooltip>
+                                                    </>
+                                                )}
                                             </Flex>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="flex justify-end items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
-                                    <Tooltip title="View Project Details">
-                                        <Button
-                                            shape="circle"
-                                            icon={<EyeOutlined />}
-                                            className="bg-yellow-500 hover:bg-yellow-700 text-white"
-                                        >
-                                            {/* Details */}
-                                        </Button>
-                                    </Tooltip>
-                                    <Tooltip title="View Project Time Line">
-                                        <Button
-                                            shape="circle"
-                                            icon={<HistoryOutlined />}
-                                            className="bg-green-500 hover:bg-green-700 text-white"
-                                        >
-                                            {/* Time Line */}
-                                        </Button>
-                                    </Tooltip>
                                     <Tooltip title="Make Project Update">
                                         <Link
                                             href={route(

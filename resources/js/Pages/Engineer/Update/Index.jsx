@@ -241,14 +241,11 @@ export default function Index({ auth, currentProject }) {
             if (project) {
                 deleteProjectImage(info.uid);
                 // console.log(info); 
-
-                // message.error("You cannot remove the project image.");
-                // return false; // Prevent file removal
             }
             removeProjectImage(info.response); // Remove from server
             setUploadedImages((prev) =>
                 prev.filter((image) => image !== info.response)
-            ); // Remove from state immediately
+            ); 
             return true;
         },
     };
@@ -295,7 +292,7 @@ export default function Index({ auth, currentProject }) {
         return date.toLocaleString("en-US", {
             month: "long",
             day: "numeric",
-            year: "numeric", // Add year
+            year: "numeric",
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
@@ -311,7 +308,7 @@ export default function Index({ auth, currentProject }) {
             <div className="py-2">
                 <Details data={data} />
             </div>
-            <div className="flex py-4 justify-start">
+            <div className="flex py-4 justify-end">
                 <Button
                     type="primary"
                     onClick={showCreateModal}
@@ -326,9 +323,13 @@ export default function Index({ auth, currentProject }) {
                     <div className="flex justify-center items-center h-64">
                         <Spin />
                     </div>
-                ) : data.length === 0 ? (
+                ) : !data || !data.updates ? (
                     <div className="flex justify-center items-center h-64">
                         <Empty description="No Project found" />
+                    </div>
+                ) : data.updates.length === 0 ? (
+                    <div className="flex justify-center items-center h-64">
+                        <Empty description="No updates available for this project" />
                     </div>
                 ) : (
                     <Timeline mode="left">

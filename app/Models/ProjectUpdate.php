@@ -34,4 +34,5 @@ class ProjectUpdate extends Model
     {
         return $this->hasMany(ImageUpdate::class,'project_update');
     }
+
 }

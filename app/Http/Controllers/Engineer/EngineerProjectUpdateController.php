@@ -26,7 +26,7 @@ class EngineerProjectUpdateController extends Controller
 
     public function getData($id)
     {
-        $projectDetails = Project::with(['updates' => function($query) {
+        $projectDetails = Project::with(['siteEngineer','contructor','updates' => function($query) {
             $query->orderBy('update_date', 'desc')
                 ->with('images'); // Include the images relationship of updates
         }])->findOrFail($id);
