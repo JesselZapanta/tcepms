@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Engineer;
+namespace App\Http\Controllers\StaffOne;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class EngineerProjectMonitoringController extends Controller
+class StaffOneProjectMonitoringController extends Controller
 {
     public function index()
     {
-        return inertia('Engineer/Project/Index');
+        return inertia('StaffOne/Monitoring/Index');
     }
 
     public function getData(Request $request)
@@ -27,7 +26,7 @@ class EngineerProjectMonitoringController extends Controller
                 ->limit(1); // Fetch only the latest update per project
             }
         ])
-        ->where('engineer', Auth::user()->id)
+        // ->where('engineer', Auth::user()->id)
         ->whereIn('status', ['Ongoing', 'Completed'])
         ->where('name', 'like', "{$request->search}%")
         ->orderBy('id', 'desc')

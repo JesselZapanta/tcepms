@@ -15,6 +15,8 @@ use App\Http\Controllers\StaffOne\ConcreteController;
 use App\Http\Controllers\StaffOne\EquipmentController;
 use App\Http\Controllers\StaffOne\ExcavationController;
 use App\Http\Controllers\StaffOne\MaterialController;
+use App\Http\Controllers\StaffOne\StaffOneProjectMonitoringController;
+use App\Http\Controllers\StaffOne\StaffOneProjectUpdateController;
 use App\Http\Controllers\StaffOne\WaterController;
 use App\Http\Controllers\StaffTwo\ConcreteLaborConroller;
 use App\Http\Controllers\StaffTwo\LaborController;
@@ -103,6 +105,11 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::put('/staffone/materials/plaster-finish/update/{id}', [PlasterFinishController::class, 'update']);
     Route::delete('/staffone/materials/plaster-finish/destroy/{id}', [PlasterFinishController::class, 'destroy']);
     
+    Route::get('/staffone/project-monitoring', [StaffOneProjectMonitoringController::class, 'index'])->name('staffone.project-monitoring');
+    Route::get('/staffone/project-monitoring/getdata', [StaffOneProjectMonitoringController::class, 'getData']);
+
+    Route::get('/staffone/project-monitoring/project/{id}', [StaffOneProjectUpdateController::class, 'index'])->name('staffone.project-update');
+    Route::get('/staffone/project-monitoring/project/getData/{id}', [StaffOneProjectUpdateController::class, 'getData']);
 });
 
 Route::middleware(['auth', 'stafftwo'])->group(function() {

@@ -50,6 +50,15 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "staffone.project",
             icon: <UserOutlined />,
         },
+        {
+            label: (
+                <Link href={route("staffone.project-monitoring")}>
+                    Project Monitoring
+                </Link>
+            ),
+            key: "staffone.project-monitoring",
+            icon: <UserOutlined />,
+        },
     ];  
 
     const staffTwoLinks = [
