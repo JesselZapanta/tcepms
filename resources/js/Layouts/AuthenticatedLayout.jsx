@@ -72,6 +72,15 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "stafftwo.project",
             icon: <AppstoreOutlined />,
         },
+        {
+            label: (
+                <Link href={route("stafftwo.project-monitoring")}>
+                    Project Monitoring
+                </Link>
+            ),
+            key: "stafftwo.project-monitoring",
+            icon: <UserOutlined />,
+        },
     ];
     
     const engineerLinks = [

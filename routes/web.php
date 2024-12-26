@@ -25,6 +25,8 @@ use App\Http\Controllers\StaffTwo\MetalLaborController;
 use App\Http\Controllers\StaffTwo\PlasterFinishLaborController;
 use App\Http\Controllers\StaffTwo\StaffTwoDashboardController;
 use App\Http\Controllers\StaffTwo\StaffTwoProjectController;
+use App\Http\Controllers\StaffTwo\StaffTwoProjectMonitoringController;
+use App\Http\Controllers\StaffTwo\StaffTwoProjectUpdateController;
 use App\Http\Controllers\StaffTwo\WaterLaborController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -141,6 +143,12 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::post('/stafftwo/labor/plaster-finish/store', [PlasterFinishLaborController::class, 'store']);
     Route::put('/stafftwo/labor/plaster-finish/update/{id}', [PlasterFinishLaborController::class, 'update']);
     Route::delete('/stafftwo/labor/plaster-finish/destroy/{id}', [PlasterFinishLaborController::class, 'destroy']);
+
+    Route::get('/stafftwo/project-monitoring', [StaffTwoProjectMonitoringController::class, 'index'])->name('stafftwo.project-monitoring');
+    Route::get('/stafftwo/project-monitoring/getdata', [StaffTwoProjectMonitoringController::class, 'getData']);
+
+    Route::get('/stafftwo/project-monitoring/project/{id}', [StaffTwoProjectUpdateController::class, 'index'])->name('stafftwo.project-update');
+    Route::get('/stafftwo/project-monitoring/project/getData/{id}', [StaffTwoProjectUpdateController::class, 'getData']);
 });
 
 Route::middleware(['auth', 'enginner'])->group(function() {
