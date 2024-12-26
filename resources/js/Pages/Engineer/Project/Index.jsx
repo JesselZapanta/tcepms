@@ -9,13 +9,10 @@ import {
     Progress,
     Tooltip,
     Button,
-    Modal,
     Avatar,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
-    EyeOutlined,
-    HistoryOutlined,
     SignatureOutlined,
     AppstoreAddOutlined,
 } from "@ant-design/icons";

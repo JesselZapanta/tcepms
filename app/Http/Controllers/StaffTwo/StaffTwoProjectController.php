@@ -22,7 +22,7 @@ class StaffTwoProjectController extends Controller
     {
         return Project::with(['siteEngineer:id,name'])
                         ->where('name', 'like', "{$request->search}%")
-                        ->whereIn('status', ['Labor', 'Ongoing', 'Hold', 'Completed'])
+                        ->whereIn('status', ['Labor', 'Ongoing', 'Completed'])
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

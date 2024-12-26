@@ -28,7 +28,7 @@ class EngineerProjectMonitoringController extends Controller
             }
         ])
         ->where('engineer', Auth::user()->id)
-        // ->where('status', 'ongoing')
+        ->whereIn('status', ['Ongoing', 'Completed'])
         ->where('name', 'like', "{$request->search}%")
         ->orderBy('id', 'desc')
         ->paginate(10);

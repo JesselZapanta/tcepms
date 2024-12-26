@@ -132,7 +132,15 @@ class LaborController extends Controller
 
         $status = $request->status;
 
-        $project->update(['status' => $status]);
+        $data = ['status' => $status];
+
+        if($status === 'Ongoing'){
+            $data['actual_start_date']  = now('Asia/Manila');
+        }else{
+            $data['actual_start_date']  = null;
+        }
+
+        $project->update($data);
 
         return response()->json([
             'status' => 'compiled',

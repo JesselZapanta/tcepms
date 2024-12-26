@@ -107,6 +107,32 @@ class EngineerProjectUpdateController extends Controller
         $data['engineer'] = Auth::user()->id;
         $data['update_date'] = now('Asia/Manila');
 
+        $projectId = Project::findOrFail($data['project']);
+
+        //if all progress === 100
+        //update the projectId->status === Completed otherwise status === ongoing
+        $excavation_progress = $data['excavation_progress'];
+        $concrete_works_progress = $data['excavation_progress'];
+        $water_works_progress = $data['water_works_progress'];
+        $metal_works_progress = $data['metal_works_progress'];
+        $cement_plaster_and_finishes_progress = $data['cement_plaster_and_finishes_progress'];
+
+        // Check if all progress values are 100%
+        if (
+            $excavation_progress === 100 &&
+            $concrete_works_progress === 100 &&
+            $water_works_progress === 100 &&
+            $metal_works_progress === 100 &&
+            $cement_plaster_and_finishes_progress === 100
+        ) {
+            $projectId->status = 'Completed';
+        } else {
+            $projectId->status = 'Ongoing';
+        }
+
+        // Save the updated project status
+        $projectId->save();
+
         $project = ProjectUpdate::create($data);
 
         $imageResponses = $request->input('project_images'); // Array of images
@@ -129,7 +155,6 @@ class EngineerProjectUpdateController extends Controller
         }
 
         //SEND NOTIF USING EMAIL OR SMS
-        //auto complete status if all === 100%
         //todo
 
 
@@ -146,6 +171,31 @@ class EngineerProjectUpdateController extends Controller
         // Find the project update by ID
         $project = ProjectUpdate::findOrFail($id);
         
+        $projectId = Project::findOrFail($project->project);
+
+        //if all progress === 100
+        //update the projectId->status === Completed otherwise status === ongoing
+        $excavation_progress = $data['excavation_progress'];
+        $concrete_works_progress = $data['excavation_progress'];
+        $water_works_progress = $data['water_works_progress'];
+        $metal_works_progress = $data['metal_works_progress'];
+        $cement_plaster_and_finishes_progress = $data['cement_plaster_and_finishes_progress'];
+
+        // Check if all progress values are 100%
+        if (
+            $excavation_progress === 100 &&
+            $concrete_works_progress === 100 &&
+            $water_works_progress === 100 &&
+            $metal_works_progress === 100 &&
+            $cement_plaster_and_finishes_progress === 100
+        ) {
+            $projectId->status = 'Completed';
+        } else {
+            $projectId->status = 'Ongoing';
+        }
+
+        // Save the updated project status
+        $projectId->save();
 
         // Update the project update fields
         $data['update_date'] = now('Asia/Manila');
@@ -189,6 +239,30 @@ class EngineerProjectUpdateController extends Controller
         }
 
         $projectUpdate->delete();
+
+        $updatedProject = Project::findOrFail($projectUpdate->project);
+
+        $excavation_progress = $updatedProject->excavation_progress;
+        $concrete_works_progress = $updatedProject->concrete_works_progress;
+        $water_works_progress = $updatedProject->water_works_progress;
+        $metal_works_progress = $updatedProject->metal_works_progress;
+        $cement_plaster_and_finishes_progress = $updatedProject->cement_plaster_and_finishes_progress;
+
+        // Check if all progress values are 100%
+        if (
+            $excavation_progress === 100 &&
+            $concrete_works_progress === 100 &&
+            $water_works_progress === 100 &&
+            $metal_works_progress === 100 &&
+            $cement_plaster_and_finishes_progress === 100
+        ) {
+            $updatedProject->status = 'Completed';
+        } else {
+            $updatedProject->status = 'Ongoing';
+        }
+
+        // Save the updated project status
+        $updatedProject->save();
 
         return response()->json([
             'status' => 'deleted'
