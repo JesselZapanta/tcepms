@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\Admin::class,
             'staffone' => \App\Http\Middleware\StaffOne::class,
             'stafftwo' => \App\Http\Middleware\StaffTwo::class,
-            'enginner' => \App\Http\Middleware\Engineer::class,
+            'engineer' => \App\Http\Middleware\Engineer::class,
             'mayor' => \App\Http\Middleware\Mayor::class,
         ]);
     })

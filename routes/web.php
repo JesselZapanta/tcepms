@@ -7,6 +7,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Engineer\EngineerDashboardController;
 use App\Http\Controllers\Engineer\EngineerProjectMonitoringController;
 use App\Http\Controllers\Engineer\EngineerProjectUpdateController;
+use App\Http\Controllers\Mayor\MayorDashboardController;
+use App\Http\Controllers\Mayor\MayorProjectMonitoringController;
+use App\Http\Controllers\Mayor\MayorProjectUpdateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffOne\PlasterFinishController;
 use App\Http\Controllers\StaffOne\StaffOneProjectController;//
@@ -151,7 +154,7 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::get('/stafftwo/project-monitoring/project/getData/{id}', [StaffTwoProjectUpdateController::class, 'getData']);
 });
 
-Route::middleware(['auth', 'enginner'])->group(function() {
+Route::middleware(['auth', 'engineer'])->group(function() {
     Route::get('/engineer/dashboard', [EngineerDashboardController::class, 'index'])->name('engineer.dashboard');
 
     Route::get('/engineer/project-monitoring', [EngineerProjectMonitoringController::class, 'index'])->name('engineer.project-monitoring');
@@ -166,6 +169,17 @@ Route::middleware(['auth', 'enginner'])->group(function() {
     Route::post('/engineer/project-update/store', [EngineerProjectUpdateController::class, 'store']);
     Route::put('/engineer/project-update/update/{id}', [EngineerProjectUpdateController::class, 'update']);
     Route::delete('/engineer/project-update/destroy/{id}', [EngineerProjectUpdateController::class, 'destroy']);
+});
+
+Route::middleware(['auth', 'mayor'])->group(function() {
+    Route::get('/mayor/dashboard', [MayorDashboardController::class, 'index'])->name('mayor.dashboard');
+
+    Route::get('/mayor/project-monitoring', [MayorProjectMonitoringController::class, 'index'])->name('mayor.project-monitoring');
+    Route::get('/mayor/project-monitoring/getdata', [MayorProjectMonitoringController::class, 'getData']);
+
+    Route::get('/mayor/project-monitoring/project/{id}', [MayorProjectUpdateController::class, 'index'])->name('mayor.project-update');
+    Route::get('/mayor/project-monitoring/project/getData/{id}', [MayorProjectUpdateController::class, 'getData']);
+
 });
 
 Route::middleware('auth')->group(function () {
