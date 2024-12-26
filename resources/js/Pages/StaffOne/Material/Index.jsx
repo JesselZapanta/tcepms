@@ -114,7 +114,13 @@ export default function Index({ auth, project }) {
         {
             key: "8",
             label: "Cost",
-            children: <Summary costs={costs} formatPeso={formatPeso} />,
+            children: (
+                <Summary
+                    costs={costs}
+                    formatPeso={formatPeso}
+                    setCostChange={setCostChange}
+                />
+            ),
         },
     ];
 

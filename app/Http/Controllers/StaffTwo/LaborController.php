@@ -122,4 +122,20 @@ class LaborController extends Controller
         return response()->json($costs);
     }
     
+    public function compile(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+
+        $request->validate([
+            'status' => ['required','string','in:Ongoing,Labor'],
+        ]);
+
+        $status = $request->status;
+
+        $project->update(['status' => $status]);
+
+        return response()->json([
+            'status' => 'compiled',
+        ], 200);
+    }
 }

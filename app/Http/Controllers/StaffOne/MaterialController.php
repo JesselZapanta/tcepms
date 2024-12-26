@@ -122,4 +122,20 @@ class MaterialController extends Controller
         return response()->json($costs);
     }
     
+    public function compile(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+
+        $request->validate([
+            'status' => ['required','string','in:Material,Labor'],
+        ]);
+
+        $status = $request->status;
+
+        $project->update(['status' => $status]);
+
+        return response()->json([
+            'status' => 'compiled',
+        ], 200);
+    }
 }

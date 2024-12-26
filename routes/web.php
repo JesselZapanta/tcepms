@@ -71,6 +71,7 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     
     Route::get('/staffone/materials/index/{id}', [MaterialController::class, 'index'])->name('staffone.material');
     Route::get('/staffone/materials/getcost/{id}', [MaterialController::class, 'getCost']);
+    Route::put('/staffone/materials/compile/{id}', [MaterialController::class, 'compile']);
 
     Route::get('/staffone/materials/excavation/getdata', [ExcavationController::class, 'getdata']);
     Route::post('/staffone/materials/excavation/store', [ExcavationController::class, 'store']);
@@ -112,6 +113,7 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
 
     Route::get('/stafftwo/labor/index/{id}', [LaborController::class, 'index'])->name('stafftwo.labor');
     Route::get('/stafftwo/labor/getcost/{id}', action: [LaborController::class, 'getCost']);
+    Route::put('/stafftwo/materials/compile/{id}', [LaborController::class, 'compile']);
 
     Route::get('/stafftwo/labor/concrete/getdata', [ConcreteLaborConroller::class, 'getdata']);
     Route::post('/stafftwo/labor/concrete/store', [ConcreteLaborConroller::class, 'store']);

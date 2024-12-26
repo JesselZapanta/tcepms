@@ -1,7 +1,9 @@
-import { Descriptions } from "antd";
+import { Button, Descriptions, Modal, notification } from "antd";
 import React from "react";
 
-export default function Summary({ costs, formatPeso }) {
+import { SettingOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+
+export default function Summary({ costs, formatPeso, setCostChange }) {
     const items = [
         {
             label: "Excavation Cost",
@@ -172,14 +174,103 @@ export default function Summary({ costs, formatPeso }) {
         },
     ];
 
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (type, placement, title, msg) => {
+        api[type]({
+            message: title,
+            description: msg,
+            placement: placement,
+        });
+    };
+
     // Determine the background color based on the condition
     const isBudgetExceeded = costs.EstimatedBudget <= costs.EstimatedTotalCost;
-    const backgroundColor = isBudgetExceeded ? "rgba(255, 204, 204, 0.3)" : "rgba(204, 255, 204, 0.3)";
+    const backgroundColor = isBudgetExceeded
+        ? "rgba(255, 204, 204, 0.3)"
+        : "rgba(204, 255, 204, 0.3)";
+
+    const handleCompile = async (status, id) => {
+        const values = { status };
+
+        try {
+            const res = await axios.put(
+                `/stafftwo/materials/compile/${id}`,
+                values
+            );
+
+            if (res.data.status === "compiled") {
+                setCostChange();
+                openNotification(
+                    "success",
+                    "bottomRight",
+                    "Status Changed!",
+                    "The materials status has been updated successfully."
+                );
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div style={{ backgroundColor, padding: "16px", borderRadius: "8px" }}>
+            {contextHolder}
+
             <Descriptions
-                title="Project Costs Summary"
+                title={
+                    <div className="flex justify-between">
+                        <div>Project Costs Summary</div>
+                        {costs?.projectDetails?.status === "Labor" && (
+                            <Button
+                                icon={<SettingOutlined />}
+                                type="primary"
+                                onClick={() =>
+                                    Modal.confirm({
+                                        title: "Compile Materials?",
+                                        icon: <QuestionCircleOutlined />,
+                                        content:
+                                            "Are you sure you want to compile all the materials?",
+                                        okText: "Yes",
+                                        cancelText: "No",
+                                        onOk() {
+                                            handleCompile(
+                                                "Ongoing",
+                                                costs.projectDetails.id
+                                            );
+                                        },
+                                    })
+                                }
+                            >
+                                Compile
+                            </Button>
+                        )}
+                        {costs?.projectDetails?.status === "Ongoing" && (
+                            <Button
+                                icon={<SettingOutlined />}
+                                danger
+                                type="primary"
+                                onClick={() =>
+                                    Modal.confirm({
+                                        title: "Cancel Compilation?",
+                                        icon: <QuestionCircleOutlined />,
+                                        content:
+                                            "Are you sure you want to cancel the materials compilation?",
+                                        okText: "Yes",
+                                        cancelText: "No",
+                                        onOk() {
+                                            handleCompile(
+                                                "Labor",
+                                                costs.projectDetails.id
+                                            );
+                                        },
+                                    })
+                                }
+                            >
+                                Cancel
+                            </Button>
+                        )}
+                    </div>
+                }
                 bordered
                 items={items}
             />

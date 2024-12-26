@@ -632,8 +632,12 @@ export default function Index({ auth, contructors, engineers }) {
                                 <Select
                                     options={[
                                         {
-                                            value: "Pending",
+                                            value: "Material",
                                             label: "Pending Materials",
+                                        },
+                                        {
+                                            value: "Labor",
+                                            label: "Pending Labors",
                                         },
                                         { value: "Ongoing", label: "Ongoing" },
                                         {
