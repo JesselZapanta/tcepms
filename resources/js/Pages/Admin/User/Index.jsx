@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { Button, Form, InputNumber, notification, Row, Select, Space, Table } from "antd";
+import { Button, Form, InputNumber, notification, Row, Select, Space, Table, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined ,
@@ -226,6 +226,20 @@ export default function Index({auth}) {
                         dataIndex="contact"
                         key="contact"
                     />
+
+                    <Column
+                        sorter={true}
+                        title="Status"
+                        dataIndex="status"
+                        key="status"
+                        render={(_, record) =>
+                            record.status === 0 ? (
+                                <Tag color="yellow">Inactive</Tag>
+                            ) : (
+                                <Tag color="green">Active</Tag>
+                            )
+                        }
+                    />
                     <Column
                         title="Action"
                         key="action"
@@ -326,8 +340,7 @@ export default function Index({auth}) {
                                         { value: 0, label: "Admin" },
                                         { value: 1, label: "Staff 1" },
                                         { value: 2, label: "Staff 2" },
-                                        { value: 3, label: "On-Site Engineer"
-                                         },
+                                        { value: 3, label: "On-Site Engineer" },
                                         { value: 4, label: "Mayor" },
                                     ]}
                                 />
