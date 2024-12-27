@@ -26,8 +26,8 @@ class ProjectUpdateRequest extends FormRequest
             'description' => ['required', 'string'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'actual_start_date' => ['nullable', 'date'],
-            'actual_end_date' => ['nullable', 'date', 'after_or_equal:actual_start_date'],
+            // 'actual_start_date' => ['nullable', 'date'],
+            // 'actual_end_date' => ['nullable', 'date', 'after_or_equal:actual_start_date'],
             'budget' => ['required', 'numeric', 'min:0'],
             'cost' => ['nullable', 'numeric', 'min:0'],
             'source' => ['nullable', 'string', 'max:255'],
@@ -37,7 +37,7 @@ class ProjectUpdateRequest extends FormRequest
             'engineer' => ['required','exists:users,id'],
             'contructor' => ['required','exists:contructors,id'],
             'category' => ['required', 'string', 'in:Roadwork,Building,Waterworks'],
-            'status' => ['required', 'string', 'in:Material,Labor,Ongoing,Completed'],
+            // 'status' => ['required', 'string', 'in:Material,Labor,Ongoing,Completed'],
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
         ];
     }

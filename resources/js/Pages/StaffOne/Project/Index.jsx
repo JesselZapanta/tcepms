@@ -14,6 +14,7 @@ import {
     Slider,
     Col,
     InputNumber,
+    Tag,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -274,17 +275,41 @@ export default function Index({ auth, contructors, engineers }) {
                         render={(site_engineer) => site_engineer?.name || "N/A"}
                     />
                     <Column
-                        // sorter={true}
                         title="Status"
                         dataIndex="status"
                         key="status"
+                        render={(_, record) =>
+                            record.status === "Material" ? (
+                                <Tag color="orange">Pending Materials</Tag>
+                            ) : record.status === "Labor" ? (
+                                <Tag color="purple">Pending Labor</Tag>
+                            ) : record.status === "Ongoing" ? (
+                                <Tag color="blue">Ongoing</Tag>
+                            ) : record.status === "Completed" ? (
+                                <Tag color="green">Completed</Tag>
+                            ) : (
+                                <Tag color="gray">Unknown</Tag>
+                            )
+                        }
                     />
+
                     <Column
-                        // sorter={true}
                         title="Priority"
                         dataIndex="priority"
                         key="priority"
+                        render={(priority) =>
+                            priority === "High" ? (
+                                <Tag color="red">High</Tag>
+                            ) : priority === "Medium" ? (
+                                <Tag color="orange">Medium</Tag>
+                            ) : priority === "Low" ? (
+                                <Tag color="green">Low</Tag>
+                            ) : (
+                                <Tag color="gray">Unknown</Tag>
+                            )
+                        }
                     />
+
                     <Column
                         title="Action"
                         key="action"
@@ -423,7 +448,10 @@ export default function Index({ auth, contructors, engineers }) {
                                 }
                                 className="w-full"
                             >
-                                <DatePicker className="w-full" />
+                                <DatePicker
+                                    disabled={true}
+                                    className="w-full"
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="ACTUAL END DATE"
@@ -438,7 +466,10 @@ export default function Index({ auth, contructors, engineers }) {
                                 }
                                 className="w-full"
                             >
-                                <DatePicker className="w-full" />
+                                <DatePicker
+                                    disabled={true}
+                                    className="w-full"
+                                />
                             </Form.Item>
                         </div>
 
@@ -630,6 +661,8 @@ export default function Index({ auth, contructors, engineers }) {
                                 className="w-full"
                             >
                                 <Select
+                                    disabled
+                                    defaultValue="Material"
                                     options={[
                                         {
                                             value: "Material",
@@ -670,7 +703,7 @@ export default function Index({ auth, contructors, engineers }) {
                             </Form.Item>
                         </div>
                     </Form.Item>
-{/* 
+                    {/* 
                     <div className="w-full">
                         <div>
                             <h2>Project Phases</h2>

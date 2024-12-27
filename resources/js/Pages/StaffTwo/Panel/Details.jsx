@@ -1,4 +1,4 @@
-import { Descriptions } from "antd";
+import { Descriptions, Tag } from "antd";
 import dayjs from "dayjs";
 import React from "react";
 
@@ -82,15 +82,38 @@ export default function Details({ costs, formatPeso }) {
             span: 1,
             children: costs?.projectDetails?.contructor?.company_name,
         },
-        { label: "Status", span: 2, children: costs?.projectDetails?.status },
+        {
+            label: "Status",
+            span: 2,
+            children:
+                costs?.projectDetails?.status === "Material" ? (
+                    <Tag color="orange">Pending Materials</Tag>
+                ) : costs?.projectDetails?.status === "Labor" ? (
+                    <Tag color="purple">Pending Labor</Tag>
+                ) : costs?.projectDetails?.status === "Ongoing" ? (
+                    <Tag color="blue">Ongoing</Tag>
+                ) : costs?.projectDetails?.status === "Completed" ? (
+                    <Tag color="green">Completed</Tag>
+                ) : (
+                    <Tag color="gray">Unknown</Tag>
+                ),
+        },
+
         {
             label: "Priority",
             span: 2,
-            children: costs?.projectDetails?.priority,
+            children:
+                costs?.projectDetails?.priority === "High" ? (
+                    <Tag color="red">High</Tag>
+                ) : costs?.projectDetails?.priority === "Medium" ? (
+                    <Tag color="orange">Medium</Tag>
+                ) : costs?.projectDetails?.priority === "Low" ? (
+                    <Tag color="green">Low</Tag>
+                ) : (
+                    <Tag color="gray">Unknown</Tag>
+                ),
         },
     ];
-
-    // <pre className="text-gray-900">{JSON.stringify(costs, null, 2)}</pre>;
 
     return <Descriptions bordered items={items} />;
 }

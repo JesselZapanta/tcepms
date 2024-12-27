@@ -10,7 +10,7 @@ class AdminProjectUpdateController extends Controller
 {
     public function index($id)
     {
-        $currentProject = Project::findOrFail($id);
+        $currentProject = Project::whereIn('status', ['Ongoing', 'Completed'])->findOrFail($id);
 
         return inertia('Admin/Monitoring/Update/Index', [
             'currentProject' => $currentProject, 

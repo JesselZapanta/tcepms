@@ -37,6 +37,8 @@ class StaffOneProjectController extends Controller
     {
         $data = $request->validated();
 
+        $data['status'] = 'Material';
+
         Project::create($data);
 
         return response()->json([

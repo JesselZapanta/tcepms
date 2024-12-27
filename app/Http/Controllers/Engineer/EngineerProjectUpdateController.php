@@ -16,7 +16,7 @@ class EngineerProjectUpdateController extends Controller
 {
     public function index($id)
     {
-        $currentProject = Project::findOrFail($id);
+        $currentProject = Project::whereIn('status', ['Ongoing', 'Completed'])->findOrFail($id);
 
         return inertia('Engineer/Update/Index', [
             'currentProject' => $currentProject, 

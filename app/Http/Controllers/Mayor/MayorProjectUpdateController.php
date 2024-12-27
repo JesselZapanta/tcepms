@@ -10,7 +10,7 @@ class MayorProjectUpdateController extends Controller
 {
     public function index($id)
     {
-        $currentProject = Project::findOrFail($id);
+        $currentProject = Project::whereIn('status', ['Ongoing', 'Completed'])->findOrFail($id);
 
         return inertia('Mayor/Monitoring/Update/Index', [
             'currentProject' => $currentProject, 
