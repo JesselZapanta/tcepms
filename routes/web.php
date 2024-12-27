@@ -78,6 +78,7 @@ Route::middleware(['auth','admin'])->group(function() {
 
 Route::middleware(['auth', 'staffone'])->group(function() {
     Route::get('/staffone/dashboard', [StaffOneDashboardController::class, 'index'])->name('staffone.dashboard');
+    Route::get('/staffone/dashboard/getdata', [StaffOneDashboardController::class, 'getData']);
 
     Route::get('/staffone/project', [StaffOneProjectController::class, 'index'])->name('staffone.project');
     Route::get('/staffone/project/getdata', [StaffOneProjectController::class, 'getData']);
@@ -128,6 +129,7 @@ Route::middleware(['auth', 'staffone'])->group(function() {
 
 Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::get('/stafftwo/dashboard', [StaffTwoDashboardController::class, 'index'])->name('stafftwo.dashboard');
+    Route::get('/stafftwo/dashboard/getdata', [StaffTwoDashboardController::class, 'getData']);
 
     Route::get('/stafftwo/project', [StaffTwoProjectController::class, 'index'])->name('stafftwo.project');
     Route::get('/stafftwo/project/getdata', [StaffTwoProjectController::class, 'getdata']);
@@ -165,6 +167,7 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
 
 Route::middleware(['auth', 'engineer'])->group(function() {
     Route::get('/engineer/dashboard', [EngineerDashboardController::class, 'index'])->name('engineer.dashboard');
+    Route::get('/engineer/dashboard/getdata', [EngineerDashboardController::class, 'getData']);
 
     Route::get('/engineer/project-monitoring', [EngineerProjectMonitoringController::class, 'index'])->name('engineer.project-monitoring');
     Route::get('/engineer/project-monitoring/getdata', [EngineerProjectMonitoringController::class, 'getData']);
@@ -182,6 +185,7 @@ Route::middleware(['auth', 'engineer'])->group(function() {
 
 Route::middleware(['auth', 'mayor'])->group(function() {
     Route::get('/mayor/dashboard', [MayorDashboardController::class, 'index'])->name('mayor.dashboard');
+    Route::get('/mayor/dashboard/getdata', [MayorDashboardController::class, 'getData']);
 
     Route::get('/mayor/project-monitoring', [MayorProjectMonitoringController::class, 'index'])->name('mayor.project-monitoring');
     Route::get('/mayor/project-monitoring/getdata', [MayorProjectMonitoringController::class, 'getData']);

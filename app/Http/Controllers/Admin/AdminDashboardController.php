@@ -21,6 +21,8 @@ class AdminDashboardController extends Controller
         $activeContructorCount = Contructor::where('status', 1)->count();
         
         $projectCount = Project::count();
+        $pendingMaterials = Project::where('status', 'Material')->count();
+        $pendingLabors = Project::where('status', 'Labor')->count();
         $OngoingProjectCount = Project::where('status', 'Ongoing')->count();
         $CompletedProjectCount = Project::where('status', 'Completed')->count();
         
@@ -29,10 +31,12 @@ class AdminDashboardController extends Controller
             'activeUserCount' => $activeUserCount,
             'activeContructorCount' => $activeContructorCount,
             'projectCount' => $projectCount,
+            'pendingMaterials' => $pendingMaterials,
+            'pendingLabors' => $pendingLabors,
             'OngoingProjectCount' => $OngoingProjectCount,
             'CompletedProjectCount' => $CompletedProjectCount,
         ];
-
         return $data;
     }
 }
+
