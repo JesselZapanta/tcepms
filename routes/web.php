@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminContructorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProjectMonitoringController;
+use App\Http\Controllers\Admin\AdminProjectUpdateController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Engineer\EngineerDashboardController;
@@ -66,6 +68,12 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::post('/admin/contructor/store', [AdminContructorController::class, 'store']);
     Route::put('/admin/contructor/update/{id}', [AdminContructorController::class, 'update']);
     Route::delete('/admin/contructor/destroy/{id}', [AdminContructorController::class, 'destroy']);
+
+    Route::get('/admin/project-monitoring', [AdminProjectMonitoringController::class, 'index'])->name('admin.project-monitoring');
+    Route::get('/admin/project-monitoring/getdata', [AdminProjectMonitoringController::class, 'getData']);
+
+    Route::get('/admin/project-monitoring/project/{id}', [AdminProjectUpdateController::class, 'index'])->name('admin.project-update');
+    Route::get('/admin/project-monitoring/project/getData/{id}', [AdminProjectUpdateController::class, 'getData']);
 });
 
 Route::middleware(['auth', 'staffone'])->group(function() {
