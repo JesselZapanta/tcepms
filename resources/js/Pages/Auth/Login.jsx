@@ -99,7 +99,7 @@ export default function Login({ status, canResetPassword }) {
                     </Button>
                 </Form.Item>
             </Form>
-            <div className="w-full flex justify-between">
+            {/* <div className="w-full flex justify-between">
                 {canResetPassword && (
                     <Button type="link" href={route("password.request")}>
                         Forgot your password?
@@ -108,7 +108,7 @@ export default function Login({ status, canResetPassword }) {
                 <Button type="link" href={route("register")}>
                     Dont have an Account?
                 </Button>
-            </div>
+            </div> */}
         </GuestLayout>
     );
 }

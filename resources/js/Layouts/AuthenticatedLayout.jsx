@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import {
     AppstoreOutlined,
+    BankOutlined,
+    DashboardOutlined,
     DownOutlined,
+    LineChartOutlined,
+    LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    ProjectOutlined,
+    TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
-import { Button, Dropdown, Layout, Menu, Space, theme } from "antd";
+import { Avatar, Button, Dropdown, Layout, Menu, Space, theme } from "antd";
 import { Link } from "@inertiajs/react";
 import { Footer } from "antd/es/layout/layout";
 const { Header, Sider, Content } = Layout;
@@ -25,17 +31,17 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
             key: "admin.dashboard",
-            icon: <AppstoreOutlined />,
+            icon: <DashboardOutlined />,
         },
         {
             label: <Link href={route("admin.user")}>User</Link>,
             key: "admin.user",
-            icon: <UserOutlined />,
+            icon: <TeamOutlined />,
         },
         {
             label: <Link href={route("admin.contructor")}>Contructor</Link>,
             key: "admin.contructor",
-            icon: <UserOutlined />,
+            icon: <BankOutlined />,
         },
         {
             label: (
@@ -44,7 +50,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 </Link>
             ),
             key: "admin.project-monitoring",
-            icon: <UserOutlined />,
+            icon: <LineChartOutlined />,
         },
     ];
 
@@ -52,12 +58,12 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
             key: "staffone.dashboard",
-            icon: <AppstoreOutlined />,
+            icon: <DashboardOutlined />,
         },
         {
             label: <Link href={route("staffone.project")}>Project</Link>,
             key: "staffone.project",
-            icon: <UserOutlined />,
+            icon: <ProjectOutlined />,
         },
         {
             label: (
@@ -66,7 +72,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 </Link>
             ),
             key: "staffone.project-monitoring",
-            icon: <UserOutlined />,
+            icon: <LineChartOutlined />,
         },
     ];  
 
@@ -74,12 +80,12 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
             key: "stafftwo.dashboard",
-            icon: <AppstoreOutlined />,
+            icon: <DashboardOutlined />,
         },
         {
             label: <Link href={route("stafftwo.project")}>Project</Link>,
             key: "stafftwo.project",
-            icon: <AppstoreOutlined />,
+            icon: <ProjectOutlined />,
         },
         {
             label: (
@@ -88,7 +94,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 </Link>
             ),
             key: "stafftwo.project-monitoring",
-            icon: <UserOutlined />,
+            icon: <LineChartOutlined />,
         },
     ];
     
@@ -96,12 +102,16 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
             key: "engineer.dashboard",
-            icon: <AppstoreOutlined />,
+            icon: <DashboardOutlined />,
         },
         {
-            label: <Link href={route("engineer.project-monitoring")}>Project Monitoring</Link>,
+            label: (
+                <Link href={route("engineer.project-monitoring")}>
+                    Project Monitoring
+                </Link>
+            ),
             key: "engineer.project-monitoring",
-            icon: <AppstoreOutlined />,
+            icon: <LineChartOutlined />,
         },
     ];  
 
@@ -109,12 +119,16 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
             key: "mayor.dashboard",
-            icon: <AppstoreOutlined />,
+            icon: <DashboardOutlined />,
         },
         {
-            label: <Link href={route("mayor.project-monitoring")}>Project Monitoring</Link>,
+            label: (
+                <Link href={route("mayor.project-monitoring")}>
+                    Project Monitoring
+                </Link>
+            ),
             key: "mayor.project-monitoring",
-            icon: <AppstoreOutlined />,
+            icon: <LineChartOutlined />,
         },
     ];  
 
@@ -128,9 +142,18 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 onCollapse={(collapsedValue) => setCollapsed(collapsedValue)}
                 style={{ minHeight: "100vh" }}
             >
-                <div className="w-full h-16 flex items-center justify-center">
-                    <div className="font-bold text-lg text-gray-50">TCEMPS</div>
+                <div className="w-full h-16 flex gap-2 items-center justify-center">
+                    <Avatar
+                        className="w-12 h-12"
+                        shape="circle"
+                        src="/storage/images/tcepms.png"
+                        alt="Tangub City Engineering Office Logo"
+                    />
+                    <div className="font-bold text-lg text-gray-50 hidden lg:block">
+                        TCEMPS
+                    </div>
                 </div>
+
                 {auth.user.role === 0 && (
                     <Menu
                         theme="dark"
@@ -197,7 +220,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                             }}
                         />
                         {/* <div className="px-4">{auth?.user?.name}</div> */}
-                        <div className="px-4">
+                        <div className="px-8">
                             <Dropdown
                                 menu={{
                                     items: [
@@ -210,7 +233,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                                                 </Link>
                                             ),
                                             key: "dashboard",
-                                            icon: <AppstoreOutlined />,
+                                            icon: <UserOutlined />,
                                         },
                                         {
                                             label: (
@@ -222,7 +245,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                                                 </Link>
                                             ),
                                             key: "logout",
-                                            icon: <AppstoreOutlined />,
+                                            icon: <LogoutOutlined />,
                                         },
                                     ],
                                 }}
@@ -246,14 +269,17 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 <Content
                     style={{
                         margin: "0 16px",
-                        padding: 24,
+                        padding: "24px",
                         minHeight: "80vh",
-                        background: colorBgContainer,
                         borderRadius: borderRadiusLG,
+                        // background: `url('/storage/images/bgg.png')`,
+                        // backgroundSize: "cover",
+                        // backgroundPosition: "center",
                     }}
                 >
                     {children}
                 </Content>
+
                 <Footer
                     style={{
                         textAlign: "center",
