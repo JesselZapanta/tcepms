@@ -35,6 +35,8 @@ import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 const { Text } = Typography;
 import axios from "axios";
+import Report from "./Report";
+import { useReactToPrint } from "react-to-print";
 
 export default function Index({ auth, currentProject }) {
     const [latestUpdate, setLatestUpdate] = useState([]);
@@ -302,13 +304,11 @@ export default function Index({ auth, currentProject }) {
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
-
             {contextHolder}
-
             <div className="py-2">
                 <Details data={data} />
             </div>
-            <div className="flex py-4 justify-end">
+            <div className="flex gap-2 justify-end">
                 <Button
                     type="primary"
                     onClick={showCreateModal}
@@ -319,6 +319,10 @@ export default function Index({ auth, currentProject }) {
             </div>
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
+                <Report
+                    formatDate={formatDate}
+                    project={data}
+                />
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <Spin />

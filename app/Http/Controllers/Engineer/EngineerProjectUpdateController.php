@@ -31,7 +31,7 @@ class EngineerProjectUpdateController extends Controller
     {
         $projectDetails = Project::with(['siteEngineer','contructor','updates' => function($query) {
             $query->orderBy('update_date', 'desc')
-                ->with('images'); // Include the images relationship of updates
+                ->with(['siteEngineer','images']); // Include the images relationship of updates
         }])->findOrFail($id);
 
 
