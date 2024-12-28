@@ -8,6 +8,9 @@ use App\Http\Requests\Engineer\EngineerProjectUpdateRequest;
 use App\Models\ImageUpdate;
 use App\Models\Project;
 use App\Models\ProjectUpdate;
+use App\Models\User;
+use App\Notifications\ProjectUpdateNotification;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -99,7 +102,6 @@ class EngineerProjectUpdateController extends Controller
             'status' => 'deleted'
         ], 200);
     }
-
     public function store(EngineerProjectStoreRequest $request)
     {
         $data = $request->validated();
@@ -109,15 +111,13 @@ class EngineerProjectUpdateController extends Controller
 
         $projectId = Project::findOrFail($data['project']);
 
-        //if all progress === 100
-        //update the projectId->status === Completed otherwise status === ongoing
+        // Check progress and update project status
         $excavation_progress = $data['excavation_progress'];
         $concrete_works_progress = $data['excavation_progress'];
         $water_works_progress = $data['water_works_progress'];
         $metal_works_progress = $data['metal_works_progress'];
         $cement_plaster_and_finishes_progress = $data['cement_plaster_and_finishes_progress'];
 
-        // Check if all progress values are 100%
         if (
             $excavation_progress === 100 &&
             $concrete_works_progress === 100 &&
@@ -130,7 +130,6 @@ class EngineerProjectUpdateController extends Controller
             $projectId->status = 'Ongoing';
         }
 
-        // Save the updated project status
         $projectId->save();
 
         $project = ProjectUpdate::create($data);
@@ -141,27 +140,26 @@ class EngineerProjectUpdateController extends Controller
             $imgFilename = $image['response'] ?? null;
 
             if ($imgFilename) {
-                // Save each image in the database
                 ImageUpdate::create([
                     'project_update' => $project->id,
                     'file_path' => $imgFilename,
                 ]);
 
-                // Move each image from 'temp' to 'project_images'
                 if (Storage::disk('public')->exists('temp/' . $imgFilename)) {
                     Storage::disk('public')->move('temp/' . $imgFilename, 'project_images/' . $imgFilename);
                 }
             }
         }
 
-        //SEND NOTIF USING EMAIL OR SMS
-        //todo
 
+        // Notify all users
+        $allUsers = User::all();
+        Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
 
         return response()->json([
-            'status' => 'created'
-        ], 200);
-    }
+                'status' => 'created'
+            ], 200);
+        }
 
     public function update(EngineerProjectUpdateRequest $request, $id)
     {
@@ -219,8 +217,14 @@ class EngineerProjectUpdateController extends Controller
                 }
             }
         }
+        
+        // Notify all users
+        // $allUsers = User::all();
+        // Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
 
-        return response()->json(['status' => 'updated'], 200);
+        return response()->json([
+            'status' => 'updated'
+        ], 200);
     }
 
 
