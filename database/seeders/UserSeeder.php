@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Jessel Zapatna',
                 'email' => 'jeszapanta9@gmail.com',
-                'contact' => '09300192172',
+                'contact' => '09452212501',
                 'role' => '0',
                 'status' => '1',
                 'email_verified_at' => now(),
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Staff 1',
                 'email' => 'staffone@gmail.com',
-                'contact' => '09786543212',
+                'contact' => '09452212501',
                 'role' => '1',
                 'status' => '1',
                 'email_verified_at' => now(),
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Staff 2',
                 'email' => 'stafftwo@gmail.com',
-                'contact' => '09786543212',
+                'contact' => '09452212501',
                 'role' => '2',
                 'status' => '1',
                 'email_verified_at' => now(),
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Engineer 1',
                 'email' => 'engineer1@gmail.com',
-                'contact' => '09786543212',
+                'contact' => '09452212501',
                 'role' => '3',
                 'status' => '1',
                 'email_verified_at' => now(),
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Engineer 2',
                 'email' => 'engineer2@gmail.com',
-                'contact' => '09786543212',
+                'contact' => '09452212501',
                 'role' => '3',
                 'status' => '1',
                 'email_verified_at' => now(),
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Engineer 3',
                 'email' => 'engineer3@gmail.com',
-                'contact' => '09786543212',
+                'contact' => '09452212501',
                 'role' => '3',
                 'status' => '1',
                 'email_verified_at' => now(),
@@ -73,7 +73,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'City Mayor',
                 'email' => 'mayor@gmail.com',
-                'contact' => '09786543212',
+                'contact' => '09452212501',
                 'role' => '4',
                 'status' => '1',
                 'email_verified_at' => now(),
