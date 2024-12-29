@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide print content by default on screen */
 @media screen {
     .print-container {
         display: none;
@@ -12,7 +13,8 @@
     .print-container {
         display: block;
     }
+    
     @page {
-        margin: 1in; 
+            margin: 1in; 
     }
 }

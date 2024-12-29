@@ -48,7 +48,7 @@ export default function Index({ auth, currentProject }) {
         setLoading(true);
         try {
             const res = await axios.get(
-                `/engineer/project-update/gedData/${currentProject.id}`
+                `/engineer/project-update/getData/${currentProject.id}`
             );
             setData(res.data.projectDetails);
             setLatestUpdate(res.data.latestUpdate);
@@ -304,10 +304,16 @@ export default function Index({ auth, currentProject }) {
 
     const componentRef = useRef();
     
-        const handlePrint = useReactToPrint({
-            documentTitle: "Title",
-            contentRef: componentRef,
-        });
+    const handlePrint = useReactToPrint({
+        documentTitle: "Project Update Report",
+        content: () => componentRef.current,
+    });
+
+    // const componentRef = useRef();
+    // const handlePrint = useReactToPrint({
+    //     documentTitle: "Project Update Report",
+    //     content: () => componentRef.current,
+    // });
     
 
     return (
@@ -319,7 +325,7 @@ export default function Index({ auth, currentProject }) {
             </div>
             <div className="flex gap-2 justify-end">
                 <Button
-                    onClick={handlePrint}
+                    onClick={() => handlePrint()}
                     icon={<PrinterOutlined />}
                 >
                     Print

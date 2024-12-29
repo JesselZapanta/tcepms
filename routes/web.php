@@ -177,7 +177,7 @@ Route::middleware(['auth', 'engineer'])->group(function() {
 
     Route::get('/engineer/project-update/{id}', [EngineerProjectUpdateController::class, 'index'])->name('engineer.project-update');
 
-    Route::get('/engineer/project-update/gedData/{id}', [EngineerProjectUpdateController::class, 'getData']);
+    Route::get('/engineer/project-update/getData/{id}', [EngineerProjectUpdateController::class, 'getData']);
     Route::post('/engineer/project-images/temp-upload', [EngineerProjectUpdateController::class, 'tempUpload']);
     Route::post('/engineer/project-images/remove-upload/{filename}', [EngineerProjectUpdateController::class, 'removeUpload']);
     Route::post('/engineer/project-images/delete-upload/{id}', [EngineerProjectUpdateController::class, 'deleteUpload']);
