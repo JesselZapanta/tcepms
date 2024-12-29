@@ -2,29 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@media screen {
+    .print-container {
+        display: none;
+    }
+}
+
 @media print {
-    .custom-print-size {
-        page-break-inside: avoid;
+    .print-container {
+        display: block;
     }
-
-    .page-break {
-        page-break-after: always;
-    }
-
-    .page {
-        position: relative;
-        height: 1056px; 
-        width: 816px; 
-    }
-
     @page {
-        size: 816px 1056px;/* this is letter*/
-        margin: 0 !important; /* Ensure no margin is applied */
-    }
-
-    /* Additional styling to remove margins on elements */
-    .no-margin {
-        margin: 0 !important;
-        padding: 0 !important;
+        margin: 1in; 
     }
 }

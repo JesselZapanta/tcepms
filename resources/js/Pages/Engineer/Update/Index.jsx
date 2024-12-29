@@ -27,11 +27,12 @@ import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
+    PrinterOutlined,
     QuestionCircleOutlined,
     UploadOutlined,
 } from "@ant-design/icons";
 import Details from "./Details";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 const { Text } = Typography;
 import axios from "axios";
@@ -301,6 +302,14 @@ export default function Index({ auth, currentProject }) {
         });
     }
 
+    const componentRef = useRef();
+    
+        const handlePrint = useReactToPrint({
+            documentTitle: "Title",
+            contentRef: componentRef,
+        });
+    
+
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
@@ -309,6 +318,12 @@ export default function Index({ auth, currentProject }) {
                 <Details data={data} />
             </div>
             <div className="flex gap-2 justify-end">
+                <Button
+                    onClick={handlePrint}
+                    icon={<PrinterOutlined />}
+                >
+                    Print
+                </Button>
                 <Button
                     type="primary"
                     onClick={showCreateModal}
@@ -319,10 +334,9 @@ export default function Index({ auth, currentProject }) {
             </div>
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
-                <Report
-                    formatDate={formatDate}
-                    project={data}
-                />
+                <div ref={componentRef}>
+                    <Report formatDate={formatDate} project={data} />
+                </div>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <Spin />

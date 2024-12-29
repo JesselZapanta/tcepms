@@ -2,7 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { Spin, Row, Col, Card, Statistic } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { useReactToPrint } from "react-to-print";
 
 export default function Dashboard({ auth }) {
     const [loading, setLoading] = useState(false);

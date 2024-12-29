@@ -22,6 +22,6 @@
     },
     "dependencies": {
         "antd": "^5.22.5",
-        "react-to-print": "^3.0.4"
+        "react-to-print": "^2.15.1"
     }
 }
