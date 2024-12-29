@@ -17,13 +17,13 @@ class UserSeeder extends Seeder
         // 0 = admin, 1 = staff 1, 2 = staff 2, 3 = on-site engineer, 4 = mayor
         $users = [
             [
-                'name' => 'Jessel Zapatna',
-                'email' => 'jeszapanta9@gmail.com',
+                'name' => 'Tcemps Admin',
+                'email' => 'admin@gmail.com',
                 'contact' => '09452212501',
                 'role' => '0',
                 'status' => '1',
                 'email_verified_at' => now(),
-                'password' => Hash::make('jeszapanta9'),
+                'password' => Hash::make('admin'),
             ],
             [
                 'name' => 'Staff 1',
