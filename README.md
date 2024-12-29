@@ -93,5 +93,5 @@ Visit the application in your web browser at [http://localhost:8000](http://loca
 <!-- Uncomment the following section once you have a project preview screenshot -->
 
 Project Preview
-![Project Preview](/images/screenshot.png) 
+![Project Preview](./public/images/screenshot.png)
 
