@@ -42,7 +42,7 @@ export default function Login({ status, canResetPassword }) {
             <div className="w-full rounded-lg overflow-hidden mb-4">
                 <Link href="/">
                     <img
-                        src="/storage/images/banner.png"
+                        src="/images/banner.png"
                         alt="Jobly"
                         className="w-full j-full"
                     />

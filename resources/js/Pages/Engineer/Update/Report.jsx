@@ -10,7 +10,7 @@ export default function Report({ formatDate, project }) {
                 <div className="p-2 font-times">
                     <div className="flex justify-around">
                         <img
-                            src="/storage/images/tangub.png"
+                            src="/images/tangub.png"
                             alt="tangub.png"
                             className="w-32"
                         />
@@ -21,7 +21,7 @@ export default function Report({ formatDate, project }) {
                             <p>PROJECT UPDATE</p>
                         </div>
                         <img
-                            src="/storage/images/tcepms.png"
+                            src="/images/tcepms.png"
                             alt="tcepms.png"
                             className="w-32"
                         />

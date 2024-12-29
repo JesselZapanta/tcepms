@@ -146,7 +146,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                     <Avatar
                         className="w-12 h-12"
                         shape="circle"
-                        src="/storage/images/tcepms.png"
+                        src="/images/tcepms.png"
                         alt="Tangub City Engineering Office Logo"
                     />
                     <div className="font-bold text-lg text-gray-50 hidden lg:block">
@@ -272,7 +272,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         padding: "24px",
                         minHeight: "80vh",
                         borderRadius: borderRadiusLG,
-                        // background: `url('/storage/images/bgg.png')`,
+                        // background: `url('/images/bgg.png')`,
                         // backgroundSize: "cover",
                         // backgroundPosition: "center",
                     }}

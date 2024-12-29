@@ -12,7 +12,7 @@ Ensure the following software is installed on your system:
 
 ## Technology Stack
 - **Backend Framework**: Laravel 11
-- **Frontend Framework**: ReactJS
+- **Frontend**: ReactJS
 - **Database**: MariaDB
 
 ## Installation Guide
@@ -91,6 +91,7 @@ npm run dev
 Visit the application in your web browser at [http://localhost:8000](http://localhost:8000).
 
 <!-- Uncomment the following section once you have a project preview screenshot -->
-<!-- ## Project Preview
-![Project Preview](./images/screenshot.png) -->
+
+Project Preview
+![Project Preview](./images/screenshot.png) 
 
