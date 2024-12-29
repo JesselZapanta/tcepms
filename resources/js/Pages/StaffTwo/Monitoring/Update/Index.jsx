@@ -11,12 +11,17 @@ import {
     Avatar,
     Divider,
     Typography,
+    Button,
 } from "antd";
 
+import { PrinterOutlined } from "@ant-design/icons";
+
 import Details from "./Details";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 const { Text } = Typography;
 import axios from "axios";
+import { useReactToPrint } from "react-to-print";
+import Report from "./Report";
 
 export default function Index({ auth, currentProject }) {
     const [data, setData] = useState([]);
@@ -53,6 +58,19 @@ export default function Index({ auth, currentProject }) {
         });
     }
 
+    const componentRef = useRef();
+        
+    const handlePrint = useReactToPrint({
+        documentTitle: "Project Update Report",
+        content: () => componentRef.current,
+    });
+
+    // const componentRef = useRef();
+    // const handlePrint = useReactToPrint({
+    //     documentTitle: "Project Update Report",
+    //     content: () => componentRef.current,
+    // });
+
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
@@ -60,8 +78,21 @@ export default function Index({ auth, currentProject }) {
             <div className="py-2">
                 <Details data={data} />
             </div>
+
+            <div className="flex gap-2 justify-end">
+                <Button
+                    onClick={() => handlePrint()}
+                    icon={<PrinterOutlined />}
+                >
+                    Print
+                </Button>
+            </div>
+
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
+                <div ref={componentRef}>
+                    <Report formatDate={formatDate} project={data} />
+                </div>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <Spin />

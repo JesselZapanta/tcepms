@@ -80,6 +80,7 @@ export default function Index({ auth, currentProject }) {
             <div className="py-2">
                 <Details data={data} />
             </div>
+            
             <div className="flex gap-2 justify-end">
                 <Button
                     onClick={() => handlePrint()}
