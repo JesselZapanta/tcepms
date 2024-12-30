@@ -17,7 +17,7 @@ class StaffOne
     public function handle(Request $request, Closure $next): Response
     {
         // 0 = admin, 1 = staff 1, 2 = staff 2, 3 = on-site engineer, 4 = mayor
-        if(Auth::check() && Auth::user()->role === 1){
+        if(Auth::check() && Auth::user()->role === 1 && Auth::user()->status === 1){
             return $next($request);
         }
         abort(403, 'Access Denied');
