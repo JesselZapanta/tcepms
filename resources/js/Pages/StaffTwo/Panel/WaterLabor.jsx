@@ -295,7 +295,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                         title="No. of Days"
                         dataIndex="no_of_days"
                         key="no_of_days"
-                        render={(value) => formatPeso(value)}
+                        // render={(value) => formatPeso(value)}
                     />
                     <Column
                         sorter={true}
