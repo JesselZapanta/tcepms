@@ -193,7 +193,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
         : "rgba(204, 255, 204, 0.3)";
 
     const handleCompile = async (status, id) => {
-        const values = { status };
+        const values = { status, EstimatedTotalCost: costs.ActualTotalCost };
 
         try {
             const res = await axios.put(
@@ -212,6 +212,14 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             }
         } catch (err) {
             console.error(err);
+            if(err.response.status === 422){
+                openNotification(
+                    "error",
+                    "bottomRight",
+                    "Error!",
+                    "The estimated total cost is greater than the budget"
+                );
+            }
         }
     };
 

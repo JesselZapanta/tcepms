@@ -124,13 +124,23 @@ class MaterialController extends Controller
     
     public function compile(Request $request, $id)
     {
+        // return $request;
         $project = Project::findOrFail($id);
 
         $request->validate([
             'status' => ['required','string','in:Material,Labor'],
+            'EstimatedTotalCost' => ['required'],
         ]);
 
         $status = $request->status;
+        $EstimatedTotalCost = $request->EstimatedTotalCost;
+        $budget = $project->budget;
+
+        if ($EstimatedTotalCost > $budget) {
+            return response()->json([
+                'status' => 'failed'
+            ], 422);
+        }
 
         $project->update(['status' => $status]);
 
