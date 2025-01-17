@@ -110,7 +110,7 @@ export default function Index({ auth }) {
                                         {/* Carousel for images */}
                                         {project.updates &&
                                         project.updates.length > 0 ? (
-                                            <Carousel arrows infinite={true}>
+                                        <Carousel arrows infinite={true}>
                                                 {project.updates.map(
                                                     (update, index) =>
                                                         update.images.map(
