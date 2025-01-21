@@ -203,7 +203,6 @@ export default function Index({ auth, contructors, engineers }) {
             setLoading(false);
         }
     };
-
     // console.log(data);
 
     // const [phases, setPhases] = useState({
@@ -223,6 +222,10 @@ export default function Index({ auth, contructors, engineers }) {
     //         [phaseKey]: value,
     //     }));
     // };
+
+    const [con, setCon] = useState("0");
+
+
     return (
         <AuthenticatedLayout header="Project Management" auth={auth}>
             <Head title="Project Management" />
@@ -654,35 +657,6 @@ export default function Index({ auth, contructors, engineers }) {
                             </Form.Item>
 
                             <Form.Item
-                                label="STATUS"
-                                name="status"
-                                validateStatus={errors?.status ? "error" : ""}
-                                help={errors?.status ? errors?.status[0] : ""}
-                                className="w-full"
-                            >
-                                <Select
-                                    disabled
-                                    defaultValue="Material"
-                                    options={[
-                                        {
-                                            value: "Material",
-                                            label: "Pending Materials",
-                                        },
-                                        {
-                                            value: "Labor",
-                                            label: "Pending Labors",
-                                        },
-                                        { value: "Ongoing", label: "Ongoing" },
-                                        {
-                                            value: "Completed",
-                                            label: "Completed",
-                                        },
-                                        { value: "Hold", label: "On Hold" },
-                                    ]}
-                                />
-                            </Form.Item>
-
-                            <Form.Item
                                 label="PRIORITY"
                                 name="priority"
                                 validatepriority={
@@ -698,6 +672,60 @@ export default function Index({ auth, contructors, engineers }) {
                                         { value: "High", label: "High" },
                                         { value: "Medium", label: "Medium" },
                                         { value: "Low", label: "Low" },
+                                    ]}
+                                />
+                            </Form.Item>
+                        </div>
+                        <div className="flex gap-4">
+                            {/* Contractual Dropdown */}
+                            <Form.Item
+                                label="CONTRACTUAL"
+                                name="contractual"
+                                validateStatus={
+                                    errors?.contractual ? "error" : ""
+                                }
+                                help={
+                                    errors?.contractual
+                                        ? errors?.contractual[0]
+                                        : ""
+                                }
+                                className="w-full"
+                            >
+                                <Select
+                                    value={con}
+                                    onChange={(value) => {
+                                        setCon(value); // Update state when value changes
+                                        // Update form state for status based on the value of con
+                                        const statusValue =
+                                            value === "1"
+                                                ? "Ongoing"
+                                                : "Material";
+                                        Form.useForm().setFieldsValue({
+                                            status: statusValue,
+                                        });
+                                    }}
+                                    options={[
+                                        { value: "0", label: "No" },
+                                        { value: "1", label: "Yes" },
+                                    ]}
+                                />
+                            </Form.Item>
+
+                            {/* Status Dropdown */}
+                            <Form.Item
+                                label="STATUS"
+                                name="status"
+                                className="w-full"
+                            >
+                                <Select
+                                    disabled
+                                    value={con === "1" ? "Ongoing" : "Material"} // Dynamically set value
+                                    options={[
+                                        {
+                                            value: "Material",
+                                            label: "Pending Materials",
+                                        },
+                                        { value: "Ongoing", label: "Ongoing" },
                                     ]}
                                 />
                             </Form.Item>
