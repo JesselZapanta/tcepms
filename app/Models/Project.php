@@ -27,8 +27,9 @@ class Project extends Model
         'engineer',
         'contructor',
         'category',
-        'status',
         'priority',
+        'contractual',
+        'status',
     ];
     public function siteEngineer()
     {

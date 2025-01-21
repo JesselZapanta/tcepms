@@ -24,8 +24,8 @@ class ProjectUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'start_date' => ['nullable', 'date'],
-            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             // 'actual_start_date' => ['nullable', 'date'],
             // 'actual_end_date' => ['nullable', 'date', 'after_or_equal:actual_start_date'],
             'budget' => ['required', 'numeric', 'min:0'],
@@ -39,6 +39,7 @@ class ProjectUpdateRequest extends FormRequest
             'category' => ['required', 'string', 'in:Roadwork,Building,Waterworks'],
             // 'status' => ['required', 'string', 'in:Material,Labor,Ongoing,Completed'],
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
+            'contractual' => ['required', 'in:0,1'],
         ];
     }
 }

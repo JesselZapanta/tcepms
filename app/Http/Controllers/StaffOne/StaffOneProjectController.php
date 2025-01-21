@@ -37,7 +37,12 @@ class StaffOneProjectController extends Controller
     {
         $data = $request->validated();
 
-        $data['status'] = 'Material';
+        if($data['contractual'] === 0){
+            $data['status'] = 'Material';
+        }else{
+            $data['status'] = 'Ongoing';
+            $data['actual_start_date'] = $data['start_date'] ?? null;
+        }
 
         Project::create($data);
 
@@ -49,6 +54,14 @@ class StaffOneProjectController extends Controller
     public function update(ProjectUpdateRequest $request, $id)
     {
         $data = $request->validated();
+
+        if($data['contractual'] === 0){
+            $data['status'] = 'Material';
+            $data['actual_start_date'] = null;
+        }else{
+            $data['status'] = 'Ongoing';
+            $data['actual_start_date'] = $data['start_date'] ?? null;
+        }
 
         $project = Project::findOrFail($id);
 

@@ -43,7 +43,7 @@ export default function Index({ auth, contructors, engineers }) {
     const [search, setSearch] = useState("");
     const [searching, setSearching] = useState(false);
     const [sortField, setSortField] = useState("id");
-    const [sortOrder, setSortOrder] = useState("asc");
+    const [sortOrder, setSortOrder] = useState("desc");
 
     const getData = async (isSearch = false) => {
         if (isSearch) {
@@ -127,6 +127,7 @@ export default function Index({ auth, contructors, engineers }) {
             contructor: project.contructor,
             category: project.category,
             status: project.status,
+            contractual: project.contractual,
             priority: project.priority,
         });
     };
@@ -223,8 +224,12 @@ export default function Index({ auth, contructors, engineers }) {
     //     }));
     // };
 
-    const [con, setCon] = useState("0");
+    // Tracks the contractual status
+    const [con, setCon] = useState(0);
 
+    useEffect(() => {
+        form.setFieldsValue({ status: con === 1 ? "Ongoing" : "Material" });
+    }, [con]);
 
     return (
         <AuthenticatedLayout header="Project Management" auth={auth}>
@@ -290,6 +295,21 @@ export default function Index({ auth, contructors, engineers }) {
                                 <Tag color="blue">Ongoing</Tag>
                             ) : record.status === "Completed" ? (
                                 <Tag color="green">Completed</Tag>
+                            ) : (
+                                <Tag color="gray">Unknown</Tag>
+                            )
+                        }
+                    />
+
+                    <Column
+                        title="Contractual"
+                        dataIndex="contractual"
+                        key="contractual"
+                        render={(_, record) =>
+                            record.contractual === 0 ? (
+                                <Tag color="orange">No</Tag>
+                            ) : record.contractual === 1 ? (
+                                <Tag color="purple">Yes</Tag>
                             ) : (
                                 <Tag color="gray">Unknown</Tag>
                             )
@@ -374,6 +394,10 @@ export default function Index({ auth, contructors, engineers }) {
                     layout="vertical"
                     autoComplete="off"
                     onFinish={handleSubmit}
+                    initialValues={{
+                        contractual: 0,
+                        status: "Material",
+                    }}
                 >
                     <Form.Item>
                         <Divider orientation="left">
@@ -693,20 +717,10 @@ export default function Index({ auth, contructors, engineers }) {
                             >
                                 <Select
                                     value={con}
-                                    onChange={(value) => {
-                                        setCon(value); // Update state when value changes
-                                        // Update form state for status based on the value of con
-                                        const statusValue =
-                                            value === "1"
-                                                ? "Ongoing"
-                                                : "Material";
-                                        Form.useForm().setFieldsValue({
-                                            status: statusValue,
-                                        });
-                                    }}
+                                    onChange={(value) => setCon(value)}
                                     options={[
-                                        { value: "0", label: "No" },
-                                        { value: "1", label: "Yes" },
+                                        { value: 0, label: "No" },
+                                        { value: 1, label: "Yes" },
                                     ]}
                                 />
                             </Form.Item>
@@ -719,7 +733,7 @@ export default function Index({ auth, contructors, engineers }) {
                             >
                                 <Select
                                     disabled
-                                    value={con === "1" ? "Ongoing" : "Material"} // Dynamically set value
+                                    value={con === 1 ? "Ongoing" : "Material"} // Dynamically set value
                                     options={[
                                         {
                                             value: "Material",
