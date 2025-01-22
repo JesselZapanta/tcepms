@@ -23,7 +23,7 @@ export default function Index({ auth }) {
     const [search, setSearch] = useState("");
     const [searching, setSearching] = useState(false);
     const [sortField, setSortField] = useState("id");
-    const [sortOrder, setSortOrder] = useState("asc");
+    const [sortOrder, setSortOrder] = useState("desc");
 
     const getData = async (isSearch = false) => {
         if (isSearch) {
@@ -119,6 +119,21 @@ export default function Index({ auth }) {
                                 <Tag color="blue">Ongoing</Tag>
                             ) : record.status === "Completed" ? (
                                 <Tag color="green">Completed</Tag>
+                            ) : (
+                                <Tag color="gray">Unknown</Tag>
+                            )
+                        }
+                    />
+
+                    <Column
+                        title="Contractual"
+                        dataIndex="contractual"
+                        key="contractual"
+                        render={(_, record) =>
+                            record.contractual === 0 ? (
+                                <Tag color="orange">No</Tag>
+                            ) : record.contractual === 1 ? (
+                                <Tag color="purple">Yes</Tag>
                             ) : (
                                 <Tag color="gray">Unknown</Tag>
                             )

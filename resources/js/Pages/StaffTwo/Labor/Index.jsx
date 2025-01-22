@@ -37,7 +37,23 @@ export default function Index({ auth, project }) {
     }, [CostChange]);
 
     // Define items for Collapse
-    const collapseItems = [
+    const collapseItems1 = [
+        {
+            key: "1",
+            label: "Project Details",
+            children: <Details costs={costs} formatPeso={formatPeso} />,
+        },
+        {
+            key: "2",
+            label: "Labors Details",
+            children: (
+                <div className="text-center">
+                    No labors details for contructual projects.
+                </div>
+            ),
+        },
+    ];
+    const collapseItems2 = [
         {
             key: "1",
             label: "Project Details",
@@ -110,8 +126,21 @@ export default function Index({ auth, project }) {
             {/* <pre className="text-gray-900">
                 {JSON.stringify(costs, null, 2)}
             </pre> */}
-            <div className="py-2">
+            {/* <div className="py-2">
                 <Collapse defaultActiveKey={["1","7"]} items={collapseItems} />
+            </div> */}
+            <div className="py-2">
+                {costs.projectDetails?.contractual === 1 ? (
+                    <Collapse
+                        defaultActiveKey={["1", "2"]}
+                        items={collapseItems1}
+                    />
+                ) : (
+                    <Collapse
+                        defaultActiveKey={["1", "7"]}
+                        items={collapseItems2}
+                    />
+                )}
             </div>
         </AuthenticatedLayout>
     );

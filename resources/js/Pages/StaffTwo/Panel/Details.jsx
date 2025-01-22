@@ -84,7 +84,7 @@ export default function Details({ costs, formatPeso }) {
         },
         {
             label: "Status",
-            span: 2,
+            span: 1,
             children:
                 costs?.projectDetails?.status === "Material" ? (
                     <Tag color="orange">Pending Materials</Tag>
@@ -101,7 +101,7 @@ export default function Details({ costs, formatPeso }) {
 
         {
             label: "Priority",
-            span: 2,
+            span: 1,
             children:
                 costs?.projectDetails?.priority === "High" ? (
                     <Tag color="red">High</Tag>
@@ -109,6 +109,18 @@ export default function Details({ costs, formatPeso }) {
                     <Tag color="orange">Medium</Tag>
                 ) : costs?.projectDetails?.priority === "Low" ? (
                     <Tag color="green">Low</Tag>
+                ) : (
+                    <Tag color="gray">Unknown</Tag>
+                ),
+        },
+        {
+            label: "Contractual",
+            span: 1,
+            children:
+                costs?.projectDetails?.contractual === 0 ? (
+                    <Tag color="orange">No</Tag>
+                ) : costs?.projectDetails?.contractual === 1 ? (
+                    <Tag color="purple">Yes</Tag>
                 ) : (
                     <Tag color="gray">Unknown</Tag>
                 ),
