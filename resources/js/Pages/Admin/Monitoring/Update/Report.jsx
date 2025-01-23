@@ -34,7 +34,7 @@ export default function Report({ formatDate, project }) {
                     <Divider />
 
                     {project?.updates?.length > 0 ? (
-                        project.updates.map((update) => (
+                        project.updates.reverse().map((update) => (
                             <div key={update.id}>
                                 <Space direction="vertical">
                                     <Text>
