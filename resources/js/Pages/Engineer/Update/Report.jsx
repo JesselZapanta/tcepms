@@ -34,7 +34,7 @@ export default function Report({ formatDate, project }) {
                     <Divider />
 
                     {project?.updates?.length > 0 ? (
-                        project.updates.map((update) => (
+                        project.updates.reverse().map((update) => (
                             <div key={update.id}>
                                 <Space direction="vertical">
                                     <Text>
@@ -55,7 +55,6 @@ export default function Report({ formatDate, project }) {
                                     <Text className="font-bold">
                                         Project Progress
                                     </Text>
-
                                     <div className="table-container">
                                         <Table
                                             className="mt-2"

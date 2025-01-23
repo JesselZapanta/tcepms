@@ -549,25 +549,31 @@ export default function Index({ auth, currentProject }) {
                         }
                     >
                         <Slider
-                            defaultValue={
-                                latestUpdate
-                                    ? latestUpdate?.excavation_progress
-                                    : 0
-                            }
                             min={
                                 latestUpdate
-                                    ? latestUpdate?.excavation_progress
+                                    ? latestUpdate.excavation_progress
                                     : 0
                             }
                             max={100}
-                            marks={{
-                                [latestUpdate
-                                    ? latestUpdate.excavation_progress
-                                    : 0]: latestUpdate
-                                    ? `${latestUpdate.excavation_progress}%`
-                                    : "0%",
-                                100: "100%",
-                            }}
+                            marks={
+                                latestUpdate?.excavation_progress === 100
+                                    ? { 100: "100%" }
+                                    : {
+                                          ...(latestUpdate
+                                              ? {
+                                                    [latestUpdate.excavation_progress]: `${latestUpdate.excavation_progress}%`,
+                                                }
+                                              : { 0: "0%" }),
+                                          ...Array.from(
+                                              { length: 10 },
+                                              (_, i) => i * 10
+                                          ).reduce((acc, value) => {
+                                              acc[value] = `${value}%`;
+                                              return acc;
+                                          }, {}),
+                                          100: "100%",
+                                      }
+                            }
                         />
                     </Form.Item>
 
@@ -586,18 +592,29 @@ export default function Index({ auth, currentProject }) {
                         <Slider
                             min={
                                 latestUpdate
-                                    ? latestUpdate?.concrete_works_progress
+                                    ? latestUpdate.concrete_works_progress
                                     : 0
                             }
                             max={100}
-                            marks={{
-                                [latestUpdate
-                                    ? latestUpdate.concrete_works_progress
-                                    : 0]: latestUpdate
-                                    ? `${latestUpdate.concrete_works_progress}%`
-                                    : "0%",
-                                100: "100%",
-                            }}
+                            marks={
+                                latestUpdate?.concrete_works_progress === 100
+                                    ? { 100: "100%" }
+                                    : {
+                                          ...(latestUpdate
+                                              ? {
+                                                    [latestUpdate.concrete_works_progress]: `${latestUpdate.concrete_works_progress}%`,
+                                                }
+                                              : { 0: "0%" }),
+                                          ...Array.from(
+                                              { length: 10 },
+                                              (_, i) => i * 10
+                                          ).reduce((acc, value) => {
+                                              acc[value] = `${value}%`;
+                                              return acc;
+                                          }, {}),
+                                          100: "100%",
+                                      }
+                            }
                         />
                     </Form.Item>
 
@@ -616,18 +633,29 @@ export default function Index({ auth, currentProject }) {
                         <Slider
                             min={
                                 latestUpdate
-                                    ? latestUpdate?.water_works_progress
+                                    ? latestUpdate.water_works_progress
                                     : 0
                             }
                             max={100}
-                            marks={{
-                                [latestUpdate
-                                    ? latestUpdate.water_works_progress
-                                    : 0]: latestUpdate
-                                    ? `${latestUpdate.water_works_progress}%`
-                                    : "0%",
-                                100: "100%",
-                            }}
+                            marks={
+                                latestUpdate?.water_works_progress === 100
+                                    ? { 100: "100%" }
+                                    : {
+                                          ...(latestUpdate
+                                              ? {
+                                                    [latestUpdate.water_works_progress]: `${latestUpdate.water_works_progress}%`,
+                                                }
+                                              : { 0: "0%" }),
+                                          ...Array.from(
+                                              { length: 10 },
+                                              (_, i) => i * 10
+                                          ).reduce((acc, value) => {
+                                              acc[value] = `${value}%`;
+                                              return acc;
+                                          }, {}),
+                                          100: "100%",
+                                      }
+                            }
                         />
                     </Form.Item>
 
@@ -646,18 +674,29 @@ export default function Index({ auth, currentProject }) {
                         <Slider
                             min={
                                 latestUpdate
-                                    ? latestUpdate?.metal_works_progress
+                                    ? latestUpdate.metal_works_progress
                                     : 0
                             }
                             max={100}
-                            marks={{
-                                [latestUpdate
-                                    ? latestUpdate.metal_works_progress
-                                    : 0]: latestUpdate
-                                    ? `${latestUpdate.metal_works_progress}%`
-                                    : "0%",
-                                100: "100%",
-                            }}
+                            marks={
+                                latestUpdate?.metal_works_progress === 100
+                                    ? { 100: "100%" }
+                                    : {
+                                          ...(latestUpdate
+                                              ? {
+                                                    [latestUpdate.metal_works_progress]: `${latestUpdate.metal_works_progress}%`,
+                                                }
+                                              : { 0: "0%" }),
+                                          ...Array.from(
+                                              { length: 10 },
+                                              (_, i) => i * 10
+                                          ).reduce((acc, value) => {
+                                              acc[value] = `${value}%`;
+                                              return acc;
+                                          }, {}),
+                                          100: "100%",
+                                      }
+                            }
                         />
                     </Form.Item>
 
@@ -678,20 +717,33 @@ export default function Index({ auth, currentProject }) {
                         <Slider
                             min={
                                 latestUpdate
-                                    ? latestUpdate?.cement_plaster_and_finishes_progress
+                                    ? latestUpdate.cement_plaster_and_finishes_progress
                                     : 0
                             }
                             max={100}
-                            marks={{
-                                [latestUpdate
-                                    ? latestUpdate.cement_plaster_and_finishes_progress
-                                    : 0]: latestUpdate
-                                    ? `${latestUpdate.cement_plaster_and_finishes_progress}%`
-                                    : "0%",
-                                100: "100%",
-                            }}
+                            marks={
+                                latestUpdate?.cement_plaster_and_finishes_progress ===
+                                100
+                                    ? { 100: "100%" }
+                                    : {
+                                          ...(latestUpdate
+                                              ? {
+                                                    [latestUpdate.cement_plaster_and_finishes_progress]: `${latestUpdate.cement_plaster_and_finishes_progress}%`,
+                                                }
+                                              : { 0: "0%" }),
+                                          ...Array.from(
+                                              { length: 10 },
+                                              (_, i) => i * 10
+                                          ).reduce((acc, value) => {
+                                              acc[value] = `${value}%`;
+                                              return acc;
+                                          }, {}),
+                                          100: "100%",
+                                      }
+                            }
                         />
                     </Form.Item>
+
                     <Form.Item
                         label="PROJECT IMAGES"
                         name="project_images"
