@@ -117,17 +117,17 @@ export default function Details({ data }) {
                 ),
         },
         {
-                    label: "Contractual",
-                    span: 1,
-                    children:
-                        data?.contractual === 0 ? (
-                            <Tag color="orange">No</Tag>
-                        ) : data?.contractual === 1 ? (
-                            <Tag color="purple">Yes</Tag>
-                        ) : (
-                            <Tag color="gray">Unknown</Tag>
-                        ),
-                },
+            label: "Contractual",
+            span: 1,
+            children:
+                data?.contractual === 0 ? (
+                    <Tag color="orange">No</Tag>
+                ) : data?.contractual === 1 ? (
+                    <Tag color="purple">Yes</Tag>
+                ) : (
+                    <Tag color="gray">Unknown</Tag>
+                ),
+        },
     ];
 
     return (

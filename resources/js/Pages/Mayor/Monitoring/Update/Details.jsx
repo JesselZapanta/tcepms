@@ -87,7 +87,7 @@ export default function Details({ data }) {
         },
         {
             label: "Status",
-            span: 2,
+            span: 1,
             children:
                 data?.status === "Material" ? (
                     <Tag color="orange">Pending Materials</Tag>
@@ -104,7 +104,7 @@ export default function Details({ data }) {
 
         {
             label: "Priority",
-            span: 2,
+            span: 1,
             children:
                 data?.priority === "High" ? (
                     <Tag color="red">High</Tag>
@@ -116,15 +116,26 @@ export default function Details({ data }) {
                     <Tag color="gray">Unknown</Tag>
                 ),
         },
+
+        {
+            label: "Contractual",
+            span: 1,
+            children:
+                data?.contractual === 0 ? (
+                    <Tag color="orange">No</Tag>
+                ) : data?.contractual === 1 ? (
+                    <Tag color="purple">Yes</Tag>
+                ) : (
+                    <Tag color="gray">Unknown</Tag>
+                ),
+        },
     ];
 
     return (
-        <Collapse label="Excavation" >
+        <Collapse label="Excavation">
             <Panel header="View Project Details" key="1">
                 <Descriptions bordered items={items} />
             </Panel>
         </Collapse>
     );
-    
-    
 }
