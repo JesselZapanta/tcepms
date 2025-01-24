@@ -12,7 +12,10 @@ import {
     Divider,
     Typography,
     Button,
+    Select,
 } from "antd";
+
+const { Option } = Select;
 
 import {
     PrinterOutlined,
@@ -28,6 +31,8 @@ import { useReactToPrint } from "react-to-print";
 export default function Index({ auth, currentProject }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const [month, setMonth] = useState();
 
     const getData = async () => {
         setLoading(true);
@@ -80,8 +85,27 @@ export default function Index({ auth, currentProject }) {
             <div className="py-2">
                 <Details data={data} />
             </div>
-            
+
             <div className="flex gap-2 justify-end">
+                <Select
+                    placeholder="Select a month"
+                    onChange={(value) => setMonth(value)}
+                    className="w-32"
+                >
+                    <Option value={0}>All</Option>
+                    <Option value={1}>January</Option>
+                    <Option value={2}>February</Option>
+                    <Option value={3}>March</Option>
+                    <Option value={4}>April</Option>
+                    <Option value={5}>May</Option>
+                    <Option value={6}>June</Option>
+                    <Option value={7}>July</Option>
+                    <Option value={8}>August</Option>
+                    <Option value={9}>September</Option>
+                    <Option value={10}>October</Option>
+                    <Option value={11}>November</Option>
+                    <Option value={12}>December</Option>
+                </Select>
                 <Button
                     onClick={() => handlePrint()}
                     icon={<PrinterOutlined />}
