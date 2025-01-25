@@ -32,13 +32,14 @@ export default function Index({ auth, currentProject }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const [month, setMonth] = useState();
+    const [month, setMonth] = useState(0);
 
     const getData = async () => {
         setLoading(true);
+
         try {
             const res = await axios.get(
-                `/admin/project-monitoring/project/getData/${currentProject.id}`
+                `/admin/project-monitoring/project/getData/${currentProject.id}?month=${month}`
             );
             setData(res.data.projectDetails);
         } catch (err) {
@@ -50,7 +51,7 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [])
+    }, [month]);
 
     function formatDate(updateDate) {
         const date = new Date(updateDate);
