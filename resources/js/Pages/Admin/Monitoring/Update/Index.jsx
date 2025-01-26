@@ -117,7 +117,11 @@ export default function Index({ auth, currentProject }) {
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
                 <div ref={componentRef}>
-                    <Report formatDate={formatDate} project={data} />
+                    <Report
+                        month={month}
+                        formatDate={formatDate}
+                        project={data}
+                    />
                 </div>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">

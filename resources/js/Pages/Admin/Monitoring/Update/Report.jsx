@@ -3,7 +3,29 @@ import Column from "antd/es/table/Column";
 
 const { Text } = Typography;
 
-export default function Report({ formatDate, project }) {
+export default function Report({ formatDate, project, month }) {
+
+    const months = [
+        { value: 0, label: "All" },
+        { value: 1, label: "January" },
+        { value: 2, label: "February" },
+        { value: 3, label: "March" },
+        { value: 4, label: "April" },
+        { value: 5, label: "May" },
+        { value: 6, label: "June" },
+        { value: 7, label: "July" },
+        { value: 8, label: "August" },
+        { value: 9, label: "September" },
+        { value: 10, label: "October" },
+        { value: 11, label: "November" },
+        { value: 12, label: "December" },
+    ];
+
+    function getMonthLabel(value) {
+        const month = months.find((month) => month.value === value);
+        return month ? month.label : null; 
+    }
+
     return (
         <>
             <div className="print-container mx-auto bg-white">
@@ -28,6 +50,7 @@ export default function Report({ formatDate, project }) {
                     </div>
                     <Space className="mt-4" direction="vertical">
                         <Text>Project Name: {project.name}</Text>
+                        <Text>Date: {getMonthLabel(month)}</Text>
                         <Text>Project Description: {project.description}</Text>
                     </Space>
 
