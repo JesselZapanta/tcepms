@@ -33,14 +33,18 @@ export default function Index({ auth, currentProject }) {
     const [loading, setLoading] = useState(false);
 
     const [month, setMonth] = useState(0);
+    const [year, setYear] = useState(0);
+
+    console.log(year);
 
     const getData = async () => {
         setLoading(true);
 
         try {
             const res = await axios.get(
-                `/admin/project-monitoring/project/getData/${currentProject.id}?month=${month}`
+                `/admin/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}`
             );
+
             setData(res.data.projectDetails);
         } catch (err) {
             console.log(err);
@@ -51,7 +55,22 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [month]);
+    }, [month, year]);
+
+    
+    const [years, setYears] = useState([]);
+
+    useEffect(() => {
+        const startYear = 2000;
+        const endYear = new Date().getFullYear(); // Current year
+        const yearArray = [];
+
+        for (let year = startYear; year <= endYear; year++) {
+            yearArray.push(year);
+        }
+
+        setYears(yearArray);
+    }, []); 
 
     function formatDate(updateDate) {
         const date = new Date(updateDate);
@@ -67,7 +86,7 @@ export default function Index({ auth, currentProject }) {
     }
 
     const componentRef = useRef();
-        
+
     const handlePrint = useReactToPrint({
         documentTitle: "Project Update Report",
         content: () => componentRef.current,
@@ -106,6 +125,18 @@ export default function Index({ auth, currentProject }) {
                     <Option value={10}>October</Option>
                     <Option value={11}>November</Option>
                     <Option value={12}>December</Option>
+                </Select>
+                <Select
+                    placeholder="Select a Year"
+                    onChange={(value) => setYear(value)}
+                    className="w-32"
+                >
+                    <Option value={0}>All</Option>
+                    {years.reverse().map((year) => (
+                        <Option key={year} value={year}>
+                            {year}
+                        </Option>
+                    ))}
                 </Select>
                 <Button
                     onClick={() => handlePrint()}
