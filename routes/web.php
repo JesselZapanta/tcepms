@@ -72,6 +72,9 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::put('/admin/contructor/update/{id}', [AdminContructorController::class, 'update']);
     Route::delete('/admin/contructor/destroy/{id}', [AdminContructorController::class, 'destroy']);
 
+    Route::get('/admin/contructor/project/{id}', [AdminContructorController::class, 'project'])->name('admin.contructor-project');
+    Route::get('/admin/contructor/getprojects', [AdminContructorController::class, 'getprojects']);
+
     Route::get('/admin/project-monitoring', [AdminProjectMonitoringController::class, 'index'])->name('admin.project-monitoring');
     Route::get('/admin/project-monitoring/getdata', [AdminProjectMonitoringController::class, 'getData']);
 

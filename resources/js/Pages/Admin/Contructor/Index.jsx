@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { Button, Form, InputNumber, notification, Row, Select, Space, Table, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -11,6 +11,7 @@ import {
     EditOutlined,
     DeleteOutlined,
     QuestionCircleOutlined,
+    UnorderedListOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import { useEffect, useState } from "react";
@@ -254,6 +255,19 @@ export default function Index({auth}) {
                                     icon={<EditOutlined />}
                                     onClick={() => showEditModal(record)}
                                 ></Button>
+
+                                <Link
+                                    href={route(
+                                        "admin.contructor-project",
+                                        record.id
+                                    )}
+                                >
+                                    <Button
+                                        type="default"
+                                        shape="circle"
+                                        icon={<UnorderedListOutlined />}
+                                    />
+                                </Link>
                                 <Button
                                     danger
                                     shape="circle"

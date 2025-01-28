@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ContructorStoreRequest;
 use App\Http\Requests\Admin\ContructorUpdateRequest;
 use App\Models\Contructor;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class AdminContructorController extends Controller
@@ -46,6 +47,36 @@ class AdminContructorController extends Controller
         return response()->json([
             'status' => 'updated'
         ], 200);
+    }
+
+    //project under contructor
+
+    public function project($id)
+    {
+        $contructor = Contructor::findOrFail($id);
+
+        return inertia('Admin/Contructor/Project/Index',[
+            'contructor' => $contructor,
+        ]);
+    }
+    
+    public function getprojects(Request $request)
+    {
+        return Project::with([
+            'siteEngineer:id,name', 
+            'updates' => function ($query) {
+                $query->with(['images' => function ($query) {
+                    $query->orderBy('created_at', 'desc')
+                        ->limit(5); // Fetch the latest image per update
+                }])
+                ->latest('created_at')
+                ->limit(1); // Fetch only the latest update per project
+            }
+        ])
+        ->where('name', 'like', "{$request->search}%")
+        ->where('contructor','like', "{$request->id}%" )
+        ->orderBy('id', 'desc')
+        ->paginate(10);
     }
 
     public function destroy($id)
