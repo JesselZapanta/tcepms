@@ -10,9 +10,10 @@ import {
     Tooltip,
     Button,
     Avatar,
+    Select,
 } from "antd";
 import Search from "antd/es/input/Search";
-import { SignatureOutlined, AppstoreAddOutlined } from "@ant-design/icons";
+import { SignatureOutlined, AppstoreAddOutlined, PrinterOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 
@@ -65,6 +66,33 @@ export default function Index({ auth, contructor }) {
     useEffect(() => {
         getData(false);
     }, []);
+
+    const [years, setYears] = useState([]);
+
+    useEffect(() => {
+        const startYear = 2000;
+        const endYear = new Date().getFullYear(); // Current year
+        const yearArray = [];
+
+        for (let year = startYear; year <= endYear; year++) {
+            yearArray.push(year);
+        }
+
+        setYears(yearArray);
+    }, []);
+
+    function formatDate(updateDate) {
+        const date = new Date(updateDate);
+
+        return date.toLocaleString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
+    }
     
 
     return (
@@ -75,6 +103,45 @@ export default function Index({ auth, contructor }) {
             <Head title={`${contructor.company_name} / Project Monitoring`} />
             <div className="py-2">
                 <div className="py-2">List of Project</div>
+                <div className="flex py-2 gap-2 justify-end">
+                    <Select
+                        placeholder="Select a month"
+                        // onChange={(value) => setMonth(value)}
+                        className="w-32"
+                    >
+                        <Option value={0}>All</Option>
+                        <Option value={1}>January</Option>
+                        <Option value={2}>February</Option>
+                        <Option value={3}>March</Option>
+                        <Option value={4}>April</Option>
+                        <Option value={5}>May</Option>
+                        <Option value={6}>June</Option>
+                        <Option value={7}>July</Option>
+                        <Option value={8}>August</Option>
+                        <Option value={9}>September</Option>
+                        <Option value={10}>October</Option>
+                        <Option value={11}>November</Option>
+                        <Option value={12}>December</Option>
+                    </Select>
+                    <Select
+                        placeholder="Select a Year"
+                        // onChange={(value) => setYear(value)}
+                        className="w-32"
+                    >
+                        <Option value={0}>All</Option>
+                        {years.reverse().map((year) => (
+                            <Option key={year} value={year}>
+                                {year}
+                            </Option>
+                        ))}
+                    </Select>
+                    <Button
+                        onClick={() => handlePrint()}
+                        icon={<PrinterOutlined />}
+                    >
+                        Print
+                    </Button>
+                </div>
                 <div className="flex gap-2 mb-2">
                     <Search
                         placeholder="Input project name"
@@ -157,7 +224,9 @@ export default function Index({ auth, contructor }) {
                                                 project.updates.length > 0 ? (
                                                     project.updates.map(
                                                         (update) => (
-                                                            <div key={update.id}>
+                                                            <div
+                                                                key={update.id}
+                                                            >
                                                                 <Tooltip
                                                                     title={`Progress is at ${update.excavation_progress}%`}
                                                                 >
