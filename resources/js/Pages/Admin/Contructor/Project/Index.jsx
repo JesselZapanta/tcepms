@@ -15,6 +15,7 @@ import {
 import Search from "antd/es/input/Search";
 import { SignatureOutlined, AppstoreAddOutlined, PrinterOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import Report from "./Report";
 
 
 export default function Index({ auth, contructor }) {
@@ -95,16 +96,14 @@ export default function Index({ auth, contructor }) {
             <div className="py-2">
                 <div className="py-2">List of Project</div>
                 <div className="flex py-2 gap-2 items-center justify-end">
-                    <div>
-                        Filters:
-                    </div>
+                    <div>Filters:</div>
                     <Select
                         placeholder="Select a month"
                         onChange={(value) => setMonth(value)}
                         className="w-24"
                     >
                         <Option value={0}>All</Option>
-                        
+
                         <Option value={1}>January</Option>
                         <Option value={2}>February</Option>
                         <Option value={3}>March</Option>
@@ -147,6 +146,13 @@ export default function Index({ auth, contructor }) {
                         onSearch={() => getData(true)}
                     />
                 </div>
+
+                <Report
+                    contructor={contructor.company_name}
+                    projects={data}
+                    month={month}
+                    year={year}
+                />
 
                 {/* <pre className="text-gray-900">
                     {JSON.stringify(data, null, 2)}

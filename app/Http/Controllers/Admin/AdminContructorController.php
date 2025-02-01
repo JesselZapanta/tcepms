@@ -81,8 +81,8 @@ class AdminContructorController extends Controller
 
     public function getprojects(Request $request)
 {
-    $month = (int)$request->month;
-    $year = (int)$request->year;
+    $month = $request->month;
+    $year = $request->year;
 
     $query = Project::with([
             'siteEngineer:id,name', 
@@ -99,12 +99,12 @@ class AdminContructorController extends Controller
         ->where('contructor', 'like', "{$request->id}%");
 
     // Apply month filter if not 0
-    if ($month !== 0) {
+    if ($month != 0) {
         $query->whereMonth('created_at', $month);
     }
 
     // Apply year filter if not 0
-    if ($year !== 0) {
+    if ($year != 0) {
         $query->whereYear('created_at', $year);
     }
 
