@@ -81,8 +81,8 @@ class AdminContructorController extends Controller
 
     public function getprojects(Request $request)
 {
-    $month = (int)$request->month;
-    $year = (int)$request->year;
+    $month = $request->month;
+    $year = $request->year;
 
     $query = Project::with([
             'siteEngineer:id,name', 
