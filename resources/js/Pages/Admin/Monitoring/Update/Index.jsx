@@ -106,11 +106,12 @@ export default function Index({ auth, currentProject }) {
                 <Details data={data} />
             </div>
 
-            <div className="flex gap-2 justify-end">
+            <div className="flex gap-2 items-center justify-end">
+                <div>Filters:</div>
                 <Select
                     placeholder="Select a month"
                     onChange={(value) => setMonth(value)}
-                    className="w-32"
+                    className="w-24"
                 >
                     <Option value={0}>All</Option>
                     <Option value={1}>January</Option>
@@ -129,7 +130,7 @@ export default function Index({ auth, currentProject }) {
                 <Select
                     placeholder="Select a Year"
                     onChange={(value) => setYear(value)}
-                    className="w-32"
+                    className="w-24"
                 >
                     <Option value={0}>All</Option>
                     {years.reverse().map((year) => (

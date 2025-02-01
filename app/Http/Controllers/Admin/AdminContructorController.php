@@ -60,24 +60,57 @@ class AdminContructorController extends Controller
         ]);
     }
     
+    // public function getprojects(Request $request)
+    // {
+    //     return Project::with([
+    //         'siteEngineer:id,name', 
+    //         'updates' => function ($query) {
+    //             $query->with(['images' => function ($query) {
+    //                 $query->orderBy('created_at', 'desc')
+    //                     ->limit(5); // Fetch the latest image per update
+    //             }])
+    //             ->latest('created_at')
+    //             ->limit(1); // Fetch only the latest update per project
+    //         }
+    //     ])
+    //     ->where('name', 'like', "{$request->search}%")
+    //     ->where('contructor','like', "{$request->id}%" )
+    //     ->orderBy('id', 'desc')
+    //     ->paginate(10);
+    // }
+
     public function getprojects(Request $request)
-    {
-        return Project::with([
+{
+    $month = (int)$request->month;
+    $year = (int)$request->year;
+
+    $query = Project::with([
             'siteEngineer:id,name', 
             'updates' => function ($query) {
                 $query->with(['images' => function ($query) {
                     $query->orderBy('created_at', 'desc')
-                        ->limit(5); // Fetch the latest image per update
+                        ->limit(5);
                 }])
                 ->latest('created_at')
-                ->limit(1); // Fetch only the latest update per project
+                ->limit(1);
             }
         ])
         ->where('name', 'like', "{$request->search}%")
-        ->where('contructor','like', "{$request->id}%" )
-        ->orderBy('id', 'desc')
-        ->paginate(10);
+        ->where('contructor', 'like', "{$request->id}%");
+
+    // Apply month filter if not 0
+    if ($month !== 0) {
+        $query->whereMonth('created_at', $month);
     }
+
+    // Apply year filter if not 0
+    if ($year !== 0) {
+        $query->whereYear('created_at', $year);
+    }
+
+    return $query->orderBy('id', 'desc')
+                ->paginate(10);
+}
 
     public function destroy($id)
     {

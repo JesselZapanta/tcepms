@@ -33,6 +33,9 @@ export default function Index({ auth, contructor }) {
         getData(false, page);
     };
 
+    const [month, setMonth] = useState(0);
+    const [year, setYear] = useState(0);
+
     const getData = async (isSearch = false, page = 1) => {
         if (isSearch) {
             setSearching(true);
@@ -41,6 +44,8 @@ export default function Index({ auth, contructor }) {
 
         const params = [
             `id=${contructor.id}`,
+            `month=${month}`,
+            `year=${year}`,
             `search=${search}`,
             `page=${page}`,
         ].join("&");
@@ -65,7 +70,7 @@ export default function Index({ auth, contructor }) {
 
     useEffect(() => {
         getData(false);
-    }, []);
+    }, [month, year]);
 
     const [years, setYears] = useState([]);
 
@@ -80,24 +85,7 @@ export default function Index({ auth, contructor }) {
 
         setYears(yearArray);
     }, []);
-
-    function formatDate(updateDate) {
-        const date = new Date(updateDate);
-
-        return date.toLocaleString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        });
-
-
-        
-    }
     
-
     return (
         <AuthenticatedLayout
             header={`${contructor.company_name} / Project Monitoring`}
@@ -106,11 +94,14 @@ export default function Index({ auth, contructor }) {
             <Head title={`${contructor.company_name} / Project Monitoring`} />
             <div className="py-2">
                 <div className="py-2">List of Project</div>
-                <div className="flex py-2 gap-2 justify-end">
+                <div className="flex py-2 gap-2 items-center justify-end">
+                    <div>
+                        Filters:
+                    </div>
                     <Select
                         placeholder="Select a month"
-                        // onChange={(value) => setMonth(value)}
-                        className="w-32"
+                        onChange={(value) => setMonth(value)}
+                        className="w-24"
                     >
                         <Option value={0}>All</Option>
                         
@@ -129,8 +120,8 @@ export default function Index({ auth, contructor }) {
                     </Select>
                     <Select
                         placeholder="Select a Year"
-                        // onChange={(value) => setYear(value)}
-                        className="w-32"
+                        onChange={(value) => setYear(value)}
+                        className="w-24"
                     >
                         <Option value={0}>All</Option>
                         {years.reverse().map((year) => (
