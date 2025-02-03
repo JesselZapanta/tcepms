@@ -3,13 +3,13 @@ import Column from "antd/es/table/Column";
 
 const { Text } = Typography;
 
-export default function Report({ contructor, projects, month, year }) {
+export default function Report({ contructor, projects }) {
     return (
         <>
-            <pre className="text-gray-900">
+            {/* <pre className="text-gray-900">
                 {JSON.stringify(projects, null, 2)}
-            </pre>
-            <div className="mx-auto bg-white">
+            </pre> */}
+            <div className="print-container mx-auto bg-white">
                 <div className="p-2 font-times">
                     <div className="flex justify-around">
                         <img
@@ -44,46 +44,33 @@ export default function Report({ contructor, projects, month, year }) {
                                 key={project.id}
                                 className="border p-4 rounded-lg shadow"
                             >
-                                <h2 className="text-lg font-semibold">
-                                    {project.name}
-                                </h2>
-                                <p className="text-sm text-gray-600">
-                                    {project.description}
-                                </p>
-                                <div className="mt-2">
-                                    <p>
-                                        <strong>Category:</strong>{" "}
-                                        {project.category}
-                                    </p>
-                                    <p>
-                                        <strong>Status:</strong>{" "}
-                                        {project.status}
-                                    </p>
-                                    <p>
-                                        <strong>Priority:</strong>{" "}
-                                        {project.priority}
-                                    </p>
-                                    <p>
-                                        <strong>Budget:</strong> $
-                                        {project.budget}
-                                    </p>
-                                    <p>
-                                        <strong>Cost:</strong>{" "}
+                                <Space direction="vertical">
+                                    <Text>Project Name: {project.name}</Text>
+                                    <Text>
+                                        Project Description:{" "}
+                                        {project.description}
+                                    </Text>
+                                    <Text>Category: {project.category}</Text>
+                                    <Text>Status: {project.status}</Text>
+                                    <Text>Priority: {project.priority}</Text>
+                                    <Text>Budget: ${project.budget}</Text>
+                                    <Text>
+                                        Cost:{" "}
                                         {project.cost
                                             ? `$${project.cost}`
                                             : "N/A"}
-                                    </p>
-                                    <p>
-                                        <strong>Location:</strong>{" "}
-                                        {project.location}
-                                    </p>
-                                    <p>
-                                        <strong>Engineer:</strong>{" "}
-                                        {project.site_engineer.name}
-                                    </p>
-                                </div>
+                                    </Text>
+                                    <Text>Location: {project.location}</Text>
+                                    <Text>
+                                        Engineer: {project.site_engineer.name}
+                                    </Text>
+                                </Space>
+
                                 <div className="mt-4">
-                                    <h3 className="font-semibold">Updates:</h3>
+                                    <Text className="font-bold">
+                                        Project Progress
+                                    </Text>
+
                                     {project.updates.length > 0 ? (
                                         <div className="space-y-2">
                                             {project.updates.map((update) => (
@@ -91,16 +78,61 @@ export default function Report({ contructor, projects, month, year }) {
                                                     key={update.id}
                                                     className="border p-2 rounded"
                                                 >
-                                                    <p>
-                                                        <strong>
-                                                            {update.name}
-                                                        </strong>
-                                                    </p>
-                                                    <p>{update.description}</p>
-                                                    <p>
-                                                        <strong>Date:</strong>{" "}
-                                                        {update.update_date}
-                                                    </p>
+                                                    <div className="table-container">
+                                                        <Table
+                                                            className="mt-2"
+                                                            dataSource={[
+                                                                {
+                                                                    key: "1",
+                                                                    description:
+                                                                        "Excavation Progress",
+                                                                    progress: `${update.excavation_progress}%`,
+                                                                },
+                                                                {
+                                                                    key: "2",
+                                                                    description:
+                                                                        "Concrete Works Progress",
+                                                                    progress: `${update.concrete_works_progress}%`,
+                                                                },
+                                                                {
+                                                                    key: "3",
+                                                                    description:
+                                                                        "Water Works Progress",
+                                                                    progress: `${update.water_works_progress}%`,
+                                                                },
+                                                                {
+                                                                    key: "4",
+                                                                    description:
+                                                                        "Metal Works Progress",
+                                                                    progress: `${update.metal_works_progress}%`,
+                                                                },
+                                                                {
+                                                                    key: "5",
+                                                                    description:
+                                                                        "Cement Plaster and Finishes Progress",
+                                                                    progress: `${update.cement_plaster_and_finishes_progress}%`,
+                                                                },
+                                                            ]}
+                                                            rowKey={(record) =>
+                                                                record.key
+                                                            }
+                                                            pagination={false}
+                                                        >
+                                                            <Column
+                                                                title="Description"
+                                                                dataIndex="description"
+                                                                key="description"
+                                                            />
+                                                            <Column
+                                                                title="Progress"
+                                                                dataIndex="progress"
+                                                                key="progress"
+                                                            />
+                                                        </Table>
+                                                    </div>
+                                                    {/* <Text className="font-bold">
+                                                        Update Images
+                                                    </Text>
                                                     <div className="flex space-x-2 mt-2">
                                                         {update.images.map(
                                                             (image) => (
@@ -114,7 +146,7 @@ export default function Report({ contructor, projects, month, year }) {
                                                                 />
                                                             )
                                                         )}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             ))}
                                         </div>

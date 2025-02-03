@@ -14,8 +14,9 @@ import {
 } from "antd";
 import Search from "antd/es/input/Search";
 import { SignatureOutlined, AppstoreAddOutlined, PrinterOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Report from "./Report";
+import { useReactToPrint } from "react-to-print";
 
 
 export default function Index({ auth, contructor }) {
@@ -86,6 +87,16 @@ export default function Index({ auth, contructor }) {
 
         setYears(yearArray);
     }, []);
+
+
+    //report
+
+    const componentRef = useRef();
+
+    const handlePrint = useReactToPrint({
+        documentTitle: "Project Update Report",
+        content: () => componentRef.current,
+    });
     
     return (
         <AuthenticatedLayout
@@ -147,12 +158,14 @@ export default function Index({ auth, contructor }) {
                     />
                 </div>
 
-                <Report
-                    contructor={contructor.company_name}
-                    projects={data}
-                    month={month}
-                    year={year}
-                />
+                <div ref={componentRef}>
+                    <Report
+                        contructor={contructor.company_name}
+                        projects={data}
+                        month={month}
+                        year={year}
+                    />
+                </div>
 
                 {/* <pre className="text-gray-900">
                     {JSON.stringify(data, null, 2)}
