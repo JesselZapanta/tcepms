@@ -1,6 +1,6 @@
 # Tangub City Engineering Project Monitoring System (TCEPMS)
 
-A comprehensive project monitoring system developed for the Tangub City Engineering Office to streamline the management of engineering projects.
+A comprehensive project monitoring system developed for the Tangub City Engineering Office to streamline the management and project updates of engineering projects.
 
 ## Application Requirements (Windows)
 Ensure the following software is installed on your system:
