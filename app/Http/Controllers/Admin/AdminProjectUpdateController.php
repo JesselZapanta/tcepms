@@ -60,8 +60,5 @@ class AdminProjectUpdateController extends Controller
         'projectDetails' => $projectDetails,
         'latestUpdate' => $latestUpdate,
     ], 200);
-}
-
-    
-
+    }
 }

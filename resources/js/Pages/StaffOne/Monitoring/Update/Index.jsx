@@ -35,7 +35,7 @@ export default function Index({ auth, currentProject }) {
         setLoading(true);
         try {
             const res = await axios.get(
-                `/staffone/project-monitoring/project/getData/${currentProject.id}`
+                `/staffone/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}`
             );
             setData(res.data.projectDetails);
         } catch (err) {
