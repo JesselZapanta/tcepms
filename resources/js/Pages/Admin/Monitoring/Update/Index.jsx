@@ -146,6 +146,8 @@ export default function Index({ auth, currentProject }) {
                     Print
                 </Button>
             </div>
+
+            
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
                 <div ref={componentRef}>
