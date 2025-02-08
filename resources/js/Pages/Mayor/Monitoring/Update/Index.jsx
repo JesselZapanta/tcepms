@@ -12,6 +12,7 @@ import {
     Divider,
     Typography,
     Button,
+    Select,
 } from "antd";
 
 import {
@@ -29,11 +30,14 @@ export default function Index({ auth, currentProject }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const [month, setMonth] = useState(0);
+    const [year, setYear] = useState(0);
+
     const getData = async () => {
         setLoading(true);
         try {
             const res = await axios.get(
-                `/mayor/project-monitoring/project/getData/${currentProject.id}`
+                `/mayor/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}`
             );
             setData(res.data.projectDetails);
         } catch (err) {
@@ -45,7 +49,21 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [])
+    }, [year,month ]);
+
+    const [years, setYears] = useState([]);
+
+    useEffect(() => {
+        const startYear = 2000;
+        const endYear = new Date().getFullYear(); // Current year
+        const yearArray = [];
+
+        for (let year = startYear; year <= endYear; year++) {
+            yearArray.push(year);
+        }
+
+        setYears(yearArray);
+    }, []); 
 
     function formatDate(updateDate) {
         const date = new Date(updateDate);
@@ -82,7 +100,40 @@ export default function Index({ auth, currentProject }) {
             <div className="py-2">
                 <Details data={data} />
             </div>
-            <div className="flex gap-2 justify-end">
+
+            <div className="flex gap-2 items-center justify-end">
+                <div>Filters:</div>
+                <Select
+                    placeholder="Select a month"
+                    onChange={(value) => setMonth(value)}
+                    className="w-24"
+                >
+                    <Option value={0}>All</Option>
+                    <Option value={1}>January</Option>
+                    <Option value={2}>February</Option>
+                    <Option value={3}>March</Option>
+                    <Option value={4}>April</Option>
+                    <Option value={5}>May</Option>
+                    <Option value={6}>June</Option>
+                    <Option value={7}>July</Option>
+                    <Option value={8}>August</Option>
+                    <Option value={9}>September</Option>
+                    <Option value={10}>October</Option>
+                    <Option value={11}>November</Option>
+                    <Option value={12}>December</Option>
+                </Select>
+                <Select
+                    placeholder="Select a Year"
+                    onChange={(value) => setYear(value)}
+                    className="w-24"
+                >
+                    <Option value={0}>All</Option>
+                    {years.reverse().map((year) => (
+                        <Option key={year} value={year}>
+                            {year}
+                        </Option>
+                    ))}
+                </Select>
                 <Button
                     onClick={() => handlePrint()}
                     icon={<PrinterOutlined />}
@@ -90,6 +141,15 @@ export default function Index({ auth, currentProject }) {
                     Print
                 </Button>
             </div>
+{/* 
+            <div className="flex gap-2 justify-end">
+                <Button
+                    onClick={() => handlePrint()}
+                    icon={<PrinterOutlined />}
+                >
+                    Print
+                </Button>
+            </div> */}
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
                 <div ref={componentRef}>
