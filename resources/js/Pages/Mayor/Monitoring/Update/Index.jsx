@@ -85,14 +85,6 @@ export default function Index({ auth, currentProject }) {
             content: () => componentRef.current,
         });
     
-        // const componentRef = useRef();
-        // const handlePrint = useReactToPrint({
-        //     documentTitle: "Project Update Report",
-        //     content: () => componentRef.current,
-        // });
-        
-    
-
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
