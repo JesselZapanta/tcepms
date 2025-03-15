@@ -16,22 +16,48 @@ class AdminUserController extends Controller
         return inertia('Admin/User/Index');
     }
 
+    // public function getData(Request $request)
+    // {
+    //     return User::where('id', '!=', Auth::user()->id)
+    //                 ->where(function($query) use ($request) {
+    //                     $query->where('name', 'like', "{$request->search}%")
+    //                             ->orWhere('email', 'like', "{$request->search}%");
+    //                 })
+    //                 ->orderBy($request->sortField, $request->sortOrder)
+    //                 ->paginate(10);
+    // }
+
     public function getData(Request $request)
     {
-        return User::where('id', '!=', Auth::user()->id)
-                    ->where(function($query) use ($request) {
+        $users = User::where('id', '!=', Auth::id())
+                    ->where(function ($query) use ($request) {
                         $query->where('name', 'like', "{$request->search}%")
                                 ->orWhere('email', 'like', "{$request->search}%");
                     })
                     ->orderBy($request->sortField, $request->sortOrder)
                     ->paginate(10);
+
+        // Modify the contact field for each user
+        $users->getCollection()->transform(function ($user) {
+            if (str_starts_with($user->contact, '+63')) {
+                $user->contact = substr($user->contact, 3); // Remove "+63"
+            }
+            return $user;
+        });
+
+        return response()->json($users);
     }
+
 
     public function store(UserStoreRequest $request)
     {
         $data = $request->validated();
 
         $data['password'] = bcrypt($data['password']);
+
+        if (!str_starts_with($data['contact'], '+63')) {
+            $data['contact'] = '+63' . $data['contact'];
+        }
 
         User::create($data);
 
@@ -49,6 +75,10 @@ class AdminUserController extends Controller
             $data['password'] = bcrypt($data['password']);
         }else{
             unset($data['password']);
+        }
+
+        if (!empty($data['contact']) && !str_starts_with($data['contact'], '+63')) {
+            $data['contact'] = '+63' . $data['contact'];
         }
 
         $user->update($data);

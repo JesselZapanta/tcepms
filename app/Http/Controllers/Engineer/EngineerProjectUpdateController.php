@@ -11,11 +11,12 @@ use App\Models\ProjectUpdate;
 use App\Models\User;
 use App\Notifications\ProjectUpdateNotification;
 use App\Notifications\TwilioProjectUpdateNotification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Twilio\Rest\Client;
 class EngineerProjectUpdateController extends Controller
 {
     public function index($id)
@@ -198,13 +199,39 @@ class EngineerProjectUpdateController extends Controller
 
 
         // Notify all users
-        $allUsers = User::all();
-        Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
+        // $allUsers = User::all();
+        // Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
+
+        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+
+        // $message = $twilio->messages->create(
+        //     '+639380012055', // Target phone number
+        //     [
+        //         'from' => env('TWILIO_PHONE_NUMBER'),
+        //         'body' => "test"
+        //     ]
+        // );
+
 
         return response()->json([
                 'status' => 'created'
             ], 200);
         }
+
+    public function sendSms()
+    {
+        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+
+        $message = $twilio->messages->create(
+            '+639380012055',
+            [
+                'from' => env('TWILIO_PHONE_NUMBER'),
+                'body' => "TEST"
+            ]
+        );
+
+        return $message->sid;
+    }
 
     public function update(EngineerProjectUpdateRequest $request, $id)
     {
@@ -264,11 +291,31 @@ class EngineerProjectUpdateController extends Controller
         }
         
         // Notify all users
-        $allUsers = User::all();
-        Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
+        // $allUsers = User::all();
+        // Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
 
         //Twilio
-        Notification::send($allUsers, new TwilioProjectUpdateNotification($projectId->name ?? 'Project'));
+        //send to this contact only +17069715920
+        // Notification::send($allUsers, new TwilioProjectUpdateNotification($projectId->name ?? 'Project'));
+
+        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+
+        $message = $twilio->messages->create(
+            '+639380012055', // Target phone number
+            [
+                'from' => env('TWILIO_PHONE_NUMBER'),
+                'body' => "test"
+            ]
+        );
+
+        // Log response data for verification
+        Log::info('Twilio SMS Sent', [
+            'sid' => $message->sid,
+            'status' => $message->status,
+            'to' => $message->to,
+            'from' => $message->from,
+            'body' => $message->body
+        ]);
 
         return response()->json([
             'status' => 'updated'

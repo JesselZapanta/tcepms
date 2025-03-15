@@ -187,7 +187,12 @@ Route::middleware(['auth', 'engineer'])->group(function() {
     Route::post('/engineer/project-update/store', [EngineerProjectUpdateController::class, 'store']);
     Route::put('/engineer/project-update/update/{id}', [EngineerProjectUpdateController::class, 'update']);
     Route::delete('/engineer/project-update/destroy/{id}', [EngineerProjectUpdateController::class, 'destroy']);
+
+   
+
 });
+
+ Route::get('/send-sms', [EngineerProjectUpdateController::class, 'sendSms']);
 
 Route::middleware(['auth', 'mayor'])->group(function() {
     Route::get('/mayor/dashboard', [MayorDashboardController::class, 'index'])->name('mayor.dashboard');

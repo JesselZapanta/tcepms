@@ -222,10 +222,16 @@ export default function Index({auth}) {
                         key="email"
                     />
                     <Column
-                        // sorter={true}
                         title="Contact"
                         dataIndex="contact"
                         key="contact"
+                        render={(contact) => {
+                            const formatted = contact.replace(
+                                /(\d{3})(\d{3})(\d{4})/,
+                                "$1 $2 $3"
+                            );
+                            return `+63 ${formatted}`;
+                        }}
                     />
 
                     <Column
@@ -323,6 +329,7 @@ export default function Index({auth}) {
                             <Input
                                 placeholder="Contact"
                                 type="number"
+                                addonBefore="+63"
                                 prefix={<PhoneOutlined />}
                                 className="w-full"
                             />
