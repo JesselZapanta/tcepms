@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\ProjectUpdate;
 use App\Models\User;
 use App\Notifications\ProjectUpdateNotification;
+use App\Notifications\TwilioProjectUpdateNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -263,8 +264,11 @@ class EngineerProjectUpdateController extends Controller
         }
         
         // Notify all users
-        // $allUsers = User::all();
-        // Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
+        $allUsers = User::all();
+        Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
+
+        //Twilio
+        Notification::send($allUsers, new TwilioProjectUpdateNotification($projectId->name ?? 'Project'));
 
         return response()->json([
             'status' => 'updated'
