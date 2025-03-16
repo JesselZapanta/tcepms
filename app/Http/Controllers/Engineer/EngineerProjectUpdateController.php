@@ -199,19 +199,25 @@ class EngineerProjectUpdateController extends Controller
 
 
         // Notify all users
-        // $allUsers = User::all();
-        // Notification::send($allUsers, new ProjectUpdateNotification($projectId->name ?? 'Project'));
+        $allUsers = User::where('status', 1)->whereNotNull('contact')->get();
+        $engineer = $projectId->siteEngineer->name;
+        $projectName = $projectId->name;
 
-        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
 
-        // $message = $twilio->messages->create(
-        //     '+639380012055', // Target phone number
-        //     [
-        //         'from' => env('TWILIO_PHONE_NUMBER'),
-        //         'body' => "test"
-        //     ]
-        // );
-
+        foreach ($allUsers as $user) {
+            try {
+                $twilio->messages->create(
+                    $user->contact,
+                    [
+                        'from' => env('TWILIO_PHONE_NUMBER'),
+                        'body' => "$engineer posted an update on $projectName"
+                    ]
+                );
+            } catch (\Exception $e) {
+                \Log::error("Failed to send SMS to {$user->contact}: " . $e->getMessage());
+            }
+        }
 
         return response()->json([
                 'status' => 'created'
