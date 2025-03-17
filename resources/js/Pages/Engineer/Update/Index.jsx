@@ -556,6 +556,7 @@ export default function Index({ auth, currentProject }) {
                 maskClosable={false}
                 width={800}
                 footer={null}
+                className="overflow-hidden"
             >
                 <Form
                     form={form}
