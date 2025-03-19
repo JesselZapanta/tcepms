@@ -2,7 +2,7 @@ import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
 import { MailOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Avatar } from "antd";
 import { useState } from "react";
 import axios from "axios";
 
@@ -40,11 +40,20 @@ export default function Login({ status, canResetPassword }) {
             )}
 
             <div className="w-full rounded-lg overflow-hidden mb-4">
+                {/* <div className=" w-full flex items-center gap-4 py-4">
+                    <Avatar
+                        className="w-24 h-24"
+                        shape="circle"
+                        src="/images/tcepms.png"
+                        alt="Tangub City Engineering Office Logo"
+                    />
+                    <div className="font-bold text-6xl">TCPEMS</div>
+                </div> */}
                 <Link href="/">
                     <img
                         src="/images/banner.png"
                         alt="Jobly"
-                        className="w-full j-full"
+                        className="w-full h-full"
                     />
                 </Link>
             </div>
