@@ -35,6 +35,7 @@ use App\Http\Controllers\StaffTwo\StaffTwoProjectUpdateController;
 use App\Http\Controllers\StaffTwo\WaterLaborController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -54,9 +55,16 @@ Route::get('/', function () {
     return Redirect::route('login');
 });
 
+Route::get('/deactivated', function () {
+    return Inertia::render('Error/DeactivatedAccount', [
+         'error' => session('error') // Pass any session error message
+    ]);
+})->name('deactivated');
+
+
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-Route::middleware(['auth','admin'])->group(function() {
+Route::middleware(['auth','admin','userStatus'])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/dashboard/getdata', [AdminDashboardController::class, 'getData']);
 
@@ -82,7 +90,7 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::get('/admin/project-monitoring/project/getData/{id}', [AdminProjectUpdateController::class, 'getData']);
 });
 
-Route::middleware(['auth', 'staffone'])->group(function() {
+Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::get('/staffone/dashboard', [StaffOneDashboardController::class, 'index'])->name('staffone.dashboard');
     Route::get('/staffone/dashboard/getdata', [StaffOneDashboardController::class, 'getData']);
 
@@ -133,7 +141,7 @@ Route::middleware(['auth', 'staffone'])->group(function() {
     Route::get('/staffone/project-monitoring/project/getData/{id}', [StaffOneProjectUpdateController::class, 'getData']);
 });
 
-Route::middleware(['auth', 'stafftwo'])->group(function() {
+Route::middleware(['auth', 'stafftwo','userStatus'])->group(function() {
     Route::get('/stafftwo/dashboard', [StaffTwoDashboardController::class, 'index'])->name('stafftwo.dashboard');
     Route::get('/stafftwo/dashboard/getdata', [StaffTwoDashboardController::class, 'getData']);
 
@@ -171,7 +179,7 @@ Route::middleware(['auth', 'stafftwo'])->group(function() {
     Route::get('/stafftwo/project-monitoring/project/getData/{id}', [StaffTwoProjectUpdateController::class, 'getData']);
 });
 
-Route::middleware(['auth', 'engineer'])->group(function() {
+Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
     Route::get('/engineer/dashboard', [EngineerDashboardController::class, 'index'])->name('engineer.dashboard');
     Route::get('/engineer/dashboard/getdata', [EngineerDashboardController::class, 'getData']);
 
@@ -188,11 +196,10 @@ Route::middleware(['auth', 'engineer'])->group(function() {
     Route::put('/engineer/project-update/update/{id}', [EngineerProjectUpdateController::class, 'update']);
     Route::delete('/engineer/project-update/destroy/{id}', [EngineerProjectUpdateController::class, 'destroy']);
 
+    Route::get('/send-sms', [EngineerProjectUpdateController::class, 'sendSms']);
 });
 
-Route::get('/send-sms', [EngineerProjectUpdateController::class, 'sendSms']);
-
-Route::middleware(['auth', 'mayor'])->group(function() {
+Route::middleware(['auth', 'mayor','userStatus'])->group(function() {
     Route::get('/mayor/dashboard', [MayorDashboardController::class, 'index'])->name('mayor.dashboard');
     Route::get('/mayor/dashboard/getdata', [MayorDashboardController::class, 'getData']);
 
