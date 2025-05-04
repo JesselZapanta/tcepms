@@ -199,45 +199,45 @@ class EngineerProjectUpdateController extends Controller
 
 
         // Notify all users
-        $allUsers = User::where('status', 1)->whereNotNull('contact')->get();
-        $engineer = $projectId->siteEngineer->name;
-        $projectName = $projectId->name;
+        // $allUsers = User::where('status', 1)->whereNotNull('contact')->get();
+        // $engineer = $projectId->siteEngineer->name;
+        // $projectName = $projectId->name;
 
-        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
 
-        foreach ($allUsers as $user) {
-            try {
-                $twilio->messages->create(
-                    $user->contact,
-                    [
-                        'from' => env('TWILIO_PHONE_NUMBER'),
-                        'body' => "$engineer posted an update on $projectName"
-                    ]
-                );
-            } catch (\Exception $e) {
-                \Log::error("Failed to send SMS to {$user->contact}: " . $e->getMessage());
-            }
-        }
+        // foreach ($allUsers as $user) {
+        //     try {
+        //         $twilio->messages->create(
+        //             $user->contact,
+        //             [
+        //                 'from' => env('TWILIO_PHONE_NUMBER'),
+        //                 'body' => "$engineer posted an update on $projectName"
+        //             ]
+        //         );
+        //     } catch (\Exception $e) {
+        //         \Log::error("Failed to send SMS to {$user->contact}: " . $e->getMessage());
+        //     }
+        // }
 
         return response()->json([
                 'status' => 'created'
             ], 200);
         }
 
-    public function sendSms()
-    {
-        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+    // public function sendSms()
+    // {
+    //     $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
 
-        $message = $twilio->messages->create(
-            '+639380012055',
-            [
-                'from' => env('TWILIO_PHONE_NUMBER'),
-                'body' => "TEST"
-            ]
-        );
+    //     $message = $twilio->messages->create(
+    //         '+639380012055',
+    //         [
+    //             'from' => env('TWILIO_PHONE_NUMBER'),
+    //             'body' => "TEST"
+    //         ]
+    //     );
 
-        return $message->sid;
-    }
+    //     return $message->sid;
+    // }
 
     public function update(EngineerProjectUpdateRequest $request, $id)
     {
@@ -303,25 +303,28 @@ class EngineerProjectUpdateController extends Controller
         //Twilio
         //send to this contact only +17069715920
         // Notification::send($allUsers, new TwilioProjectUpdateNotification($projectId->name ?? 'Project'));
+        //
 
-        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
 
-        $message = $twilio->messages->create(
-            '+639380012055', // Target phone number
-            [
-                'from' => env('TWILIO_PHONE_NUMBER'),
-                'body' => "test"
-            ]
-        );
+        // $message = $twilio->messages->create(
+        //     '+639380012055', // Target phone number
+        //     [
+        //         'from' => env('TWILIO_PHONE_NUMBER'),
+        //         'body' => "test"
+        //     ]
+        // );
 
-        // Log response data for verification
-        Log::info('Twilio SMS Sent', [
-            'sid' => $message->sid,
-            'status' => $message->status,
-            'to' => $message->to,
-            'from' => $message->from,
-            'body' => $message->body
-        ]);
+        // // Log response data for verification
+        // Log::info('Twilio SMS Sent', [
+        //     'sid' => $message->sid,
+        //     'status' => $message->status,
+        //     'to' => $message->to,
+        //     'from' => $message->from,
+        //     'body' => $message->body
+        // ]);
+
+        //
 
         return response()->json([
             'status' => 'updated'
