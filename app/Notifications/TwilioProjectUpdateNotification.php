@@ -27,7 +27,7 @@ class TwilioProjectUpdateNotification extends Notification
             $notifiable->contact,
             [
                 'from' => env('TWILIO_PHONE_NUMBER'),
-                'body' => "Project Update: {$this->projectName}",
+                'body' => "Project Update: {$this->projectName}",   
             ]
         );
     }
