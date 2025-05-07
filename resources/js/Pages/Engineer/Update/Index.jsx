@@ -565,14 +565,14 @@ export default function Index({ auth, currentProject }) {
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="PROJECT NAME"
+                        label="UPDATE NAME"
                         name="name"
                         // Custom error handling
                         validateStatus={errors?.name ? "error" : ""}
                         help={errors?.name ? errors.name[0] : ""}
                     >
                         <Input
-                            placeholder="Name"
+                            placeholder="Update name"
                             prefix={<DatabaseOutlined />}
                         />
                     </Form.Item>
