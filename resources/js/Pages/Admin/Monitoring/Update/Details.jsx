@@ -1,15 +1,36 @@
 import { Collapse, Descriptions, Tag } from "antd";
 const { Panel } = Collapse;
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Details({ data }) {
+
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)"); // Tailwind 'sm' max
+
+        const handleChange = (e) => {
+            setIsSmallScreen(e.matches);
+        };
+
+        // Set the initial value
+        setIsSmallScreen(mediaQuery.matches);
+
+        // Listen for changes
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
+    }, []);
+
     const formatPeso = (value) => {
         const num = parseFloat(value);
         if (isNaN(num)) return "₱0.00";
         return `₱${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
     };
-
+    
     const items = [
         { label: "Name", span: 3, children: data.name },
         {
@@ -132,27 +153,26 @@ export default function Details({ data }) {
     ];
 
     return (
-        // <Collapse label="Details">
-        //     <Panel header="View Project Details" key="1">
-        //         <Descriptions
-        //             // layout="vertical"only in sm screen
-        //             bordered
-        //             column={1}
-        //             items={items}
-        //         />
-        //     </Panel>
-        // </Collapse>
-        <Collapse>
+        <Collapse label="Details">
             <Panel header="View Project Details" key="1">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {items.map((item, id) => (
-                        <div key={id} className="border rounded-md p-2">
-                            <div className="font-semibold">{item.label}</div>
-                            <div>{item.children}</div>
-                        </div>
-                    ))}
-                </div>
+                <Descriptions
+                    layout={isSmallScreen ? "vertical" : "horizontal"}
+                    bordered
+                    items={items}
+                />
             </Panel>
         </Collapse>
+        // <Collapse>
+        //     <Panel header="View Project Details" key="1">
+        //         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        //             {items.map((item, id) => (
+        //                 <div key={id} className="border rounded-md p-2">
+        //                     <div className="font-semibold">{item.label}</div>
+        //                     <div>{item.children}</div>
+        //                 </div>
+        //             ))}
+        //         </div>
+        //     </Panel>
+        // </Collapse>
     );
 }

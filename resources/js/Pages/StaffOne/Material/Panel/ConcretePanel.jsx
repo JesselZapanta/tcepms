@@ -216,7 +216,7 @@ export default function ConcretePanel({ project,costs, setCostChange }) {
         <>
             {contextHolder}
             <div className="py-2">List of Concrete Works Materials</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input concrete material"
                     allowClear
@@ -265,27 +265,37 @@ export default function ConcretePanel({ project,costs, setCostChange }) {
                     )}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        lassName="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Materials"
                         dataIndex="material"
                         key="material"
                     />
                     <Column
+                        lassName="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Unit"
                         dataIndex="unit"
                         key="unit"
                     />
                     <Column
+                        lassName="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
+                        lassName="whitespace-nowrap bg-white"
                         sorter={true}
                         title="UNIT COST"
                         dataIndex="unit_cost"
@@ -293,6 +303,7 @@ export default function ConcretePanel({ project,costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        lassName="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
@@ -300,6 +311,7 @@ export default function ConcretePanel({ project,costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        lassName="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (

@@ -1,12 +1,4 @@
-import {
-    Button,
-    Form,
-    notification,
-    Row,
-    Select,
-    Space,
-    Table,
-} from "antd";
+import { Button, Form, notification, Row, Select, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
@@ -209,12 +201,11 @@ export default function PlasterFinishPanel({ project, costs, setCostChange }) {
         return `₱${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
     };
 
-
     return (
         <>
             {contextHolder}
             <div className="py-2">List of Plaster & Finish Material</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input plaster & finish material"
                     allowClear
@@ -263,27 +254,37 @@ export default function PlasterFinishPanel({ project, costs, setCostChange }) {
                     )}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Materials"
                         dataIndex="material"
                         key="material"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Unit"
                         dataIndex="unit"
                         key="unit"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="UNIT COST"
                         dataIndex="unit_cost"
@@ -291,6 +292,7 @@ export default function PlasterFinishPanel({ project, costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
@@ -298,6 +300,7 @@ export default function PlasterFinishPanel({ project, costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (

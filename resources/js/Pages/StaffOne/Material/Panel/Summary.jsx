@@ -1,5 +1,5 @@
 import { Button, Descriptions, Modal, notification } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     SettingOutlined   ,
@@ -7,6 +7,27 @@ import {
 } from "@ant-design/icons";
 
 export default function Summary({ costs, formatPeso, setCostChange }) {
+
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)"); // Tailwind 'sm' max
+
+        const handleChange = (e) => {
+            setIsSmallScreen(e.matches);
+        };
+
+        // Set the initial value
+        setIsSmallScreen(mediaQuery.matches);
+
+        // Listen for changes
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
+    }, []);
+
     const items = [
         {
             label: "Excavation Cost",
@@ -232,7 +253,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
                         <div>Project Costs Summary</div>
                         {costs?.projectDetails?.status === "Material" && (
                             <Button
-                                icon={<SettingOutlined    />}
+                                icon={<SettingOutlined />}
                                 type="primary"
                                 onClick={() =>
                                     Modal.confirm({
@@ -256,7 +277,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
                         )}
                         {costs?.projectDetails?.status === "Labor" && (
                             <Button
-                                icon={<SettingOutlined    />}
+                                icon={<SettingOutlined />}
                                 danger
                                 type="primary"
                                 onClick={() =>
@@ -281,6 +302,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
                         )}
                     </div>
                 }
+                layout={isSmallScreen ? "vertical" : "horizontal"}
                 bordered
                 items={items}
             />

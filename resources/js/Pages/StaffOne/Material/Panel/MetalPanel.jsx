@@ -1,12 +1,4 @@
-import {
-    Button,
-    Form,
-    notification,
-    Row,
-    Select,
-    Space,
-    Table,
-} from "antd";
+import { Button, Form, notification, Row, Select, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
@@ -213,7 +205,7 @@ export default function MetalPanel({ project, costs, setCostChange }) {
         <>
             {contextHolder}
             <div className="py-2">List of Metal Works Materials</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input metal material"
                     allowClear
@@ -260,27 +252,37 @@ export default function MetalPanel({ project, costs, setCostChange }) {
                     )}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Materials"
                         dataIndex="material"
                         key="material"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Unit"
                         dataIndex="unit"
                         key="unit"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="UNIT COST"
                         dataIndex="unit_cost"
@@ -288,6 +290,7 @@ export default function MetalPanel({ project, costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"

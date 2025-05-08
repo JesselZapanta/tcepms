@@ -236,7 +236,7 @@ export default function Index({ auth, contructors, engineers }) {
             <Head title="Project Management" />
             {contextHolder}
             <div className="py-2">List of Project</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input project name"
                     allowClear
@@ -267,15 +267,22 @@ export default function Index({ auth, contructors, engineers }) {
                     }}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
-
                     <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
+                    <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Project Name"
                         dataIndex="name"
                         key="name"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Engineer"
                         dataIndex="site_engineer"
@@ -283,6 +290,7 @@ export default function Index({ auth, contructors, engineers }) {
                         render={(site_engineer) => site_engineer?.name || "N/A"}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Status"
                         dataIndex="status"
                         key="status"
@@ -300,8 +308,8 @@ export default function Index({ auth, contructors, engineers }) {
                             )
                         }
                     />
-
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Contractual"
                         dataIndex="contractual"
                         key="contractual"
@@ -315,8 +323,8 @@ export default function Index({ auth, contructors, engineers }) {
                             )
                         }
                     />
-
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Priority"
                         dataIndex="priority"
                         key="priority"
@@ -332,8 +340,8 @@ export default function Index({ auth, contructors, engineers }) {
                             )
                         }
                     />
-
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (
@@ -432,7 +440,7 @@ export default function Index({ auth, contructors, engineers }) {
                             />
                         </Form.Item>
                         <Divider orientation="left">Project Timeline</Divider>
-                        <div className="flex gap-4">
+                        <div className="flex md:flex-row flex-col gap-4">
                             <Form.Item
                                 label="START DATE"
                                 name="start_date"
@@ -461,7 +469,7 @@ export default function Index({ auth, contructors, engineers }) {
                                 <DatePicker className="w-full" />
                             </Form.Item>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex md:flex-row flex-col gap-4">
                             <Form.Item
                                 label="ACTUAL START DATE"
                                 name="actual_start_date"
@@ -503,8 +511,7 @@ export default function Index({ auth, contructors, engineers }) {
                         <Divider orientation="left">
                             Financial Information
                         </Divider>
-
-                        <div className="flex gap-4">
+                        <div className="flex md:flex-row flex-col gap-4">
                             <Form.Item
                                 label="ESTIMATED BUDGET"
                                 name="budget"
@@ -571,7 +578,7 @@ export default function Index({ auth, contructors, engineers }) {
                             />
                         </Form.Item>
 
-                        <div className="flex gap-4">
+                        {/* <div className="flex gap-4">
                             <Form.Item
                                 label="LATITUDE (OPTIONAL)"
                                 name="latitude"
@@ -606,11 +613,11 @@ export default function Index({ auth, contructors, engineers }) {
                                     className="w-full"
                                 />
                             </Form.Item>
-                        </div>
+                        </div> */}
 
                         <Divider orientation="left">Other Information</Divider>
 
-                        <div className="flex gap-4">
+                        <div className="flex md:flex-row flex-col gap-4">
                             <Form.Item
                                 label="ON-SITE ENGINEER"
                                 name="engineer"
@@ -652,7 +659,7 @@ export default function Index({ auth, contructors, engineers }) {
                             </Form.Item>
                         </div>
 
-                        <div className="flex gap-4">
+                        <div className="flex md:flex-row flex-col gap-4">
                             <Form.Item
                                 label="CATEGORY"
                                 name="category"
@@ -700,7 +707,7 @@ export default function Index({ auth, contructors, engineers }) {
                                 />
                             </Form.Item>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex md:flex-row flex-col gap-4">
                             {/* Contractual Dropdown */}
                             <Form.Item
                                 label="CONTRACTUAL"

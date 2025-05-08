@@ -217,7 +217,7 @@ export default function ExcavationPanel({ project,costs, setCostChange }) {
         <>
             {contextHolder}
             <div className="py-2">List of Excavation Materials</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input excavation material"
                     allowClear
@@ -247,25 +247,36 @@ export default function ExcavationPanel({ project,costs, setCostChange }) {
                         onChange: (page) => setPage(page),
                     }}
                     footer={() =>
-                        `Total Material Cost: ${formatPeso(costs.ExcavationCost)}`
+                        `Total Material Cost: ${formatPeso(
+                            costs.ExcavationCost
+                        )}`
                     }
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Materials"
                         dataIndex="material"
                         key="material"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="No. of Days"
                         dataIndex="no_of_days"
@@ -273,6 +284,7 @@ export default function ExcavationPanel({ project,costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Rate / Day"
                         dataIndex="rate"
@@ -280,6 +292,7 @@ export default function ExcavationPanel({ project,costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
@@ -287,6 +300,7 @@ export default function ExcavationPanel({ project,costs, setCostChange }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (

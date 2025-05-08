@@ -1,8 +1,28 @@
 import { Descriptions, Tag } from "antd";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Details({ costs, formatPeso }) {
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)"); // Tailwind 'sm' max
+
+        const handleChange = (e) => {
+            setIsSmallScreen(e.matches);
+        };
+
+        // Set the initial value
+        setIsSmallScreen(mediaQuery.matches);
+
+        // Listen for changes
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
+    }, []);
+
     const items = [
         { label: "Name", span: 3, children: costs?.projectDetails?.name },
         {
@@ -62,16 +82,16 @@ export default function Details({ costs, formatPeso }) {
             span: 3,
             children: costs?.projectDetails?.location,
         },
-        {
-            label: "Latitude",
-            span: 2,
-            children: costs?.projectDetails?.latitude || "N/A",
-        },
-        {
-            label: "Longitude",
-            span: 1,
-            children: costs?.projectDetails?.longitude || "N/A",
-        },
+        // {
+        //     label: "Latitude",
+        //     span: 2,
+        //     children: costs?.projectDetails?.latitude || "N/A",
+        // },
+        // {
+        //     label: "Longitude",
+        //     span: 1,
+        //     children: costs?.projectDetails?.longitude || "N/A",
+        // },
         {
             label: "Engineer",
             span: 2,
@@ -127,5 +147,11 @@ export default function Details({ costs, formatPeso }) {
         },
     ];
 
-    return <Descriptions bordered items={items} />;
+    return (
+        <Descriptions
+            layout={isSmallScreen ? "vertical" : "horizontal"}
+            bordered
+            items={items}
+        />
+    );
 }
