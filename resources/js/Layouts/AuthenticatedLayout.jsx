@@ -289,7 +289,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         textAlign: "center",
                     }}
                 >
-                    Ant Design ©{new Date().getFullYear()}
+                    TCEMPS ©{new Date().getFullYear()}
                 </Footer>
             </Layout>
         </Layout>

@@ -180,7 +180,7 @@ export default function Index({auth}) {
             <Head title="Contructor Management" />
             {contextHolder}
             <div className="py-2">List of Contructors</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input name or email"
                     allowClear
@@ -211,27 +211,37 @@ export default function Index({auth}) {
                     }}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Company Name"
                         dataIndex="company_name"
                         key="company_name"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         // sorter={true}
-                        title="Contact"
-                        dataIndex="contact"
-                        key="contact"
+                        title="Description"
+                        dataIndex="description"
+                        key="description"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         // sorter={true}
                         title="Address"
                         dataIndex="address"
                         key="address"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Status"
                         dataIndex="status"
@@ -245,6 +255,7 @@ export default function Index({auth}) {
                         }
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (

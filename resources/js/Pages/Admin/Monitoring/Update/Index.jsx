@@ -17,9 +17,7 @@ import {
 
 const { Option } = Select;
 
-import {
-    PrinterOutlined,
-} from "@ant-design/icons";
+import { PrinterOutlined } from "@ant-design/icons";
 
 import Details from "./Details";
 import { useEffect, useRef, useState } from "react";
@@ -57,7 +55,6 @@ export default function Index({ auth, currentProject }) {
         getData();
     }, [month, year]);
 
-    
     const [years, setYears] = useState([]);
 
     useEffect(() => {
@@ -70,7 +67,7 @@ export default function Index({ auth, currentProject }) {
         }
 
         setYears(yearArray);
-    }, []); 
+    }, []);
 
     function formatDate(updateDate) {
         const date = new Date(updateDate);
@@ -106,12 +103,12 @@ export default function Index({ auth, currentProject }) {
                 <Details data={data} />
             </div>
 
-            <div className="flex gap-2 items-center justify-end">
+            <div className="flex md:flex-row flex-col py-2 gap-2 justify-end">
                 <div>Filters:</div>
                 <Select
                     placeholder="Select a month"
                     onChange={(value) => setMonth(value)}
-                    className="w-24"
+                    className="md:w-24 w-full"
                 >
                     <Option value={0}>All</Option>
                     <Option value={1}>January</Option>
@@ -130,7 +127,7 @@ export default function Index({ auth, currentProject }) {
                 <Select
                     placeholder="Select a Year"
                     onChange={(value) => setYear(value)}
-                    className="w-24"
+                    className="md:w-24 w-full"
                 >
                     <Option value={0}>All</Option>
                     {years.reverse().map((year) => (
@@ -140,6 +137,7 @@ export default function Index({ auth, currentProject }) {
                     ))}
                 </Select>
                 <Button
+                    className="md:w-24 w-full"
                     onClick={() => handlePrint()}
                     icon={<PrinterOutlined />}
                 >
@@ -147,7 +145,6 @@ export default function Index({ auth, currentProject }) {
                 </Button>
             </div>
 
-            
             {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
             <div className="py-2">
                 <div ref={componentRef}>

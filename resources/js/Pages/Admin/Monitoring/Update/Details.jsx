@@ -65,16 +65,16 @@ export default function Details({ data }) {
             span: 3,
             children: data.location,
         },
-        {
-            label: "Latitude",
-            span: 2,
-            children: data.latitude || "N/A",
-        },
-        {
-            label: "Longitude",
-            span: 1,
-            children: data.longitude || "N/A",
-        },
+        // {
+        //     label: "Latitude",
+        //     span: 2,
+        //     children: data.latitude || "N/A",
+        // },
+        // {
+        //     label: "Longitude",
+        //     span: 1,
+        //     children: data.longitude || "N/A",
+        // },
         {
             label: "Engineer",
             span: 2,
@@ -132,9 +132,26 @@ export default function Details({ data }) {
     ];
 
     return (
-        <Collapse label="Excavation">
+        // <Collapse label="Details">
+        //     <Panel header="View Project Details" key="1">
+        //         <Descriptions
+        //             // layout="vertical"only in sm screen
+        //             bordered
+        //             column={1}
+        //             items={items}
+        //         />
+        //     </Panel>
+        // </Collapse>
+        <Collapse>
             <Panel header="View Project Details" key="1">
-                <Descriptions bordered items={items} />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {items.map((item, id) => (
+                        <div key={id} className="border rounded-md p-2">
+                            <div className="font-semibold">{item.label}</div>
+                            <div>{item.children}</div>
+                        </div>
+                    ))}
+                </div>
             </Panel>
         </Collapse>
     );

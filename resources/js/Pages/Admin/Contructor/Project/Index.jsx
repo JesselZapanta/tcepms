@@ -105,13 +105,13 @@ export default function Index({ auth, contructor }) {
         >
             <Head title={`${contructor.company_name} / Project Monitoring`} />
             <div className="py-2">
-                <div className="py-2">List of Project</div>
-                <div className="flex py-2 gap-2 items-center justify-end">
+                <div>List of Project</div>
+                <div className="flex md:flex-row flex-col py-2 gap-2 justify-end">
                     <div>Filters:</div>
                     <Select
                         placeholder="Select a month"
                         onChange={(value) => setMonth(value)}
-                        className="w-24"
+                        className="md:w-24 w-full"
                     >
                         <Option value={0}>All</Option>
 
@@ -131,7 +131,7 @@ export default function Index({ auth, contructor }) {
                     <Select
                         placeholder="Select a Year"
                         onChange={(value) => setYear(value)}
-                        className="w-24"
+                        className="md:w-24 w-full"
                     >
                         <Option value={0}>All</Option>
                         {years.reverse().map((year) => (
@@ -140,12 +140,15 @@ export default function Index({ auth, contructor }) {
                             </Option>
                         ))}
                     </Select>
-                    <Button
-                        onClick={() => handlePrint()}
-                        icon={<PrinterOutlined />}
-                    >
-                        Print
-                    </Button>
+                    <div>
+                        <Button
+                            className="md:w-24 w-full"
+                            onClick={() => handlePrint()}
+                            icon={<PrinterOutlined />}
+                        >
+                            Print
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex gap-2 mb-2">
                     <Search
