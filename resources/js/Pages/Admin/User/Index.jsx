@@ -1,9 +1,19 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { Button, Form, InputNumber, notification, Row, Select, Space, Table, Tag } from "antd";
+import {
+    Button,
+    Form,
+    InputNumber,
+    notification,
+    Row,
+    Select,
+    Space,
+    Table,
+    Tag,
+} from "antd";
 import Search from "antd/es/input/Search";
 import {
-    PhoneOutlined ,
+    PhoneOutlined,
     LockOutlined,
     MailOutlined,
     PlusOutlined,
@@ -18,10 +28,10 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function Index({auth}) {
+export default function Index({ auth }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    
+
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
@@ -96,9 +106,9 @@ export default function Index({auth}) {
             contact: user.contact,
             role: user.role,
             status: user.status,
-            password: ""
-        })
-    }
+            password: "",
+        });
+    };
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -110,10 +120,13 @@ export default function Index({auth}) {
 
     const handleSubmit = async (values) => {
         setProcessing(true);
-        
-        if(user){
+
+        if (user) {
             try {
-                const res = await axios.put(`/admin/user/update/${user.id}`, values);
+                const res = await axios.put(
+                    `/admin/user/update/${user.id}`,
+                    values
+                );
                 if (res.data.status === "updated") {
                     handleCancel();
                     openNotification(
@@ -128,7 +141,7 @@ export default function Index({auth}) {
             } finally {
                 setProcessing(false);
             }
-        }else{
+        } else {
             try {
                 const res = await axios.post("/admin/user/store", values);
                 if (res.data.status === "created") {
@@ -148,10 +161,10 @@ export default function Index({auth}) {
         }
     };
 
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         setLoading(true);
-        
-        try{
+
+        try {
             const res = await axios.delete(`/admin/user/destroy/${id}`);
 
             if (res.data.status === "deleted") {
@@ -163,20 +176,19 @@ export default function Index({auth}) {
                     "The user has been deleted successfully."
                 );
             }
-
-        }catch(err){
-            console.log(err)
-        }finally{
+        } catch (err) {
+            console.log(err);
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <AuthenticatedLayout header="User Management" auth={auth}>
             <Head title="User Management" />
             {contextHolder}
             <div className="py-2">List of Users</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input name or email"
                     allowClear
@@ -207,21 +219,30 @@ export default function Index({auth}) {
                     }}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Name"
                         dataIndex="name"
                         key="name"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Email"
                         dataIndex="email"
                         key="email"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Contact"
                         dataIndex="contact"
                         key="contact"
@@ -235,6 +256,7 @@ export default function Index({auth}) {
                     />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Status"
                         dataIndex="status"
@@ -248,6 +270,7 @@ export default function Index({auth}) {
                         }
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (

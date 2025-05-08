@@ -252,10 +252,14 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                                 trigger={["click"]}
                             >
                                 <a onClick={(e) => e.preventDefault()}>
-                                    <Space>
+                                    {/* <Space>
                                         {auth?.user?.name}
                                         <DownOutlined />
-                                    </Space>
+                                    </Space> */}
+                                    <Avatar
+                                        size="medium"
+                                        icon={<UserOutlined />}
+                                    />
                                 </a>
                             </Dropdown>
                         </div>
@@ -269,7 +273,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 <Content
                     style={{
                         margin: "0 16px",
-                        padding: "24px",
+                        padding: "2px",
                         minHeight: "80vh",
                         borderRadius: borderRadiusLG,
                         // background: `url('/images/bgg.png')`,
