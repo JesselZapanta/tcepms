@@ -342,12 +342,12 @@ export default function Index({ auth, currentProject }) {
                 <Details data={data} />
             </div>
 
-            <div className="flex gap-2 items-center justify-end">
+            <div className="flex md:flex-row flex-col py-2 gap-2 justify-end">
                 <div>Filters:</div>
                 <Select
                     placeholder="Select a month"
                     onChange={(value) => setMonth(value)}
-                    className="w-24"
+                    className="md:w-24 w-full"
                 >
                     <Option value={0}>All</Option>
                     <Option value={1}>January</Option>
@@ -366,7 +366,7 @@ export default function Index({ auth, currentProject }) {
                 <Select
                     placeholder="Select a Year"
                     onChange={(value) => setYear(value)}
-                    className="w-24"
+                    className="md:w-24 w-full"
                 >
                     <Option value={0}>All</Option>
                     {years.reverse().map((year) => (
@@ -376,12 +376,14 @@ export default function Index({ auth, currentProject }) {
                     ))}
                 </Select>
                 <Button
+                    className="md:w-24 w-full"
                     onClick={() => handlePrint()}
                     icon={<PrinterOutlined />}
                 >
                     Print
                 </Button>
                 <Button
+                    className="md:w-32 w-full"
                     type="primary"
                     onClick={showCreateModal}
                     icon={<PlusOutlined />}
