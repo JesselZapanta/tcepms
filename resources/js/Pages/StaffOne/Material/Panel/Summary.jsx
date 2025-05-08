@@ -249,7 +249,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             {contextHolder}
             <Descriptions
                 title={
-                    <div className="flex justify-between">
+                    <div className="flex justify-between md:flex-row flex-col">
                         <div>Project Costs Summary</div>
                         {costs?.projectDetails?.status === "Material" && (
                             <Button

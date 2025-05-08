@@ -132,12 +132,12 @@ export default function Index({ auth, project }) {
             <div className="py-2">
                 {costs.projectDetails?.contractual === 1 ? (
                     <Collapse
-                        defaultActiveKey={["1", "2"]}
+                        defaultActiveKey={["2"]}
                         items={collapseItems1}
                     />
                 ) : (
                     <Collapse
-                        defaultActiveKey={["1", "7"]}
+                        defaultActiveKey={["7"]}
                         items={collapseItems2}
                     />
                 )}

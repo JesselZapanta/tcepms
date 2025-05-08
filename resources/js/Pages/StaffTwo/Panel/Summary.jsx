@@ -1,9 +1,30 @@
 import { Button, Descriptions, Modal, notification } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { SettingOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 export default function Summary({ costs, formatPeso, setCostChange }) {
+
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+    
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)"); // Tailwind 'sm' max
+
+        const handleChange = (e) => {
+            setIsSmallScreen(e.matches);
+        };
+
+        // Set the initial value
+        setIsSmallScreen(mediaQuery.matches);
+
+        // Listen for changes
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
+    }, []);
+
     const items = [
         {
             label: "Excavation Cost",
@@ -204,7 +225,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
                     "success",
                     "bottomRight",
                     "Status Changed!",
-                    "The materials status has been updated successfully."
+                    "The status has been updated successfully. The project status is now Ongoing"
                 );
             }
         } catch (err) {
@@ -218,7 +239,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
 
             <Descriptions
                 title={
-                    <div className="flex justify-between">
+                    <div className="flex justify-between md:flex-row flex-col">
                         <div>Project Costs Summary</div>
                         {costs?.projectDetails?.status === "Labor" && (
                             <Button
@@ -271,6 +292,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
                         )}
                     </div>
                 }
+                layout={isSmallScreen ? "vertical" : "horizontal"}
                 bordered
                 items={items}
             />

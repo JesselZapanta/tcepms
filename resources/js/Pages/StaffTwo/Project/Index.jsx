@@ -1,19 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import {
-    Button,
-    Space,
-    Table,
-    Tag,
-} from "antd";
+import { Button, Space, Table, Tag } from "antd";
 import Search from "antd/es/input/Search";
-import {
-    EditOutlined,
-} from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Column from "antd/es/table/Column";
-
 
 export default function Index({ auth }) {
     const [data, setData] = useState([]);
@@ -91,15 +83,23 @@ export default function Index({ auth }) {
                     }}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Project Name"
                         dataIndex="name"
                         key="name"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Engineer"
                         dataIndex="site_engineer"
@@ -107,6 +107,7 @@ export default function Index({ auth }) {
                         render={(site_engineer) => site_engineer?.name || "N/A"}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Status"
                         dataIndex="status"
                         key="status"
@@ -126,6 +127,7 @@ export default function Index({ auth }) {
                     />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Contractual"
                         dataIndex="contractual"
                         key="contractual"
@@ -141,6 +143,7 @@ export default function Index({ auth }) {
                     />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Priority"
                         dataIndex="priority"
                         key="priority"
@@ -158,6 +161,7 @@ export default function Index({ auth }) {
                     />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (

@@ -233,7 +233,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
         <>
             {contextHolder}
             <div className="py-2">List of Water Labor</div>
-            <div className="flex gap-2 mb-2">
+            <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input water labor position"
                     allowClear
@@ -276,21 +276,30 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                     )}
                     onChange={handleTableChange}
                 >
-                    <Column sorter={true} title="ID" dataIndex="id" key="id" />
+                    <Column
+                        className="whitespace-nowrap bg-white"
+                        sorter={true}
+                        title="ID"
+                        dataIndex="id"
+                        key="id"
+                    />
 
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Position"
                         dataIndex="position"
                         key="position"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="No. of Days"
                         dataIndex="no_of_days"
@@ -298,6 +307,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                         // render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Rate / Day"
                         dataIndex="rate"
@@ -305,6 +315,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         sorter={true}
                         title="Cost"
                         dataIndex="cost"
@@ -312,6 +323,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                         render={(value) => formatPeso(value)}
                     />
                     <Column
+                        className="whitespace-nowrap bg-white"
                         title="Action"
                         key="action"
                         render={(_, record) => (
@@ -346,9 +358,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                 </Table>
             </div>
             <Modal
-                title={
-                    waterLabor ? "UPDATE WATER LABOR" : "WATER LABOR"
-                }
+                title={waterLabor ? "UPDATE WATER LABOR" : "WATER LABOR"}
                 width={800}
                 open={isModalOpen}
                 onCancel={handleCancel}

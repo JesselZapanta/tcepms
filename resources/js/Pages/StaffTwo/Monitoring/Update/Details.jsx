@@ -1,9 +1,30 @@
 import { Collapse, Descriptions, Tag } from "antd";
 const { Panel } = Collapse;
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Details({ data }) {
+
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)"); // Tailwind 'sm' max
+
+        const handleChange = (e) => {
+            setIsSmallScreen(e.matches);
+        };
+
+        // Set the initial value
+        setIsSmallScreen(mediaQuery.matches);
+
+        // Listen for changes
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
+    }, []);
+
     const formatPeso = (value) => {
         const num = parseFloat(value);
         if (isNaN(num)) return "₱0.00";
@@ -65,16 +86,16 @@ export default function Details({ data }) {
             span: 3,
             children: data.location,
         },
-        {
-            label: "Latitude",
-            span: 2,
-            children: data.latitude || "N/A",
-        },
-        {
-            label: "Longitude",
-            span: 1,
-            children: data.longitude || "N/A",
-        },
+        // {
+        //     label: "Latitude",
+        //     span: 2,
+        //     children: data.latitude || "N/A",
+        // },
+        // {
+        //     label: "Longitude",
+        //     span: 1,
+        //     children: data.longitude || "N/A",
+        // },
         {
             label: "Engineer",
             span: 2,
@@ -133,7 +154,11 @@ export default function Details({ data }) {
     return (
         <Collapse label="Excavation">
             <Panel header="View Project Details" key="1">
-                <Descriptions bordered items={items} />
+                <Descriptions
+                    layout={isSmallScreen ? "vertical" : "horizontal"}
+                    bordered
+                    items={items}
+                />
             </Panel>
         </Collapse>
     );
