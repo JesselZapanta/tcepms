@@ -17,7 +17,6 @@ class StaffTwoProjectUpdateController extends Controller
         ]);
     }
 
-
     // public function getData($id)
     // {
     //     $projectDetails = Project::with(['siteEngineer','contructor','updates' => function($query) {

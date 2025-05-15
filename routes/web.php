@@ -138,6 +138,9 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::get('/staffone/project-monitoring/getdata', [StaffOneProjectMonitoringController::class, 'getData']);
 
     Route::get('/staffone/project-monitoring/project/{id}', [StaffOneProjectUpdateController::class, 'index'])->name('staffone.project-update');
+
+    Route::get('/staffone/project-monitoring/calendar/project/{id}', [StaffOneProjectUpdateController::class, 'calendar'])->name('staffone.project-update-calendar');
+    
     Route::get('/staffone/project-monitoring/project/getData/{id}', [StaffOneProjectUpdateController::class, 'getData']);
 });
 

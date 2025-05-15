@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import {
     Flex,
     Progress,
@@ -15,7 +15,7 @@ import {
     Select,
 } from "antd";
 
-import { PrinterOutlined } from "@ant-design/icons";
+import { CalendarOutlined, PrinterOutlined } from "@ant-design/icons";
 
 import Details from "./Details";
 import { useEffect, useRef, useState } from "react";
@@ -61,7 +61,7 @@ export default function Index({ auth, currentProject }) {
         }
 
         setYears(yearArray);
-    }, []); 
+    }, []);
 
     function formatDate(updateDate) {
         const date = new Date(updateDate);
@@ -77,7 +77,7 @@ export default function Index({ auth, currentProject }) {
     }
 
     const componentRef = useRef();
-            
+
     const handlePrint = useReactToPrint({
         documentTitle: "Project Update Report",
         content: () => componentRef.current,
@@ -98,6 +98,19 @@ export default function Index({ auth, currentProject }) {
             </div>
 
             <div className="flex md:flex-row flex-col py-2 gap-2 justify-end">
+                <Link
+                    href={route(
+                        "staffone.project-update-calendar",
+                        currentProject.id
+                    )}
+                >
+                    <Button
+                        className="md:w-24 w-full"
+                        icon={<CalendarOutlined />}
+                    >
+                        Calendar
+                    </Button>
+                </Link>
                 <div>Filters:</div>
                 <Select
                     placeholder="Select a month"

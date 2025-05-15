@@ -442,7 +442,7 @@ export default function Index({ auth, contructors, engineers }) {
                         <Divider orientation="left">Project Timeline</Divider>
                         <div className="flex md:flex-row flex-col gap-4">
                             <Form.Item
-                                label="START DATE"
+                                label="ESTIMATED START DATE"
                                 name="start_date"
                                 validateStatus={
                                     errors?.start_date ? "error" : ""
@@ -458,7 +458,7 @@ export default function Index({ auth, contructors, engineers }) {
                             </Form.Item>
 
                             <Form.Item
-                                label="END DATE"
+                                label="ESTIMATED END DATE"
                                 name="end_date"
                                 validateStatus={errors?.end_date ? "error" : ""}
                                 help={

@@ -172,6 +172,7 @@ class EngineerProjectUpdateController extends Controller
             $cement_plaster_and_finishes_progress === 100
         ) {
             $projectId->status = 'Completed';
+            $projectId->actual_end_date = now('Asia/Manila');
         } else {
             $projectId->status = 'Ongoing';
         }
@@ -268,6 +269,7 @@ class EngineerProjectUpdateController extends Controller
             $cement_plaster_and_finishes_progress === 100
         ) {
             $projectId->status = 'Completed';
+            $projectId->actual_end_date = now('Asia/Manila');
         } else {
             $projectId->status = 'Ongoing';
         }

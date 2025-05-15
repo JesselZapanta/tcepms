@@ -17,6 +17,15 @@ class StaffOneProjectUpdateController extends Controller
         ]);
     }
 
+    public function calendar($id)
+    {
+        $project = Project::with('updates')->findOrFail($id);
+
+        return inertia('StaffOne/Monitoring/Update/UpdateCalendar',[
+            'project' => $project
+        ]);
+    }
+
 
     // public function getData($id)
     // {
