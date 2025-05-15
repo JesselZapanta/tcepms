@@ -179,254 +179,265 @@ export default function Index({auth}) {
         <AuthenticatedLayout header="Contructor Management" auth={auth}>
             <Head title="Contructor Management" />
             {contextHolder}
-            <div className="py-2">List of Contructors</div>
-            <div className="flex md:flex-row flex-col gap-2 mb-2">
-                <Search
-                    placeholder="Input name or email"
-                    allowClear
-                    enterButton="Search"
-                    loading={searching}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onSearch={() => getData(true)}
-                />
-                <Button
-                    type="primary"
-                    onClick={showCreateModal}
-                    icon={<PlusOutlined />}
-                >
-                    New
-                </Button>
-            </div>
-            <div className="overflow-x-auto">
-                <Table
-                    loading={loading}
-                    dataSource={data}
-                    rowKey={(data) => data.id}
-                    pagination={{
-                        current: page,
-                        total: total,
-                        pageSize: 10,
-                        showSizeChanger: false,
-                        onChange: (page) => setPage(page),
-                    }}
-                    onChange={handleTableChange}
-                >
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="ID"
-                        dataIndex="id"
-                        key="id"
+            <div className="max-w-5xl mx-auto p-4 mt-4 rounded bg-white">
+                <div className="py-2 text-lg font-bold uppercase">
+                    List of Contructors
+                </div>
+                <div className="flex md:flex-row flex-col gap-2 mb-2">
+                    <Search
+                        placeholder="Input contructor name"
+                        allowClear
+                        enterButton="Search"
+                        loading={searching}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onSearch={() => getData(true)}
                     />
+                    <Button
+                        type="primary"
+                        onClick={showCreateModal}
+                        icon={<PlusOutlined />}
+                    >
+                        New
+                    </Button>
+                </div>
+                <div className="overflow-x-auto">
+                    <Table
+                        className="mt-2 custom-ant-table"
+                        loading={loading}
+                        dataSource={data}
+                        rowKey={(data) => data.id}
+                        pagination={{
+                            current: page,
+                            total: total,
+                            pageSize: 10,
+                            showSizeChanger: false,
+                            onChange: (page) => setPage(page),
+                        }}
+                        onChange={handleTableChange}
+                    >
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="ID"
+                            dataIndex="id"
+                            key="id"
+                        />
 
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="Company Name"
-                        dataIndex="company_name"
-                        key="company_name"
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        // sorter={true}
-                        title="Description"
-                        dataIndex="description"
-                        key="description"
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        // sorter={true}
-                        title="Address"
-                        dataIndex="address"
-                        key="address"
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="Status"
-                        dataIndex="status"
-                        key="status"
-                        render={(_, record) =>
-                            record.status === 0 ? (
-                                <Tag color="yellow">Inactive</Tag>
-                            ) : (
-                                <Tag color="green">Active</Tag>
-                            )
-                        }
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        title="Action"
-                        key="action"
-                        render={(_, record) => (
-                            <Space>
-                                <Button
-                                    type="primary"
-                                    shape="circle"
-                                    icon={<EditOutlined />}
-                                    onClick={() => showEditModal(record)}
-                                ></Button>
-
-                                <Link
-                                    href={route(
-                                        "admin.contructor-project",
-                                        record.id
-                                    )}
-                                >
+                        <Column
+                            className="whitespace-nowrap bg-white font-bold"
+                            //sorter={true}
+                            title="Company Name"
+                            dataIndex="company_name"
+                            key="company_name"
+                        />
+                        {/* <Column
+                            className="whitespace-nowrap bg-white"
+                            // //sorter={true}
+                            title="Description"
+                            dataIndex="description"
+                            key="description"
+                        /> */}
+                        {/* <Column
+                            className="whitespace-nowrap bg-white"
+                            // //sorter={true}
+                            title="Address"
+                            dataIndex="address"
+                            key="address"
+                        /> */}
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Status"
+                            dataIndex="status"
+                            key="status"
+                            render={(_, record) =>
+                                record.status === 0 ? (
+                                    <Tag color="yellow">Inactive</Tag>
+                                ) : (
+                                    <Tag color="green">Active</Tag>
+                                )
+                            }
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            title="Action"
+                            key="action"
+                            render={(_, record) => (
+                                <Space>
                                     <Button
-                                        type="default"
+                                        type="primary"
                                         shape="circle"
-                                        icon={<UnorderedListOutlined />}
+                                        icon={<EditOutlined />}
+                                        onClick={() => showEditModal(record)}
+                                    ></Button>
+
+                                    <Link
+                                        href={route(
+                                            "admin.contructor-project",
+                                            record.id
+                                        )}
+                                    >
+                                        <Button
+                                            type="default"
+                                            shape="circle"
+                                            icon={<UnorderedListOutlined />}
+                                        />
+                                    </Link>
+                                    <Button
+                                        danger
+                                        shape="circle"
+                                        icon={<DeleteOutlined />}
+                                        onClick={() =>
+                                            Modal.confirm({
+                                                title: "Delete?",
+                                                icon: (
+                                                    <QuestionCircleOutlined />
+                                                ),
+                                                content:
+                                                    "Are you sure you want to delete this data?",
+                                                okText: "Yes",
+                                                cancelText: "No",
+                                                onOk() {
+                                                    handleDelete(record.id);
+                                                },
+                                            })
+                                        }
                                     />
-                                </Link>
-                                <Button
-                                    danger
-                                    shape="circle"
-                                    icon={<DeleteOutlined />}
-                                    onClick={() =>
-                                        Modal.confirm({
-                                            title: "Delete?",
-                                            icon: <QuestionCircleOutlined />,
-                                            content:
-                                                "Are you sure you want to delete this data?",
-                                            okText: "Yes",
-                                            cancelText: "No",
-                                            onOk() {
-                                                handleDelete(record.id);
-                                            },
-                                        })
-                                    }
-                                />
-                            </Space>
-                        )}
-                    />
-                </Table>
-            </div>
+                                </Space>
+                            )}
+                        />
+                    </Table>
+                </div>
 
-            <Modal
-                title={
-                    contructor
-                        ? "UPDATE CONTRUCTOR INFORMATION"
-                        : "CONTRUCTOR INFORMATION"
-                }
-                open={isModalOpen}
-                onCancel={handleCancel}
-                maskClosable={false}
-                footer={false}
-            >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    autoComplete="off"
-                    onFinish={handleSubmit}
+                <Modal
+                    title={
+                        contructor
+                            ? "UPDATE CONTRUCTOR INFORMATION"
+                            : "CONTRUCTOR INFORMATION"
+                    }
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    maskClosable={false}
+                    footer={false}
                 >
-                    <Form.Item>
-                        <Form.Item
-                            label="COMPANY NAME"
-                            name="company_name"
-                            // Custom error handling
-                            validateStatus={errors?.company_name ? "error" : ""}
-                            help={
-                                errors?.company_name
-                                    ? errors.company_name[0]
-                                    : ""
-                            }
-                        >
-                            <Input
-                                placeholder="Company Name"
-                                prefix={<UserOutlined />}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Description"
-                            name="description"
-                            validateStatus={errors?.description ? "error" : ""}
-                            help={
-                                errors?.description
-                                    ? errors?.description[0]
-                                    : ""
-                            }
-                        >
-                            <TextArea
-                                placeholder="Company Description"
-                                allowClear
-                                rows={4}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="CONTACT"
-                            name="contact"
-                            validateStatus={errors?.contact ? "error" : ""}
-                            help={errors?.contact ? errors?.contact[0] : ""}
-                        >
-                            <Input
-                                placeholder="Contact"
-                                type="number"
-                                prefix={<PhoneOutlined />}
-                                className="w-full"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="WEBSITE"
-                            name="website"
-                            validateStatus={errors?.website ? "error" : ""}
-                            help={errors?.website ? errors?.website[0] : ""}
-                        >
-                            <Input
-                                placeholder="example.com"
-                                addonBefore="https://"
-                                type="website"
-
-                                // prefix={<LockOutlined />}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="ADDRESS"
-                            name="address"
-                            validateStatus={errors?.address ? "error" : ""}
-                            help={errors?.address ? errors?.address[0] : ""}
-                        >
-                            <Input prefix={<LockOutlined />} />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="STATUS"
-                            name="status"
-                            validateStatus={errors?.status ? "error" : ""}
-                            help={errors?.status ? errors?.status[0] : ""}
-                            className="w-full"
-                        >
-                            <Select
-                                options={[
-                                    { value: 1, label: "Active" },
-                                    { value: 0, label: "Inactive" },
-                                ]}
-                            />
-                        </Form.Item>
-                    </Form.Item>
-                    <Row justify="end">
-                        <Space size="small">
-                            <Button type="default" onClick={handleCancel}>
-                                Cancel
-                            </Button>
-
-                            <Button
-                                htmlType="submit"
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                disabled={processing}
-                                loading={processing}
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        autoComplete="off"
+                        onFinish={handleSubmit}
+                    >
+                        <Form.Item>
+                            <Form.Item
+                                label="COMPANY NAME"
+                                name="company_name"
+                                // Custom error handling
+                                validateStatus={
+                                    errors?.company_name ? "error" : ""
+                                }
+                                help={
+                                    errors?.company_name
+                                        ? errors.company_name[0]
+                                        : ""
+                                }
                             >
-                                {contructor ? "Update" : "Create"}
-                            </Button>
-                        </Space>
-                    </Row>
-                </Form>
-            </Modal>
+                                <Input
+                                    placeholder="Company Name"
+                                    prefix={<UserOutlined />}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Description"
+                                name="description"
+                                validateStatus={
+                                    errors?.description ? "error" : ""
+                                }
+                                help={
+                                    errors?.description
+                                        ? errors?.description[0]
+                                        : ""
+                                }
+                            >
+                                <TextArea
+                                    placeholder="Company Description"
+                                    allowClear
+                                    rows={4}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="CONTACT"
+                                name="contact"
+                                validateStatus={errors?.contact ? "error" : ""}
+                                help={errors?.contact ? errors?.contact[0] : ""}
+                            >
+                                <Input
+                                    placeholder="Contact"
+                                    type="number"
+                                    prefix={<PhoneOutlined />}
+                                    className="w-full"
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="WEBSITE"
+                                name="website"
+                                validateStatus={errors?.website ? "error" : ""}
+                                help={errors?.website ? errors?.website[0] : ""}
+                            >
+                                <Input
+                                    placeholder="example.com"
+                                    addonBefore="https://"
+                                    type="website"
+
+                                    // prefix={<LockOutlined />}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="ADDRESS"
+                                name="address"
+                                validateStatus={errors?.address ? "error" : ""}
+                                help={errors?.address ? errors?.address[0] : ""}
+                            >
+                                <Input prefix={<LockOutlined />} />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="STATUS"
+                                name="status"
+                                validateStatus={errors?.status ? "error" : ""}
+                                help={errors?.status ? errors?.status[0] : ""}
+                                className="w-full"
+                            >
+                                <Select
+                                    options={[
+                                        { value: 1, label: "Active" },
+                                        { value: 0, label: "Inactive" },
+                                    ]}
+                                />
+                            </Form.Item>
+                        </Form.Item>
+                        <Row justify="end">
+                            <Space size="small">
+                                <Button type="default" onClick={handleCancel}>
+                                    Cancel
+                                </Button>
+
+                                <Button
+                                    htmlType="submit"
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                    disabled={processing}
+                                    loading={processing}
+                                >
+                                    {contructor ? "Update" : "Create"}
+                                </Button>
+                            </Space>
+                        </Row>
+                    </Form>
+                </Modal>
+            </div>
         </AuthenticatedLayout>
     );
 }

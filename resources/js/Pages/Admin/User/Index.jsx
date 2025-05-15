@@ -183,266 +183,301 @@ export default function Index({ auth }) {
         }
     };
 
+    const roleLabels = {
+        0: "Admin",
+        1: "Staff 1",
+        2: "Staff 2",
+        3: "On-site Engineer",
+        4: "Mayor",
+    };
+
     return (
         <AuthenticatedLayout header="User Management" auth={auth}>
             <Head title="User Management" />
             {contextHolder}
-            <div className="py-2">List of Users</div>
-            <div className="flex md:flex-row flex-col gap-2 mb-2">
-                <Search
-                    placeholder="Input name or email"
-                    allowClear
-                    enterButton="Search"
-                    loading={searching}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onSearch={() => getData(true)}
-                />
-                <Button
-                    type="primary"
-                    onClick={showCreateModal}
-                    icon={<PlusOutlined />}
-                >
-                    New
-                </Button>
-            </div>
-            <div className="overflow-x-auto">
-                <Table
-                    loading={loading}
-                    dataSource={data}
-                    rowKey={(data) => data.id}
-                    pagination={{
-                        current: page,
-                        total: total,
-                        pageSize: 10,
-                        showSizeChanger: false,
-                        onChange: (page) => setPage(page),
-                    }}
-                    onChange={handleTableChange}
-                >
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="ID"
-                        dataIndex="id"
-                        key="id"
+            <div className="max-w-5xl mx-auto p-4 mt-4 rounded bg-white">
+                <div className="py-2 text-lg font-bold uppercase">
+                    List of Users
+                </div>
+                <div className="flex my-2 md:flex-row flex-col gap-2">
+                    <Search
+                        placeholder="Input name or email"
+                        allowClear
+                        enterButton="Search"
+                        loading={searching}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onSearch={() => getData(true)}
                     />
-
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="Name"
-                        dataIndex="name"
-                        key="name"
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="Email"
-                        dataIndex="email"
-                        key="email"
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        title="Contact"
-                        dataIndex="contact"
-                        key="contact"
-                        render={(contact) => {
-                            const formatted = contact.replace(
-                                /(\d{3})(\d{3})(\d{4})/,
-                                "$1 $2 $3"
-                            );
-                            return `+63 ${formatted}`;
+                    <Button
+                        // className="custom-ant-btn"
+                        type="primary"
+                        onClick={showCreateModal}
+                        icon={<PlusOutlined />}
+                    >
+                        New
+                    </Button>
+                </div>
+                <div className="overflow-x-auto">
+                    <Table
+                        className="mt-2 custom-ant-table"
+                        loading={loading}
+                        dataSource={data}
+                        rowKey={(data) => data.id}
+                        pagination={{
+                            current: page,
+                            total: total,
+                            pageSize: 10,
+                            showSizeChanger: false,
+                            onChange: (page) => setPage(page),
                         }}
-                    />
+                        onChange={handleTableChange}
+                    >
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="ID"
+                            dataIndex="id"
+                            key="id"
+                        />
 
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        sorter={true}
-                        title="Status"
-                        dataIndex="status"
-                        key="status"
-                        render={(_, record) =>
-                            record.status === 0 ? (
-                                <Tag color="yellow">Inactive</Tag>
-                            ) : (
-                                <Tag color="green">Active</Tag>
-                            )
-                        }
-                    />
-                    <Column
-                        className="whitespace-nowrap bg-white"
-                        title="Action"
-                        key="action"
-                        render={(_, record) => (
-                            <Space>
-                                <Button
-                                    type="primary"
-                                    shape="circle"
-                                    icon={<EditOutlined />}
-                                    onClick={() => showEditModal(record)}
-                                ></Button>
-                                <Button
-                                    danger
-                                    shape="circle"
-                                    icon={<DeleteOutlined />}
-                                    onClick={() =>
-                                        Modal.confirm({
-                                            title: "Delete?",
-                                            icon: <QuestionCircleOutlined />,
-                                            content:
-                                                "Are you sure you want to delete this data?",
-                                            okText: "Yes",
-                                            cancelText: "No",
-                                            onOk() {
-                                                handleDelete(record.id);
-                                            },
-                                        })
-                                    }
-                                />
-                            </Space>
-                        )}
-                    />
-                </Table>
-            </div>
+                        <Column
+                            className="whitespace-nowrap bg-white font-bold"
+                            //sorter={true}
+                            title="Name"
+                            dataIndex="name"
+                            key="name"
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Role"
+                            dataIndex="role"
+                            key="role"
+                            render={(role) => roleLabels[role] || "Unknown"}
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Email"
+                            dataIndex="email"
+                            key="email"
+                        />
+                        {/* <Column
+                            className="whitespace-nowrap bg-white"
+                            title="Contact"
+                            dataIndex="contact"
+                            key="contact"
+                            render={(contact) => {
+                                const formatted = contact.replace(
+                                    /(\d{3})(\d{3})(\d{4})/,
+                                    "$1 $2 $3"
+                                );
+                                return `+63 ${formatted}`;
+                            }}
+                        /> */}
 
-            <Modal
-                title={user ? "UPDATE USER INFORMATION" : "USER INFORMATION"}
-                open={isModalOpen}
-                onCancel={handleCancel}
-                maskClosable={false}
-                footer={false}
-            >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    autoComplete="off"
-                    onFinish={handleSubmit}
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Status"
+                            dataIndex="status"
+                            key="status"
+                            render={(_, record) =>
+                                record.status === 0 ? (
+                                    <Tag color="yellow">Inactive</Tag>
+                                ) : (
+                                    <Tag color="green">Active</Tag>
+                                )
+                            }
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            title="Action"
+                            key="action"
+                            render={(_, record) => (
+                                <Space>
+                                    <Button
+                                        type="primary"
+                                        shape="circle"
+                                        icon={<EditOutlined />}
+                                        onClick={() => showEditModal(record)}
+                                    ></Button>
+                                    <Button
+                                        danger
+                                        shape="circle"
+                                        icon={<DeleteOutlined />}
+                                        onClick={() =>
+                                            Modal.confirm({
+                                                title: "Delete?",
+                                                icon: (
+                                                    <QuestionCircleOutlined />
+                                                ),
+                                                content:
+                                                    "Are you sure you want to delete this data?",
+                                                okText: "Yes",
+                                                cancelText: "No",
+                                                onOk() {
+                                                    handleDelete(record.id);
+                                                },
+                                            })
+                                        }
+                                    />
+                                </Space>
+                            )}
+                        />
+                    </Table>
+                </div>
+
+                <Modal
+                    title={
+                        user ? "UPDATE USER INFORMATION" : "USER INFORMATION"
+                    }
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    maskClosable={false}
+                    footer={false}
                 >
-                    <Form.Item>
-                        <Form.Item
-                            label="NAME"
-                            name="name"
-                            // Custom error handling
-                            validateStatus={errors?.name ? "error" : ""}
-                            help={errors?.name ? errors.name[0] : ""}
-                        >
-                            <Input
-                                placeholder="Name"
-                                prefix={<UserOutlined />}
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            label="EMAIL"
-                            name="email"
-                            validateStatus={errors?.email ? "error" : ""}
-                            help={errors?.email ? errors?.email[0] : ""}
-                        >
-                            <Input
-                                placeholder="Email"
-                                prefix={<MailOutlined />}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="CONTACT"
-                            name="contact"
-                            validateStatus={errors?.contact ? "error" : ""}
-                            help={errors?.contact ? errors?.contact[0] : ""}
-                        >
-                            <Input
-                                placeholder="Contact"
-                                type="number"
-                                addonBefore="+63"
-                                prefix={<PhoneOutlined />}
-                                className="w-full"
-                            />
-                        </Form.Item>
-
-                        <div className="flex gap-4">
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        autoComplete="off"
+                        onFinish={handleSubmit}
+                    >
+                        <Form.Item>
                             <Form.Item
-                                label="ROLE"
-                                name="role"
-                                validateStatus={errors?.role ? "error" : ""}
-                                help={errors?.role ? errors?.role[0] : ""}
-                                className="w-full"
+                                label="NAME"
+                                name="name"
+                                // Custom error handling
+                                validateStatus={errors?.name ? "error" : ""}
+                                help={errors?.name ? errors.name[0] : ""}
                             >
-                                <Select
-                                    options={[
-                                        { value: 0, label: "Admin" },
-                                        { value: 1, label: "Staff 1" },
-                                        { value: 2, label: "Staff 2" },
-                                        { value: 3, label: "On-Site Engineer" },
-                                        { value: 4, label: "Mayor" },
-                                    ]}
+                                <Input
+                                    placeholder="Name"
+                                    prefix={<UserOutlined />}
                                 />
                             </Form.Item>
                             <Form.Item
-                                label="STATUS"
-                                name="status"
-                                validateStatus={errors?.status ? "error" : ""}
-                                help={errors?.status ? errors?.status[0] : ""}
-                                className="w-full"
+                                label="EMAIL"
+                                name="email"
+                                validateStatus={errors?.email ? "error" : ""}
+                                help={errors?.email ? errors?.email[0] : ""}
                             >
-                                <Select
-                                    options={[
-                                        { value: 1, label: "Active" },
-                                        { value: 0, label: "Inactive" },
-                                    ]}
+                                <Input
+                                    placeholder="Email"
+                                    prefix={<MailOutlined />}
                                 />
                             </Form.Item>
-                        </div>
 
-                        <Form.Item
-                            label="PASSWORD"
-                            name="password"
-                            validateStatus={errors?.password ? "error" : ""}
-                            help={errors?.password ? errors?.password[0] : ""}
-                        >
-                            <Input.Password
-                                placeholder="Password"
-                                type="password"
-                                prefix={<LockOutlined />}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="RE-TYPE PASSWORD"
-                            name="password_confirmation"
-                            validateStatus={
-                                errors?.password_confirmation ? "error" : ""
-                            }
-                            help={
-                                errors?.password_confirmation
-                                    ? errors?.password_confirmation[0]
-                                    : ""
-                            }
-                        >
-                            <Input.Password
-                                placeholder="Re-type Password"
-                                type="password"
-                                prefix={<LockOutlined />}
-                            />
-                        </Form.Item>
-                    </Form.Item>
-                    <Row justify="end">
-                        <Space size="small">
-                            <Button type="default" onClick={handleCancel}>
-                                Cancel
-                            </Button>
-
-                            <Button
-                                htmlType="submit"
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                disabled={processing}
-                                loading={processing}
+                            <Form.Item
+                                label="CONTACT"
+                                name="contact"
+                                validateStatus={errors?.contact ? "error" : ""}
+                                help={errors?.contact ? errors?.contact[0] : ""}
                             >
-                                {user ? "Update" : "Create"}
-                            </Button>
-                        </Space>
-                    </Row>
-                </Form>
-            </Modal>
+                                <Input
+                                    placeholder="Contact"
+                                    type="number"
+                                    addonBefore="+63"
+                                    prefix={<PhoneOutlined />}
+                                    className="w-full"
+                                />
+                            </Form.Item>
+
+                            <div className="flex gap-4">
+                                <Form.Item
+                                    label="ROLE"
+                                    name="role"
+                                    validateStatus={errors?.role ? "error" : ""}
+                                    help={errors?.role ? errors?.role[0] : ""}
+                                    className="w-full"
+                                >
+                                    <Select
+                                        options={[
+                                            { value: 0, label: "Admin" },
+                                            { value: 1, label: "Staff 1" },
+                                            { value: 2, label: "Staff 2" },
+                                            {
+                                                value: 3,
+                                                label: "On-Site Engineer",
+                                            },
+                                            { value: 4, label: "Mayor" },
+                                        ]}
+                                    />
+                                </Form.Item>
+                                <Form.Item
+                                    label="STATUS"
+                                    name="status"
+                                    validateStatus={
+                                        errors?.status ? "error" : ""
+                                    }
+                                    help={
+                                        errors?.status ? errors?.status[0] : ""
+                                    }
+                                    className="w-full"
+                                >
+                                    <Select
+                                        options={[
+                                            { value: 1, label: "Active" },
+                                            { value: 0, label: "Inactive" },
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </div>
+
+                            <Form.Item
+                                label="PASSWORD"
+                                name="password"
+                                validateStatus={errors?.password ? "error" : ""}
+                                help={
+                                    errors?.password ? errors?.password[0] : ""
+                                }
+                            >
+                                <Input.Password
+                                    placeholder="Password"
+                                    type="password"
+                                    prefix={<LockOutlined />}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="RE-TYPE PASSWORD"
+                                name="password_confirmation"
+                                validateStatus={
+                                    errors?.password_confirmation ? "error" : ""
+                                }
+                                help={
+                                    errors?.password_confirmation
+                                        ? errors?.password_confirmation[0]
+                                        : ""
+                                }
+                            >
+                                <Input.Password
+                                    placeholder="Re-type Password"
+                                    type="password"
+                                    prefix={<LockOutlined />}
+                                />
+                            </Form.Item>
+                        </Form.Item>
+                        <Row justify="end">
+                            <Space size="small">
+                                <Button type="default" onClick={handleCancel}>
+                                    Cancel
+                                </Button>
+
+                                <Button
+                                    htmlType="submit"
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                    disabled={processing}
+                                    loading={processing}
+                                >
+                                    {user ? "Update" : "Create"}
+                                </Button>
+                            </Space>
+                        </Row>
+                    </Form>
+                </Modal>
+            </div>
         </AuthenticatedLayout>
     );
 }

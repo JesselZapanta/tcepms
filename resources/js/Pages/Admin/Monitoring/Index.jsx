@@ -73,8 +73,13 @@ export default function Index({ auth }) {
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
             <Head title="Project Monitoring" />
-            <div className="py-2">
-                <div className="py-2">List of Project</div>
+            <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
+                <div className="py-2 text-lg font-bold uppercase">
+                    List of Project
+                </div>
+                <div className="bg-blue-500 text-md rounded font-bold text-white p-4 mb-4">
+                    Monitor the project progress here!
+                </div>
                 <div className="flex gap-2 mb-2">
                     <Search
                         placeholder="Input project name"
@@ -99,11 +104,11 @@ export default function Index({ auth }) {
                         <Empty description="No Project found" />
                     </div>
                 ) : (
-                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         {data.map((project) => (
                             <div
                                 key={project.id}
-                                className="bg-white shadow-lg flex flex-col justify-between rounded-lg overflow-hidden"
+                                className="bg-white shadow-lg flex flex-col justify-between rounded-lg overflow-hidden animate-fade-in delay-200 duration-1000"
                             >
                                 <div>
                                     <div className="relative">
@@ -146,7 +151,7 @@ export default function Index({ auth }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div>{project.name}</div>
+                                        <div className="font-bold text-md">{project.name}</div>
                                         <div className="mt-4">
                                             <Flex
                                                 wrap="wrap"

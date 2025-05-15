@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+.custom-ant-table .ant-table-thead > tr > th {
+  @apply bg-amber-300 font-bold transition-colors;
+}
+
+.custom-ant-table .ant-table-thead > tr > th:hover{
+  @apply bg-amber-200;
+}
+
+.custom-menu .ant-menu-item-selected {
+  @apply bg-amber-600 text-white ;
+}
+
+.custom-menu .ant-menu-item{
+  @apply  font-bold;
+}
+/* btn */
+
+/* overiding some antd styles */
+.primary-button {
+  background-color: #b45309 !important;
+  border: 1px solid #b45309 ;
+  color: white !important;
+}
+
+.primary-button:hover {
+  border: 1px solid #92400e !important;
+  background-color: #92400e !important;
+}
+
 /* Hide print content by default on screen */
 @media screen {
     .print-container {

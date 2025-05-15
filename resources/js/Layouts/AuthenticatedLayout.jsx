@@ -18,11 +18,10 @@ import { Footer } from "antd/es/layout/layout";
 const { Header, Sider, Content } = Layout;
 export default function AuthenticatedLayout({ auth, header, children }) {
     const [collapsed, setCollapsed] = useState(true);
-    
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-
 
     const currentRoute = route().current();
 
@@ -74,7 +73,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "staffone.project-monitoring",
             icon: <LineChartOutlined />,
         },
-    ];  
+    ];
 
     const staffTwoLinks = [
         {
@@ -97,7 +96,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <LineChartOutlined />,
         },
     ];
-    
+
     const engineerLinks = [
         {
             label: <Link href={route("dashboard")}>Dashboard</Link>,
@@ -113,7 +112,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "engineer.project-monitoring",
             icon: <LineChartOutlined />,
         },
-    ];  
+    ];
 
     const mayorLinks = [
         {
@@ -130,7 +129,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "mayor.project-monitoring",
             icon: <LineChartOutlined />,
         },
-    ];  
+    ];
 
     return (
         <Layout>
@@ -140,23 +139,26 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 breakpoint="lg"
                 collapsed={collapsed}
                 onCollapse={(collapsedValue) => setCollapsed(collapsedValue)}
-                style={{ minHeight: "100vh" }}
+                // style={{ minHeight: "100vh" }}
+                className="min-h-screen p-4 bg-orange-200"
+                width="300"
             >
-                <div className="w-full h-16 flex gap-2 items-center justify-center">
+                <div className="w-full flex justify-center mb-4">
                     <Avatar
-                        className="w-12 h-12"
+                        className={collapsed ? "w-12 h-12" : "w-32 h-32"}
                         shape="circle"
                         src="/images/tcepms.png"
                         alt="Tangub City Engineering Office Logo"
                     />
-                    <div className="font-bold text-lg text-gray-50 hidden lg:block">
+                    {/* <div className="font-bold text-lg text-gray-50 hidden lg:block">
                         TCEMPS
-                    </div>
+                    </div> */}
                 </div>
 
                 {auth.user.role === 0 && (
                     <Menu
-                        theme="dark"
+                        // theme="dark"
+                        className="custom-menu bg-orange-200"
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         selectedKeys={[currentRoute]}
@@ -165,7 +167,8 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 )}
                 {auth.user.role === 1 && (
                     <Menu
-                        theme="dark"
+                        // theme="dark"
+                        className="custom-menu bg-orange-200"
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         selectedKeys={[currentRoute]}
@@ -174,7 +177,8 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 )}
                 {auth.user.role === 2 && (
                     <Menu
-                        theme="dark"
+                        // theme="dark"
+                        className="custom-menu bg-orange-200"
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         selectedKeys={[currentRoute]}
@@ -183,7 +187,8 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 )}
                 {auth.user.role === 3 && (
                     <Menu
-                        theme="dark"
+                        // theme="dark"
+                        className="custom-menu bg-orange-200"
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         selectedKeys={[currentRoute]}
@@ -192,7 +197,8 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 )}
                 {auth.user.role === 4 && (
                     <Menu
-                        theme="dark"
+                        // theme="dark"
+                        className="custom-menu bg-orange-200"
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         selectedKeys={[currentRoute]}
@@ -201,7 +207,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 )}
             </Sider>
             <Layout>
-                <Header className="w-full bg-gray-50 px-0">
+                <Header className="w-full bg-white px-0">
                     <div className="w-full flex items-center justify-between">
                         <Button
                             type="text"
@@ -257,7 +263,8 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                                         <DownOutlined />
                                     </Space> */}
                                     <Avatar
-                                        size="medium"
+                                        className="border-orange-500"
+                                        size="large"
                                         icon={<UserOutlined />}
                                     />
                                 </a>
@@ -265,21 +272,22 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         </div>
                     </div>
                 </Header>
-                <div className="p-4">
+                {/* <div className="p-4">
                     <p className="text-gray-400">
                         Home / <span className="text-gray-700">{header}</span>{" "}
                     </p>
-                </div>
+                </div> */}
                 <Content
-                    style={{
-                        margin: "0 16px",
-                        padding: "2px",
-                        minHeight: "80vh",
-                        borderRadius: borderRadiusLG,
-                        // background: `url('/images/bgg.png')`,
-                        // backgroundSize: "cover",
-                        // backgroundPosition: "center",
-                    }}
+                    className="bg-orange-50"
+                    // style={{
+                    //     margin: "0 16px",
+                    //     padding: "2px",
+                    //     minHeight: "80vh",
+                    //     borderRadius: borderRadiusLG,
+                    //     // background: `url('/images/bgg.png')`,
+                    //     // backgroundSize: "cover",
+                    //     // backgroundPosition: "center",
+                    // }}
                 >
                     {children}
                 </Content>
@@ -294,4 +302,4 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             </Layout>
         </Layout>
     );
-};
+}
