@@ -17,6 +17,15 @@ class StaffTwoProjectUpdateController extends Controller
         ]);
     }
 
+    public function calendar($id)
+    {
+        $project = Project::with('updates')->findOrFail($id);
+
+        return inertia('StaffTwo/Monitoring/Update/UpdateCalendar',[
+            'project' => $project
+        ]);
+    }
+
     // public function getData($id)
     // {
     //     $projectDetails = Project::with(['siteEngineer','contructor','updates' => function($query) {

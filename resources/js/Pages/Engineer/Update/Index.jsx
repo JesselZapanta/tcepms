@@ -437,7 +437,7 @@ export default function Index({ auth, currentProject }) {
                             <Empty description="No updates available for this project" />
                         </div>
                     ) : (
-                        <div className="max-w-3xl">
+                        <div className="da">
                             <Timeline mode="left">
                                 {data.updates.map((update) => (
                                     <Timeline.Item key={update.id}>

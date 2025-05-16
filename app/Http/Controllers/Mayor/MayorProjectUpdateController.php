@@ -17,6 +17,15 @@ class MayorProjectUpdateController extends Controller
         ]);
     }
 
+    public function calendar($id)
+    {
+        $project = Project::with('updates')->findOrFail($id);
+
+        return inertia('Mayor/Monitoring/Update/UpdateCalendar',[
+            'project' => $project
+        ]);
+    }
+
     public function getData($id, Request $request)
     {
         $month = $request->month;

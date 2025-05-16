@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 import { UserOutlined } from "@ant-design/icons";
 
-
 export default function Dashboard({ auth }) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);

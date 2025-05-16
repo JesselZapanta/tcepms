@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mayor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,11 @@ class MayorProjectMonitoringController extends Controller
 {
     public function index()
     {
-        return inertia('Mayor/Monitoring/Index');
+        $categories = Category::where('status', 1)->get();
+        
+        return inertia('Mayor/Monitoring/Index', [
+            'categories' => $categories
+        ]);
     }
 
     public function getData(Request $request)
@@ -27,6 +32,7 @@ class MayorProjectMonitoringController extends Controller
             }
         ])
         // ->where('engineer', Auth::user()->id)
+        ->where('category', 'like', "{$request->filter}%")
         ->whereIn('status', ['Ongoing', 'Completed'])
         ->where('name', 'like', "{$request->search}%")
         ->orderBy('id', 'desc')

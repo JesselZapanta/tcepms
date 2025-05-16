@@ -180,6 +180,9 @@ Route::middleware(['auth', 'stafftwo','userStatus'])->group(function() {
     Route::get('/stafftwo/project-monitoring/getdata', [StaffTwoProjectMonitoringController::class, 'getData']);
 
     Route::get('/stafftwo/project-monitoring/project/{id}', [StaffTwoProjectUpdateController::class, 'index'])->name('stafftwo.project-update');
+    
+    Route::get('/stafftwo/project-monitoring/calendar/project/{id}', [StaffTwoProjectUpdateController::class, 'calendar'])->name('stafftwo.project-update-calendar');
+
     Route::get('/stafftwo/project-monitoring/project/getData/{id}', [StaffTwoProjectUpdateController::class, 'getData']);
 });
 
@@ -215,6 +218,7 @@ Route::middleware(['auth', 'mayor','userStatus'])->group(function() {
     Route::get('/mayor/project-monitoring/getdata', [MayorProjectMonitoringController::class, 'getData']);
 
     Route::get('/mayor/project-monitoring/project/{id}', [MayorProjectUpdateController::class, 'index'])->name('mayor.project-update');
+    Route::get('/mayor/project-monitoring/calendar/project/{id}', [MayorProjectUpdateController::class, 'calendar'])->name('mayor.project-update-calendar');
     Route::get('/mayor/project-monitoring/project/getData/{id}', [MayorProjectUpdateController::class, 'getData']);
 
 });
