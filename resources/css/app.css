@@ -5,6 +5,9 @@
 .custom-ant-table .ant-table-thead > tr > th {
   @apply bg-amber-300 font-bold transition-colors;
 }
+.custom-ant-table .ant-table-footer {
+  @apply bg-amber-100 font-bold;
+}
 
 .custom-ant-table .ant-table-thead > tr > th:hover{
   @apply bg-amber-200;
@@ -17,6 +20,11 @@
 .custom-menu .ant-menu-item{
   @apply  font-bold;
 }
+/* collaps */
+.ant-collapse-header{
+  @apply bg-amber-50 font-bold text-white ;
+}
+
 /* btn */
 
 /* overiding some antd styles */

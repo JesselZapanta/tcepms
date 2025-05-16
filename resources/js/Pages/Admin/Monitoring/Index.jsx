@@ -10,6 +10,7 @@ import {
     Tooltip,
     Button,
     Avatar,
+    Select,
 } from "antd";
 import Search from "antd/es/input/Search";
 import { SignatureOutlined, AppstoreAddOutlined } from "@ant-design/icons";
@@ -24,10 +25,11 @@ const contentStyle = {
     background: "#364d79",
 };
 
-export default function Index({ auth }) {
+export default function Index({ auth, categories }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("");
     const [searching, setSearching] = useState(false);
 
     const [pagination, setPagination] = useState({
@@ -46,7 +48,11 @@ export default function Index({ auth }) {
         }
         setLoading(true);
 
-        const params = [`search=${search}`, `page=${page}`].join("&");
+        const params = [
+                    `search=${search}`, 
+                    `page=${page}`,
+                    `filter=${filter}`,
+                ].join("&");
 
         try {
             const res = await axios.get(
@@ -68,7 +74,7 @@ export default function Index({ auth }) {
 
     useEffect(() => {
         getData(false);
-    }, []);
+    }, [filter]);
 
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
@@ -77,10 +83,26 @@ export default function Index({ auth }) {
                 <div className="py-2 text-lg font-bold uppercase">
                     List of Project
                 </div>
-                <div className="bg-blue-500 text-md rounded font-bold text-white p-4 mb-4">
+                <div className="bg-amber-300 font-bold  text-md rounded text-gray-700 p-4 mb-4">
                     Monitor the project progress here!
                 </div>
                 <div className="flex gap-2 mb-2">
+                    <Select
+                        defaultValue="All"
+                        className="w-40"
+                        showSearch
+                        onChange={(value) => setFilter(value)}
+                    >
+                        <Select.Option value="">All</Select.Option>
+                        {categories.map((category) => (
+                            <Select.Option
+                                key={category.id}
+                                value={category.name}
+                            >
+                                {category.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
                     <Search
                         placeholder="Input project name"
                         allowClear
@@ -151,7 +173,9 @@ export default function Index({ auth }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div className="font-bold text-md">{project.name}</div>
+                                        <div className="font-bold text-md">
+                                            {project.name}
+                                        </div>
                                         <div className="mt-4">
                                             <Flex
                                                 wrap="wrap"

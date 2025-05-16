@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,10 @@ class AdminProjectMonitoringController extends Controller
 {
     public function index()
     {
-        return inertia('Admin/Monitoring/Index');
+        $categories = Category::where('status', 1)->get();
+        return inertia('Admin/Monitoring/Index', [
+            'categories' => $categories
+        ]);
     }
 
     public function getData(Request $request)
@@ -26,7 +30,7 @@ class AdminProjectMonitoringController extends Controller
                 ->limit(1); // Fetch only the latest update per project
             }
         ])
-        // ->where('engineer', Auth::user()->id)
+        ->where('category', 'like', "{$request->filter}%")
         ->whereIn('status', ['Ongoing', 'Completed'])
         ->where('name', 'like', "{$request->search}%")
         ->orderBy('id', 'desc')

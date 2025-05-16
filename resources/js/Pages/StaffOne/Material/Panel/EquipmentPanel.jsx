@@ -1,4 +1,4 @@
-import { Button, Form, notification, Row, Space, Table } from "antd";
+import { Button, Form, InputNumber, notification, Row, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
@@ -7,6 +7,9 @@ import {
     EditOutlined,
     DeleteOutlined,
     QuestionCircleOutlined,
+    NumberOutlined,
+    CalendarOutlined,
+    DollarCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import { useEffect, useState } from "react";
@@ -207,7 +210,10 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Equipment Materials</div>
+            {/* <div className="py-2">List of Equipment Materials</div> */}
+            <div className="py-2 text-md font-bold uppercase">
+                List of Equipment Materials
+            </div>
             <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input equipment material"
@@ -227,6 +233,7 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
             </div>
             <div className="overflow-x-auto">
                 <Table
+                    className="mt-2 custom-ant-table"
                     loading={loading}
                     dataSource={data}
                     rowKey={(data) => data.id}
@@ -246,7 +253,7 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
                 >
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="ID"
                         dataIndex="id"
                         key="id"
@@ -254,29 +261,29 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
 
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Equipment"
                         dataIndex="equipment"
                         key="equipment"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="No. of Days"
                         dataIndex="no_of_days"
                         key="no_of_days"
-                        render={(value) => formatPeso(value)}
+                        // render={(value) => formatPeso(value)}
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Rate / Day"
                         dataIndex="rate"
                         key="rate"
@@ -284,7 +291,7 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Cost"
                         dataIndex="cost"
                         key="cost"
@@ -366,7 +373,7 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<NumberOutlined />}
                                     onChange={(e) =>
                                         setQuantity(Number(e.target.value) || 0)
                                     }
@@ -388,7 +395,7 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<CalendarOutlined />}
                                     onChange={(e) =>
                                         setNoOfDays(Number(e.target.value) || 0)
                                     }
@@ -404,13 +411,29 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
                                 help={errors?.rate ? errors?.rate[0] : ""}
                                 className="w-full"
                             >
-                                <Input
+                                {/* <Input
                                     type="number"
                                     prefix={<PhoneOutlined />}
                                     onChange={(e) =>
                                         setRate(Number(e.target.value) || 0)
                                     }
                                     className="w-full"
+                                /> */}
+                                <InputNumber
+                                    className="w-full"
+                                    onChange={(value) =>
+                                        setRate(Number(value) || 0)
+                                    }
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
+                                    }
+                                    parser={(value) =>
+                                        value.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -418,12 +441,26 @@ export default function EquipmentPanel({ project, costs, setCostChange }) {
                                 name="cost"
                                 className="w-full"
                             >
-                                <Input
+                                {/* <Input
                                     type="number"
                                     disabled
                                     // value={cost}
                                     prefix={<PhoneOutlined />}
                                     className="w-full"
+                                /> */}
+                                <InputNumber
+                                    disabled
+                                    className="w-full"
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
+                                    }
+                                    parser={(value) =>
+                                        value.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
                         </div>

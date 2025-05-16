@@ -53,10 +53,11 @@ class StaffOneProjectController extends Controller
             $data['actual_start_date'] = $data['start_date'] ?? null;
         }
 
-        Project::create($data);
+        $project = Project::create($data);
 
         return response()->json([
-            'status' => 'created'
+            'status' => 'created',
+            'project' => $project,
         ], 200);
     }
 
@@ -78,7 +79,8 @@ class StaffOneProjectController extends Controller
         $project->update($data);
 
         return response()->json([
-            'status' => 'updated'
+            'status' => 'updated',
+            'project' => $project,
         ], 200);
     }
 

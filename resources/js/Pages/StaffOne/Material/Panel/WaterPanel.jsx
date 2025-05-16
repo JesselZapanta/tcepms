@@ -1,4 +1,4 @@
-import { Button, Form, notification, Row, Select, Space, Table } from "antd";
+import { Button, Form, InputNumber, notification, Row, Select, Space, Table } from "antd";
 import Search from "antd/es/input/Search";
 import {
     PhoneOutlined,
@@ -7,6 +7,9 @@ import {
     EditOutlined,
     DeleteOutlined,
     QuestionCircleOutlined,
+    NumberOutlined,
+    DollarCircleOutlined,
+    TagOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import { useEffect, useState } from "react";
@@ -204,7 +207,9 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Water Works Materials</div>
+            <div className="py-2 text-md font-bold uppercase">
+                List of Water Works Materials
+            </div>
             <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input water material"
@@ -224,6 +229,7 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
             </div>
             <div className="overflow-x-auto">
                 <Table
+                    className="mt-2 custom-ant-table"
                     loading={loading}
                     dataSource={data}
                     rowKey={(data) => data.id}
@@ -254,7 +260,7 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                 >
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="ID"
                         dataIndex="id"
                         key="id"
@@ -262,28 +268,28 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
 
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Materials"
                         dataIndex="material"
                         key="material"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Unit"
                         dataIndex="unit"
                         key="unit"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="UNIT COST"
                         dataIndex="unit_cost"
                         key="unit_cost"
@@ -291,7 +297,7 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Cost"
                         dataIndex="cost"
                         key="cost"
@@ -372,6 +378,7 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                                 className="w-full"
                             >
                                 <Select
+                                    prefix={<TagOutlined />}
                                     options={[
                                         { value: "bag", label: "Bag" },
                                         {
@@ -384,6 +391,11 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                                             label: "Board Feet (bd.ft.)",
                                         },
                                         { value: "kg", label: "Kilogram (kg)" },
+                                        { value: "liter", label: "Liter (L)" },
+                                        {
+                                            value: "gallon",
+                                            label: "Gallon (gal)",
+                                        },
                                     ]}
                                     className="w-full"
                                 />
@@ -399,7 +411,7 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<NumberOutlined />}
                                     onChange={(e) =>
                                         setQuantity(Number(e.target.value) || 0)
                                     }
@@ -421,13 +433,29 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                                 }
                                 className="w-full"
                             >
-                                <Input
+                                {/* <Input
                                     type="number"
                                     prefix={<PhoneOutlined />}
                                     onChange={(e) =>
                                         setUnitCost(Number(e.target.value) || 0)
                                     }
                                     className="w-full"
+                                /> */}
+                                <InputNumber
+                                    className="w-full"
+                                    onChange={(value) =>
+                                        setUnitCost(Number(value) || 0)
+                                    }
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
+                                    }
+                                    parser={(value) =>
+                                        value.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -435,12 +463,26 @@ export default function ConcretePanel({ project, costs, setCostChange }) {
                                 name="cost"
                                 className="w-full"
                             >
-                                <Input
+                                {/* <Input
                                     type="number"
                                     disabled
                                     // value={cost}
                                     prefix={<PhoneOutlined />}
                                     className="w-full"
+                                /> */}
+                                <InputNumber
+                                    disabled
+                                    className="w-full"
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
+                                    }
+                                    parser={(value) =>
+                                        value.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
                         </div>

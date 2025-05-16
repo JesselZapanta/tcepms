@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import dayjs from "dayjs";
 import {
     Button,
@@ -154,6 +154,15 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                     values
                 );
                 if (res.data.status === "updated") {
+                    const project = res.data.project;
+
+                    if (project.contractual === 0) {
+                        router.visit(
+                            `/staffone/materials/index/${project.id}`
+                        );
+                        // console.log(project);
+                    }
+
                     handleCancel();
                     openNotification(
                         "success",
@@ -171,7 +180,14 @@ export default function Index({ auth, contructors, engineers, categories, funds 
             try {
                 const res = await axios.post("/staffone/project/store", values);
                 if (res.data.status === "created") {
-                    handleCancel();
+                    const project = res.data.project;
+
+                    if (project.contractual === 0) {
+                        router.visit(`/staffone/materials/index/${project.id}`);
+                        // console.log(project);
+                    }
+
+                    handleCancel(); // Close the modal
                     openNotification(
                         "success",
                         "bottomRight",
@@ -229,7 +245,7 @@ export default function Index({ auth, contructors, engineers, categories, funds 
     // };
 
     // Tracks the contractual status
-    const [con, setCon] = useState(0);
+    const [con, setCon] = useState();
 
     useEffect(() => {
         form.setFieldsValue({ status: con === 1 ? "Ongoing" : "Material" });
@@ -721,10 +737,16 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                     className="w-full"
                                 >
                                     <Select
+                                        showSearch
                                         options={engineers.map((engineer) => ({
                                             label: engineer.name,
                                             value: engineer.id,
                                         }))}
+                                        filterOption={(input, option) =>
+                                            option.label
+                                                .toLowerCase()
+                                                .includes(input.toLowerCase())
+                                        }
                                     />
                                 </Form.Item>
 

@@ -144,17 +144,14 @@ export default function Index({ auth, project }) {
             {/* <pre className="text-gray-900">
                 {JSON.stringify(costs, null, 2)}
             </pre> */}
-            <div className="py-2">
+            <div className="max-w-7xl p-4 mt-4 rounded bg-white mx-auto">
+                <div className="py-2 text-lg font-bold uppercase">
+                    Project Materials
+                </div>
                 {costs.projectDetails?.contractual === 1 ? (
-                    <Collapse
-                        defaultActiveKey={["2"]}
-                        items={collapseItems1}
-                    />
+                    <Collapse defaultActiveKey={["2"]} items={collapseItems1} />
                 ) : (
-                    <Collapse
-                        defaultActiveKey={["8"]}
-                        items={collapseItems2}
-                    />
+                    <Collapse defaultActiveKey={["8"]} items={collapseItems2} />
                 )}
             </div>
         </AuthenticatedLayout>
