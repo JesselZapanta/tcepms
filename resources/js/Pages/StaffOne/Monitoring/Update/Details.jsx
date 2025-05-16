@@ -86,16 +86,6 @@ export default function Details({ data }) {
             span: 3,
             children: data.location,
         },
-        // {
-        //     label: "Latitude",
-        //     span: 2,
-        //     children: data.latitude || "N/A",
-        // },
-        // {
-        //     label: "Longitude",
-        //     span: 1,
-        //     children: data.longitude || "N/A",
-        // },
         {
             label: "Engineer",
             span: 2,
@@ -104,7 +94,9 @@ export default function Details({ data }) {
         {
             label: "Constructor",
             span: 1,
-            children: data.contructor?.company_name,
+            children: data.contructor?.contractual
+                ? data.contructor?.company_name
+                : "Not Contructual",
         },
         {
             label: "Status",

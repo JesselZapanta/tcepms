@@ -88,6 +88,7 @@ Route::middleware(['auth','admin','userStatus'])->group(function() {
 
     Route::get('/admin/project-monitoring/project/{id}', [AdminProjectUpdateController::class, 'index'])->name('admin.project-update');
     Route::get('/admin/project-monitoring/project/getData/{id}', [AdminProjectUpdateController::class, 'getData']);
+    Route::get('/admin/project-monitoring/calendar/project/{id}', [AdminProjectUpdateController::class, 'calendar'])->name('admin.project-update-calendar');
 });
 
 Route::middleware(['auth', 'staffone','userStatus'])->group(function() {

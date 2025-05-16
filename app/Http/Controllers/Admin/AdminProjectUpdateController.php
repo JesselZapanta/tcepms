@@ -17,6 +17,14 @@ class AdminProjectUpdateController extends Controller
         ]);
     }
 
+    public function calendar($id)
+    {
+        $project = Project::with('updates')->findOrFail($id);
+
+        return inertia('Admin/Monitoring/Update/UpdateCalendar',[
+            'project' => $project
+        ]);
+    }
 
     public function getData($id, Request $request)
     {

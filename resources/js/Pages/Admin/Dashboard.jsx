@@ -49,12 +49,14 @@ export default function Dashboard({ auth }) {
                         <UserOutlined className="text-5xl mr-4" />
                         <div>
                             <div className="text-2xl uppercase">
-                                Welcome{" "}
+                                Welcome back, {" "}
                                 <span className="font-bold text-orange-500">
                                     {auth.user.name}
                                 </span>
                             </div>
-                            <p className="text-sm italic">Admin</p>
+                            <p className="text-sm italic">
+                                You are logged in as Administrator
+                            </p>
                         </div>
                     </div>
                     <div className="m-4 grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
@@ -102,51 +104,6 @@ export default function Dashboard({ auth }) {
                         </div>
                     </div>
                 </>
-
-                // <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
-                //     <Card>
-                //         <Statistic
-                //             title="Active Users"
-                //             value={data.activeUserCount}
-                //         />
-                //     </Card>
-                //     <Card>
-                //         <Statistic
-                //             title="Active Contractors"
-                //             value={data.activeContructorCount}
-                //         />
-                //     </Card>
-                //     <Card>
-                //         <Statistic
-                //             title="Total Projects"
-                //             value={data.projectCount}
-                //         />
-                //     </Card>
-                //     <Card>
-                //         <Statistic
-                //             title="Pending Materials"
-                //             value={data.pendingMaterials}
-                //         />
-                //     </Card>
-                //     <Card>
-                //         <Statistic
-                //             title="Pending Labors"
-                //             value={data.pendingLabors}
-                //         />
-                //     </Card>
-                //     <Card>
-                //         <Statistic
-                //             title="Ongoing Projects"
-                //             value={data.OngoingProjectCount}
-                //         />
-                //     </Card>
-                //     <Card>
-                //         <Statistic
-                //             title="Completed Projects"
-                //             value={data.CompletedProjectCount}
-                //         />
-                //     </Card>
-                // </div>
             )}
         </AuthenticatedLayout>
     );

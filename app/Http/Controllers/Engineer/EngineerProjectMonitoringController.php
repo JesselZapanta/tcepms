@@ -19,8 +19,6 @@ class EngineerProjectMonitoringController extends Controller
         ]);
     }
 
-    
-
     public function getData(Request $request)
     {
         return Project::with([
