@@ -23,6 +23,7 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'project_code' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
@@ -35,8 +36,8 @@ class ProjectStoreRequest extends FormRequest
             'latitude' => ['nullable', 'string', 'max:255'],
             'longitude' => ['nullable', 'string', 'max:255'],
             'engineer' => ['required','exists:users,id'],
-            'contructor' => ['required','exists:contructors,id'],
-            'category' => ['required', 'string', 'in:Roadwork,Building,Waterworks'],
+            'contructor' => ['nullable','exists:contructors,id'],
+            'category' => ['required', 'string'],
             // 'status' => ['required', 'string', 'in:Material,Labor,Ongoing,Completed'],        
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
             'contractual' => ['required', 'in:0,1'],

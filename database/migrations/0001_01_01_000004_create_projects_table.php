@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('project_code');
             $table->text('description');
 
             $table->string('start_date')->nullable();
@@ -26,11 +27,9 @@ return new class extends Migration
             $table->string('source')->nullable();
 
             $table->string('location');
-            $table->string('latitude')->nullable();
-            $table->string('longitude')->nullable();
 
             $table->foreignId('engineer')->constrained('users')->onDelete('cascade');
-            $table->foreignId('contructor')->constrained('contructors')->onDelete('cascade');
+            $table->foreignId('contructor')->nullable()->constrained('contructors')->onDelete('cascade');
             $table->tinyText('category');
             $table->tinyText('priority');
             $table->tinyInteger('contractual');

@@ -27,6 +27,7 @@ import {
     CompassOutlined,
     EnvironmentOutlined,
     UnorderedListOutlined,
+    CodeOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
@@ -35,7 +36,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function Index({ auth, contructors, engineers }) {
+export default function Index({ auth, contructors, engineers, categories, funds }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -44,6 +45,7 @@ export default function Index({ auth, contructors, engineers }) {
     const [searching, setSearching] = useState(false);
     const [sortField, setSortField] = useState("id");
     const [sortOrder, setSortOrder] = useState("desc");
+    const [filter, setFilter] = useState("");
 
     const getData = async (isSearch = false) => {
         if (isSearch) {
@@ -56,6 +58,7 @@ export default function Index({ auth, contructors, engineers }) {
             `search=${search}`,
             `sortField=${sortField}`,
             `sortOrder=${sortOrder}`,
+            `filter=${filter}`,
         ].join("&");
 
         try {
@@ -79,7 +82,7 @@ export default function Index({ auth, contructors, engineers }) {
 
     useEffect(() => {
         getData(false);
-    }, [page, sortField, sortOrder]);
+    }, [page, sortField, sortOrder, filter]);
 
     const [project, setProject] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,6 +111,7 @@ export default function Index({ auth, contructors, engineers }) {
 
         form.setFieldsValue({
             name: project.name,
+            project_code: project.project_code,
             description: project.description,
             start_date: project.start_date ? dayjs(project.start_date) : null,
             end_date: project.end_date ? dayjs(project.end_date) : null,
@@ -231,11 +235,19 @@ export default function Index({ auth, contructors, engineers }) {
         form.setFieldsValue({ status: con === 1 ? "Ongoing" : "Material" });
     }, [con]);
 
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+
+        return text;
+    };
+
     return (
         <AuthenticatedLayout header="Project Management" auth={auth}>
             <Head title="Project Management" />
             {contextHolder}
-            <div className="max-w-5xl p-4 mt-4 rounded bg-white mx-auto">
+            <div className="max-w-7xl p-4 mt-4 rounded bg-white mx-auto">
                 <div className="py-2 text-lg font-bold uppercase">
                     List of Project
                 </div>
@@ -248,13 +260,30 @@ export default function Index({ auth, contructors, engineers }) {
                         onChange={(e) => setSearch(e.target.value)}
                         onSearch={() => getData(true)}
                     />
-                    <Button
-                        type="primary"
-                        onClick={showCreateModal}
-                        icon={<PlusOutlined />}
-                    >
-                        New
-                    </Button>
+                    <div className="flex gap-2 items-center justify-between">
+                        <Select
+                            defaultValue="All"
+                            className="w-40"
+                            showSearch
+                            onChange={(value) => setFilter(value)}
+                        >
+                            <Option value="">All</Option>
+                            {categories.map((category) => (
+                                <Option key={category.id} value={category.name}>
+                                    {category.name}
+                                </Option>
+                            ))}
+                        </Select>
+
+                        <Button
+                            type="primary"
+                            onClick={showCreateModal}
+                            icon={<PlusOutlined />}
+                            className="self-start"
+                        >
+                            New
+                        </Button>
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <Table
@@ -274,16 +303,17 @@ export default function Index({ auth, contructors, engineers }) {
                         <Column
                             className="whitespace-nowrap bg-green"
                             //sorter={true}
-                            title="ID"
-                            dataIndex="id"
-                            key="id"
+                            title="CODE"
+                            dataIndex="project_code"
+                            key="project_code"
                         />
                         <Column
-                            className="whitespace-nowrap bg-white"
+                            className="whitespace-nowrap bg-white font-bold"
                             //sorter={true}
                             title="Project Name"
                             dataIndex="name"
                             key="name"
+                            render={(name) => truncate(name, 50)}
                         />
                         <Column
                             className="whitespace-nowrap bg-white"
@@ -435,6 +465,24 @@ export default function Index({ auth, contructors, engineers }) {
                                 />
                             </Form.Item>
                             <Form.Item
+                                label="PROJECT CODE"
+                                name="project_code"
+                                // Custom error handling
+                                validateStatus={
+                                    errors?.project_code ? "error" : ""
+                                }
+                                help={
+                                    errors?.project_code
+                                        ? errors.project_code[0]
+                                        : ""
+                                }
+                            >
+                                <Input
+                                    placeholder="Project Code"
+                                    prefix={<CodeOutlined />}
+                                />
+                            </Form.Item>
+                            <Form.Item
                                 label="DESCRIPTION"
                                 name="description"
                                 validateStatus={
@@ -542,10 +590,23 @@ export default function Index({ auth, contructors, engineers }) {
                                     }
                                     className="w-full"
                                 >
-                                    <Input
+                                    {/* <Input
                                         type="number"
                                         prefix={<DollarOutlined />}
                                         className="w-full"
+                                    /> */}
+                                    <InputNumber
+                                        className="w-full"
+                                        formatter={(value) =>
+                                            `${value}`.replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                        }
+                                        parser={(value) =>
+                                            value.replace(/\$\s?|(,*)/g, "")
+                                        }
+                                        prefix={<DollarOutlined />}
                                     />
                                 </Form.Item>
 
@@ -576,17 +637,11 @@ export default function Index({ auth, contructors, engineers }) {
                                     className="w-full"
                                 >
                                     <Select
-                                        options={[
-                                            {
-                                                value: "Government",
-                                                label: "Government",
-                                            },
-                                            {
-                                                value: "Private",
-                                                label: "Private",
-                                            },
-                                        ]}
-                                        className="w-full"
+                                        showSearch
+                                        options={funds.map((fund) => ({
+                                            label: fund.name,
+                                            value: fund.name,
+                                        }))}
                                     />
                                 </Form.Item>
                             </div>
@@ -674,62 +729,6 @@ export default function Index({ auth, contructors, engineers }) {
                                 </Form.Item>
 
                                 <Form.Item
-                                    label="CONTRUCTOR"
-                                    name="contructor"
-                                    validatecontructor={
-                                        errors?.contructor ? "error" : ""
-                                    }
-                                    help={
-                                        errors?.contructor
-                                            ? errors?.contructor[0]
-                                            : ""
-                                    }
-                                    className="w-full"
-                                >
-                                    <Select
-                                        options={contructors.map(
-                                            (contructor) => ({
-                                                label: contructor.company_name,
-                                                value: contructor.id,
-                                            })
-                                        )}
-                                    />
-                                </Form.Item>
-                            </div>
-
-                            <div className="flex md:flex-row flex-col gap-4">
-                                <Form.Item
-                                    label="CATEGORY"
-                                    name="category"
-                                    validateStatus={
-                                        errors?.category ? "error" : ""
-                                    }
-                                    help={
-                                        errors?.category
-                                            ? errors?.category[0]
-                                            : ""
-                                    }
-                                    className="w-full"
-                                >
-                                    <Select
-                                        options={[
-                                            {
-                                                value: "Roadwork",
-                                                label: "Roadwork",
-                                            },
-                                            {
-                                                value: "Building",
-                                                label: "Building",
-                                            },
-                                            {
-                                                value: "Waterworks",
-                                                label: "Waterworks",
-                                            },
-                                        ]}
-                                    />
-                                </Form.Item>
-
-                                <Form.Item
                                     label="PRIORITY"
                                     name="priority"
                                     validatepriority={
@@ -751,6 +750,46 @@ export default function Index({ auth, contructors, engineers }) {
                                             },
                                             { value: "Low", label: "Low" },
                                         ]}
+                                    />
+                                </Form.Item>
+                            </div>
+
+                            <div className="flex md:flex-row flex-col gap-4">
+                                <Form.Item
+                                    label="CATEGORY"
+                                    name="category"
+                                    validateStatus={
+                                        errors?.category ? "error" : ""
+                                    }
+                                    help={
+                                        errors?.category
+                                            ? errors?.category[0]
+                                            : ""
+                                    }
+                                    className="w-full"
+                                >
+                                    {/* <Select
+                                        options={[
+                                            {
+                                                value: "Roadwork",
+                                                label: "Roadwork",
+                                            },
+                                            {
+                                                value: "Building",
+                                                label: "Building",
+                                            },
+                                            {
+                                                value: "Waterworks",
+                                                label: "Waterworks",
+                                            },
+                                        ]}
+                                    /> */}
+                                    <Select
+                                        showSearch
+                                        options={categories.map((category) => ({
+                                            label: category.name,
+                                            value: category.name,
+                                        }))}
                                     />
                                 </Form.Item>
                             </div>
@@ -778,6 +817,40 @@ export default function Index({ auth, contructors, engineers }) {
                                         ]}
                                     />
                                 </Form.Item>
+
+                                {con === 1 && (
+                                    <Form.Item
+                                        label="CONTRUCTOR"
+                                        name="contructor"
+                                        validatecontructor={
+                                            errors?.contructor ? "error" : ""
+                                        }
+                                        help={
+                                            errors?.contructor
+                                                ? errors?.contructor[0]
+                                                : ""
+                                        }
+                                        className="w-full"
+                                    >
+                                        <Select
+                                            showSearch
+                                            placeholder="Select constructor"
+                                            options={contructors.map(
+                                                (contructor) => ({
+                                                    label: contructor.company_name,
+                                                    value: contructor.id,
+                                                })
+                                            )}
+                                            filterOption={(input, option) =>
+                                                option.label
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        input.toLowerCase()
+                                                    )
+                                            }
+                                        />
+                                    </Form.Item>
+                                )}
 
                                 {/* Status Dropdown */}
                                 <Form.Item

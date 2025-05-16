@@ -5,7 +5,9 @@ namespace App\Http\Controllers\StaffOne;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StaffOne\ProjectStoreRequest;
 use App\Http\Requests\StaffOne\ProjectUpdateRequest;
+use App\Models\Category;
 use App\Models\Contructor;
+use App\Models\Fund;
 use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
@@ -19,15 +21,21 @@ class StaffOneProjectController extends Controller
         $engineers = User::where('role', 3)
                         ->where('status', 1)
                         ->get(['id','name']);
+        $categories = Category::where('status', 1)->get();
+        $funds = Fund::where('status', 1)->get();
         return inertia('StaffOne/Project/Index',[
             'contructors' => $contructors,
-            'engineers' => $engineers
+            'engineers' => $engineers,
+            'categories' => $categories,
+            'funds' => $funds,
         ]);
     }
 
     public function getData(Request $request)
     {
         return Project::with(['siteEngineer:id,name'])
+                        // ->where('category', $request->filter)
+                        ->where('category', 'like', "{$request->filter}%")
                         ->where('name', 'like', "{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
@@ -38,6 +46,7 @@ class StaffOneProjectController extends Controller
         $data = $request->validated();
 
         if($data['contractual'] === 0){
+            $data['contructor'] = null;
             $data['status'] = 'Material';
         }else{
             $data['status'] = 'Ongoing';
@@ -57,6 +66,7 @@ class StaffOneProjectController extends Controller
 
         if($data['contractual'] === 0){
             $data['status'] = 'Material';
+            $data['contructor'] = null;
             $data['actual_start_date'] = null;
         }else{
             $data['status'] = 'Ongoing';

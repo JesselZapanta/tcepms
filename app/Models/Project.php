@@ -13,6 +13,7 @@ class Project extends Model
     protected $table = 'projects';
     protected $fillable = [
         'name',
+        'project_code',
         'description',
         'start_date',
         'end_date',
@@ -22,8 +23,6 @@ class Project extends Model
         'cost',
         'source',
         'location',
-        'latitude',
-        'longitude',
         'engineer',
         'contructor',
         'category',
