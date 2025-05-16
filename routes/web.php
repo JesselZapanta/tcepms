@@ -199,6 +199,8 @@ Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
     Route::put('/engineer/project-update/update/{id}', [EngineerProjectUpdateController::class, 'update']);
     Route::delete('/engineer/project-update/destroy/{id}', [EngineerProjectUpdateController::class, 'destroy']);
 
+    Route::get('/engineer/project-monitoring/calendar/project/{id}', [EngineerProjectUpdateController::class, 'calendar'])->name('engineer.project-update-calendar');
+
 
 });
 

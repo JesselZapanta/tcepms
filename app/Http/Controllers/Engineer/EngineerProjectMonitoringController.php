@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Engineer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,14 @@ class EngineerProjectMonitoringController extends Controller
 {
     public function index()
     {
-        return inertia('Engineer/Project/Index');
+        $categories = Category::where('status', 1)->get();
+
+        return inertia('Engineer/Project/Index', [
+            'categories' => $categories
+        ]);
     }
+
+    
 
     public function getData(Request $request)
     {
@@ -27,6 +34,7 @@ class EngineerProjectMonitoringController extends Controller
                 ->limit(1); // Fetch only the latest update per project
             }
         ])
+        ->where('category', 'like', "{$request->filter}%")
         ->where('engineer', Auth::user()->id)
         ->whereIn('status', ['Ongoing', 'Completed'])
         ->where('name', 'like', "{$request->search}%")

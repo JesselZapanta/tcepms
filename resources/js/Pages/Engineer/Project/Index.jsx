@@ -10,6 +10,7 @@ import {
     Tooltip,
     Button,
     Avatar,
+    Select,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -27,10 +28,11 @@ const contentStyle = {
     background: "#364d79",
 };
 
-export default function Index({ auth }) {
+export default function Index({ auth, categories }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("");
     const [searching, setSearching] = useState(false);
 
     const [pagination, setPagination] = useState({
@@ -49,7 +51,11 @@ export default function Index({ auth }) {
         }
         setLoading(true);
 
-        const params = [`search=${search}`, `page=${page}`].join("&");
+        const params = [
+            `search=${search}`,
+            `page=${page}`,
+            `filter=${filter}`,
+        ].join("&");
 
         try {
             const res = await axios.get(
@@ -71,14 +77,35 @@ export default function Index({ auth }) {
 
     useEffect(() => {
         getData(false);
-    }, []);
+    }, [filter]);
 
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
             <Head title="Project Monitoring" />
-            <div className="py-2">
-                <div className="py-2">List of Project</div>
+            <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
+                <div className="py-2 text-lg font-bold uppercase">
+                    List of Project
+                </div>
+                <div className="bg-amber-300 font-bold  text-md rounded text-gray-700 p-4 mb-4">
+                    Monitor the project progress here!
+                </div>
                 <div className="flex gap-2 mb-2">
+                    <Select
+                        defaultValue="All"
+                        className="w-40"
+                        showSearch
+                        onChange={(value) => setFilter(value)}
+                    >
+                        <Select.Option value="">All</Select.Option>
+                        {categories.map((category) => (
+                            <Select.Option
+                                key={category.id}
+                                value={category.name}
+                            >
+                                {category.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
                     <Search
                         placeholder="Input project name"
                         allowClear
@@ -102,7 +129,7 @@ export default function Index({ auth }) {
                         <Empty description="No Project found" />
                     </div>
                 ) : (
-                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         {data.map((project) => (
                             <div
                                 key={project.id}
@@ -149,7 +176,7 @@ export default function Index({ auth }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div>{project.name}</div>
+                                        <div className="font-bold text-md">{project.name}</div>
                                         <div className="mt-4">
                                             <Flex
                                                 wrap="wrap"

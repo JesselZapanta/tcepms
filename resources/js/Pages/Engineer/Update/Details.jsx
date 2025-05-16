@@ -103,7 +103,9 @@ export default function Details({ data }) {
         {
             label: "Constructor",
             span: 1,
-            children: data.contructor?.company_name,
+            children: data?.contractual
+                ? data.contructor?.company_name
+                : "Not Contructual",
         },
         {
             label: "Status",

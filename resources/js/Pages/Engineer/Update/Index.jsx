@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Flex,
     Progress,
@@ -24,6 +24,7 @@ import {
 } from "antd";
 
 import {
+    CalendarOutlined,
     DatabaseOutlined,
     DeleteOutlined,
     EditOutlined,
@@ -79,10 +80,10 @@ export default function Index({ auth, currentProject }) {
         }
 
         setYears(yearArray);
-    }, []); 
+    }, []);
 
     // console.log(latestUpdate);
-    
+
     //modals and forms
     const [project, setProject] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,18 +101,27 @@ export default function Index({ auth, currentProject }) {
         });
     };
 
-
     const showCreateModal = () => {
         setProject(null);
         setIsModalOpen(true);
         form.setFieldsValue({
             name: "",
             description: "",
-            excavation_progress: latestUpdate ? latestUpdate?.excavation_progress : 0,
-            concrete_works_progress: latestUpdate ? latestUpdate?.concrete_works_progress : 0,
-            water_works_progress: latestUpdate ? latestUpdate?.water_works_progress : 0,
-            metal_works_progress: latestUpdate ? latestUpdate?.metal_works_progress : 0,
-            cement_plaster_and_finishes_progress: latestUpdate ? latestUpdate?.cement_plaster_and_finishes_progress : 0,
+            excavation_progress: latestUpdate
+                ? latestUpdate?.excavation_progress
+                : 0,
+            concrete_works_progress: latestUpdate
+                ? latestUpdate?.concrete_works_progress
+                : 0,
+            water_works_progress: latestUpdate
+                ? latestUpdate?.water_works_progress
+                : 0,
+            metal_works_progress: latestUpdate
+                ? latestUpdate?.metal_works_progress
+                : 0,
+            cement_plaster_and_finishes_progress: latestUpdate
+                ? latestUpdate?.cement_plaster_and_finishes_progress
+                : 0,
         });
     };
 
@@ -141,7 +151,6 @@ export default function Index({ auth, currentProject }) {
             project_images: project_images,
         });
     };
-
 
     const handleSubmit = async (values) => {
         setProcessing(true);
@@ -215,19 +224,19 @@ export default function Index({ auth, currentProject }) {
             if (err.response.status === 422) {
                 message.error("Cannot delete the last image.");
             }
-
         }
     };
 
     const removeProjectImage = async ($filename) => {
-        try{
-            const res = await axios.post(`/engineer/project-images/remove-upload/${$filename}`);
+        try {
+            const res = await axios.post(
+                `/engineer/project-images/remove-upload/${$filename}`
+            );
 
             if (res.data.status === "remove") {
                 message.success("Image removed.");
             }
-
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     };
@@ -261,12 +270,12 @@ export default function Index({ auth, currentProject }) {
         onRemove(info) {
             if (project) {
                 deleteProjectImage(info.uid);
-                // console.log(info); 
+                // console.log(info);
             }
             removeProjectImage(info.response); // Remove from server
             setUploadedImages((prev) =>
                 prev.filter((image) => image !== info.response)
-            ); 
+            );
             return true;
         },
     };
@@ -282,7 +291,6 @@ export default function Index({ auth, currentProject }) {
         getData();
     };
 
-    
     const handleDelete = async (id) => {
         setLoading(true);
 
@@ -306,7 +314,7 @@ export default function Index({ auth, currentProject }) {
             setLoading(false);
         }
     };
-    
+
     function formatDate(updateDate) {
         const date = new Date(updateDate);
 
@@ -321,7 +329,7 @@ export default function Index({ auth, currentProject }) {
     }
 
     const componentRef = useRef();
-    
+
     const handlePrint = useReactToPrint({
         documentTitle: "Project Update Report",
         content: () => componentRef.current,
@@ -332,514 +340,569 @@ export default function Index({ auth, currentProject }) {
     //     documentTitle: "Project Update Report",
     //     content: () => componentRef.current,
     // });
-    
 
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
             {contextHolder}
-            <div className="py-2">
-                <Details data={data} />
-            </div>
-
-            <div className="flex md:flex-row flex-col py-2 gap-2 justify-end">
-                <div>Filters:</div>
-                <Select
-                    placeholder="Select a month"
-                    onChange={(value) => setMonth(value)}
-                    className="md:w-24 w-full"
-                >
-                    <Option value={0}>All</Option>
-                    <Option value={1}>January</Option>
-                    <Option value={2}>February</Option>
-                    <Option value={3}>March</Option>
-                    <Option value={4}>April</Option>
-                    <Option value={5}>May</Option>
-                    <Option value={6}>June</Option>
-                    <Option value={7}>July</Option>
-                    <Option value={8}>August</Option>
-                    <Option value={9}>September</Option>
-                    <Option value={10}>October</Option>
-                    <Option value={11}>November</Option>
-                    <Option value={12}>December</Option>
-                </Select>
-                <Select
-                    placeholder="Select a Year"
-                    onChange={(value) => setYear(value)}
-                    className="md:w-24 w-full"
-                >
-                    <Option value={0}>All</Option>
-                    {years.reverse().map((year) => (
-                        <Option key={year} value={year}>
-                            {year}
-                        </Option>
-                    ))}
-                </Select>
-                <Button
-                    className="md:w-24 w-full"
-                    onClick={() => handlePrint()}
-                    icon={<PrinterOutlined />}
-                >
-                    Print
-                </Button>
-                <Button
-                    className="md:w-32 w-full"
-                    type="primary"
-                    onClick={showCreateModal}
-                    icon={<PlusOutlined />}
-                >
-                    New Update
-                </Button>
-            </div>
-
-            {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
-            <div className="py-2">
-                <div ref={componentRef}>
-                    <Report formatDate={formatDate} project={data} />
+            <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
+                <div className="py-2 text-lg font-bold uppercase">
+                    Project Updates
                 </div>
-                {loading ? (
-                    <div className="flex justify-center items-center h-64">
-                        <Spin />
-                    </div>
-                ) : !data || !data.updates ? (
-                    <div className="flex justify-center items-center h-64">
-                        <Empty description="No Project found" />
-                    </div>
-                ) : data.updates.length === 0 ? (
-                    <div className="flex justify-center items-center h-64">
-                        <Empty description="No updates available for this project" />
-                    </div>
-                ) : (
-                    <Timeline mode="left">
-                        {data.updates.map((update) => (
-                            <Timeline.Item key={update.id}>
-                                <div className="p-4 bg-gray-100 rounded">
-                                    <div className="flex justify-between">
-                                        <Space direction="vertical">
-                                            <Text>
-                                                {formatDate(update.update_date)}
-                                            </Text>
-                                            <Text>{update.name}</Text>
-                                        </Space>
-                                        <Space>
-                                            {latestUpdate.latestUpdateId ===
-                                                update.id && (
-                                                <>
-                                                    <Button
-                                                        type="primary"
-                                                        shape="circle"
-                                                        icon={<EditOutlined />}
-                                                        onClick={() =>
-                                                            showEditModal(
-                                                                update
-                                                            )
-                                                        }
-                                                    ></Button>
-                                                    <Button
-                                                        danger
-                                                        shape="circle"
-                                                        icon={
-                                                            <DeleteOutlined />
-                                                        }
-                                                        onClick={() =>
-                                                            Modal.confirm({
-                                                                title: "Delete?",
-                                                                icon: (
-                                                                    <QuestionCircleOutlined />
-                                                                ),
-                                                                content:
-                                                                    "Are you sure you want to delete this data?",
-                                                                okText: "Yes",
-                                                                cancelText:
-                                                                    "No",
-                                                                onOk() {
-                                                                    handleDelete(
-                                                                        update.id
-                                                                    );
-                                                                },
-                                                            })
-                                                        }
-                                                    />
-                                                </>
-                                            )}
-                                        </Space>
-                                    </div>
-                                    <Divider />
+                <div className="py-2">
+                    <Details data={data} />
+                </div>
 
-                                    <div>{update.description}</div>
-                                    <Divider />
-                                    <div className="my-4 max-w-96">
-                                        <Flex wrap="wrap" vertical gap="small">
-                                            <Tooltip
-                                                title={`Progress is at ${update.excavation_progress}`}
-                                            >
-                                                <div>Excavation Progress</div>
-                                                <Progress
-                                                    percent={
-                                                        update.excavation_progress
-                                                    }
-                                                />
-                                            </Tooltip>
-                                            <Tooltip
-                                                title={`Progress is at ${update.concrete_works_progress}`}
-                                            >
-                                                <div>
-                                                    Concrete Works Progress
-                                                </div>
-                                                <Progress
-                                                    percent={
-                                                        update.concrete_works_progress
-                                                    }
-                                                />
-                                            </Tooltip>
-                                            <Tooltip
-                                                title={`Progress is at ${update.water_works_progress}`}
-                                            >
-                                                <div>Water Works Progress</div>
-                                                <Progress
-                                                    percent={
-                                                        update.water_works_progress
-                                                    }
-                                                />
-                                            </Tooltip>
-                                            <Tooltip
-                                                title={`Progress is at ${update.metal_works_progress}`}
-                                            >
-                                                <div>Metal Works Progress</div>
-                                                <Progress
-                                                    percent={
-                                                        update.metal_works_progress
-                                                    }
-                                                />
-                                            </Tooltip>
-                                            <Tooltip
-                                                title={`Progress is at ${update.cement_plaster_and_finishes_progress}`}
-                                            >
-                                                <div>
-                                                    Cement Plaster and Finishes
-                                                    Progress
-                                                </div>
-                                                <Progress
-                                                    percent={
-                                                        update.cement_plaster_and_finishes_progress
-                                                    }
-                                                />
-                                            </Tooltip>
-                                        </Flex>
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-4">
-                                        {update.images.map((image) => (
-                                            <a
-                                                key={image.id}
-                                                href={`/storage/project_images/${image.file_path}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <Avatar
-                                                    shape="square"
-                                                    size={92}
-                                                    src={`/storage/project_images/${image.file_path}`}
-                                                />
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            </Timeline.Item>
-                        ))}
-                    </Timeline>
-                )}
-            </div>
-            {/* Modal */}
-            <Modal
-                title="Update"
-                open={isModalOpen}
-                onCancel={handleCancel}
-                maskClosable={false}
-                width={800}
-                footer={null}
-                className="overflow-hidden"
-            >
-                <Form
-                    form={form}
-                    onFinish={handleSubmit}
-                    layout="vertical"
-                    autoComplete="off"
-                >
-                    <Form.Item
-                        label="UPDATE NAME"
-                        name="name"
-                        // Custom error handling
-                        validateStatus={errors?.name ? "error" : ""}
-                        help={errors?.name ? errors.name[0] : ""}
+                <div className="flex md:flex-row flex-col py-2 gap-2 justify-between">
+                    {/* <div>Filters:</div> */}
+                    <Button
+                        className="md:w-32 w-full"
+                        type="primary"
+                        onClick={showCreateModal}
+                        icon={<PlusOutlined />}
                     >
-                        <Input
-                            placeholder="Update name"
-                            prefix={<DatabaseOutlined />}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        label="DESCRIPTION"
-                        name="description"
-                        validateStatus={errors?.description ? "error" : ""}
-                        help={errors?.description ? errors?.description[0] : ""}
-                    >
-                        <TextArea
-                            placeholder="Project Description"
-                            allowClear
-                            rows={4}
-                        />
-                    </Form.Item>
+                        New Update
+                    </Button>
 
-                    <Form.Item
-                        label="EXCAVATION PROGRESS"
-                        name="excavation_progress"
-                        validateStatus={
-                            errors?.excavation_progress ? "error" : ""
-                        }
-                        help={
-                            errors?.excavation_progress
-                                ? errors.excavation_progress[0]
-                                : ""
-                        }
-                    >
-                        <Slider
-                            min={
-                                latestUpdate
-                                    ? latestUpdate.excavation_progress
-                                    : 0
-                            }
-                            max={100}
-                            marks={
-                                latestUpdate?.excavation_progress === 100
-                                    ? { 100: "100%" }
-                                    : {
-                                          ...(latestUpdate
-                                              ? {
-                                                    [latestUpdate.excavation_progress]: `${latestUpdate.excavation_progress}%`,
-                                                }
-                                              : { 0: "0%" }),
-                                          ...Array.from(
-                                              { length: 10 },
-                                              (_, i) => i * 10
-                                          ).reduce((acc, value) => {
-                                              acc[value] = `${value}%`;
-                                              return acc;
-                                          }, {}),
-                                          100: "100%",
-                                      }
-                            }
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="CONCRETE WORKS PROGRESS"
-                        name="concrete_works_progress"
-                        validateStatus={
-                            errors?.concrete_works_progress ? "error" : ""
-                        }
-                        help={
-                            errors?.concrete_works_progress
-                                ? errors.concrete_works_progress[0]
-                                : ""
-                        }
-                    >
-                        <Slider
-                            min={
-                                latestUpdate
-                                    ? latestUpdate.concrete_works_progress
-                                    : 0
-                            }
-                            max={100}
-                            marks={
-                                latestUpdate?.concrete_works_progress === 100
-                                    ? { 100: "100%" }
-                                    : {
-                                          ...(latestUpdate
-                                              ? {
-                                                    [latestUpdate.concrete_works_progress]: `${latestUpdate.concrete_works_progress}%`,
-                                                }
-                                              : { 0: "0%" }),
-                                          ...Array.from(
-                                              { length: 10 },
-                                              (_, i) => i * 10
-                                          ).reduce((acc, value) => {
-                                              acc[value] = `${value}%`;
-                                              return acc;
-                                          }, {}),
-                                          100: "100%",
-                                      }
-                            }
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="WATER WORKS PROGRESS"
-                        name="water_works_progress"
-                        validateStatus={
-                            errors?.water_works_progress ? "error" : ""
-                        }
-                        help={
-                            errors?.water_works_progress
-                                ? errors.water_works_progress[0]
-                                : ""
-                        }
-                    >
-                        <Slider
-                            min={
-                                latestUpdate
-                                    ? latestUpdate.water_works_progress
-                                    : 0
-                            }
-                            max={100}
-                            marks={
-                                latestUpdate?.water_works_progress === 100
-                                    ? { 100: "100%" }
-                                    : {
-                                          ...(latestUpdate
-                                              ? {
-                                                    [latestUpdate.water_works_progress]: `${latestUpdate.water_works_progress}%`,
-                                                }
-                                              : { 0: "0%" }),
-                                          ...Array.from(
-                                              { length: 10 },
-                                              (_, i) => i * 10
-                                          ).reduce((acc, value) => {
-                                              acc[value] = `${value}%`;
-                                              return acc;
-                                          }, {}),
-                                          100: "100%",
-                                      }
-                            }
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="METAL WORKS PROGRESS"
-                        name="metal_works_progress"
-                        validateStatus={
-                            errors?.metal_works_progress ? "error" : ""
-                        }
-                        help={
-                            errors?.metal_works_progress
-                                ? errors.metal_works_progress[0]
-                                : ""
-                        }
-                    >
-                        <Slider
-                            min={
-                                latestUpdate
-                                    ? latestUpdate.metal_works_progress
-                                    : 0
-                            }
-                            max={100}
-                            marks={
-                                latestUpdate?.metal_works_progress === 100
-                                    ? { 100: "100%" }
-                                    : {
-                                          ...(latestUpdate
-                                              ? {
-                                                    [latestUpdate.metal_works_progress]: `${latestUpdate.metal_works_progress}%`,
-                                                }
-                                              : { 0: "0%" }),
-                                          ...Array.from(
-                                              { length: 10 },
-                                              (_, i) => i * 10
-                                          ).reduce((acc, value) => {
-                                              acc[value] = `${value}%`;
-                                              return acc;
-                                          }, {}),
-                                          100: "100%",
-                                      }
-                            }
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="CEMENT PLASTER & FINISHES PROGRESS"
-                        name="cement_plaster_and_finishes_progress"
-                        validateStatus={
-                            errors?.cement_plaster_and_finishes_progress
-                                ? "error"
-                                : ""
-                        }
-                        help={
-                            errors?.cement_plaster_and_finishes_progress
-                                ? errors.cement_plaster_and_finishes_progress[0]
-                                : ""
-                        }
-                    >
-                        <Slider
-                            min={
-                                latestUpdate
-                                    ? latestUpdate.cement_plaster_and_finishes_progress
-                                    : 0
-                            }
-                            max={100}
-                            marks={
-                                latestUpdate?.cement_plaster_and_finishes_progress ===
-                                100
-                                    ? { 100: "100%" }
-                                    : {
-                                          ...(latestUpdate
-                                              ? {
-                                                    [latestUpdate.cement_plaster_and_finishes_progress]: `${latestUpdate.cement_plaster_and_finishes_progress}%`,
-                                                }
-                                              : { 0: "0%" }),
-                                          ...Array.from(
-                                              { length: 10 },
-                                              (_, i) => i * 10
-                                          ).reduce((acc, value) => {
-                                              acc[value] = `${value}%`;
-                                              return acc;
-                                          }, {}),
-                                          100: "100%",
-                                      }
-                            }
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="PROJECT IMAGES"
-                        name="project_images"
-                        valuePropName="fileList"
-                        className="w-full"
-                        getValueFromEvent={(e) =>
-                            Array.isArray(e) ? e : e?.fileList
-                        }
-                        validateStatus={errors?.project_images ? "error" : ""}
-                        help={
-                            errors?.project_images
-                                ? errors.project_images[0]
-                                : ""
-                        }
-                    >
-                        <Upload listType="picture" multiple {...Uploadprops}>
-                            <Button icon={<UploadOutlined />}>
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                    </Form.Item>
-
-                    <Row justify="end">
-                        <Space size="small">
-                            <Button type="default" onClick={handleCancel}>
-                                Cancel
-                            </Button>
-
+                    <div className="flex gap-2 md:flex-row flex-col">
+                        <Link
+                            href={route(
+                                "engineer.project-update-calendar",
+                                currentProject.id
+                            )}
+                        >
                             <Button
-                                htmlType="submit"
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                disabled={processing}
-                                loading={processing}
+                                className="md:w-24 w-full"
+                                icon={<CalendarOutlined />}
                             >
-                                Saved
+                                Calendar
                             </Button>
-                        </Space>
-                    </Row>
-                </Form>
-            </Modal>
+                        </Link>
+                        <Select
+                            placeholder="Select a month"
+                            onChange={(value) => setMonth(value)}
+                            className="md:w-24 w-full"
+                        >
+                            <Option value={0}>All</Option>
+                            <Option value={1}>January</Option>
+                            <Option value={2}>February</Option>
+                            <Option value={3}>March</Option>
+                            <Option value={4}>April</Option>
+                            <Option value={5}>May</Option>
+                            <Option value={6}>June</Option>
+                            <Option value={7}>July</Option>
+                            <Option value={8}>August</Option>
+                            <Option value={9}>September</Option>
+                            <Option value={10}>October</Option>
+                            <Option value={11}>November</Option>
+                            <Option value={12}>December</Option>
+                        </Select>
+                        <Select
+                            placeholder="Select a Year"
+                            onChange={(value) => setYear(value)}
+                            className="md:w-24 w-full"
+                        >
+                            <Option value={0}>All</Option>
+                            {years.reverse().map((year) => (
+                                <Option key={year} value={year}>
+                                    {year}
+                                </Option>
+                            ))}
+                        </Select>
+                        <Button
+                            className="md:w-24 w-full"
+                            onClick={() => handlePrint()}
+                            icon={<PrinterOutlined />}
+                        >
+                            Print
+                        </Button>
+                    </div>
+                </div>
+
+                {/* <pre className="text-gray-900">{JSON.stringify(data, null, 2)}</pre> */}
+                <div className="py-2 mt-4">
+                    <div ref={componentRef}>
+                        <Report formatDate={formatDate} project={data} />
+                    </div>
+                    {loading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <Spin />
+                        </div>
+                    ) : !data || !data.updates ? (
+                        <div className="flex justify-center items-center h-64">
+                            <Empty description="No Project found" />
+                        </div>
+                    ) : data.updates.length === 0 ? (
+                        <div className="flex justify-center items-center h-64">
+                            <Empty description="No updates available for this project" />
+                        </div>
+                    ) : (
+                        <div className="max-w-3xl">
+                            <Timeline mode="left">
+                                {data.updates.map((update) => (
+                                    <Timeline.Item key={update.id}>
+                                        <div className="p-4 bg-gray-100 rounded">
+                                            <div className="flex justify-between">
+                                                <Space direction="vertical">
+                                                    <Text className="font-bold text-xl">
+                                                        {update.name}
+                                                    </Text>
+                                                    <Text>
+                                                        {formatDate(
+                                                            update.update_date
+                                                        )}
+                                                    </Text>
+                                                </Space>
+                                                <Space>
+                                                    {latestUpdate.latestUpdateId ===
+                                                        update.id && (
+                                                        <>
+                                                            <Button
+                                                                type="primary"
+                                                                shape="circle"
+                                                                icon={
+                                                                    <EditOutlined />
+                                                                }
+                                                                onClick={() =>
+                                                                    showEditModal(
+                                                                        update
+                                                                    )
+                                                                }
+                                                            ></Button>
+                                                            <Button
+                                                                danger
+                                                                shape="circle"
+                                                                icon={
+                                                                    <DeleteOutlined />
+                                                                }
+                                                                onClick={() =>
+                                                                    Modal.confirm(
+                                                                        {
+                                                                            title: "Delete?",
+                                                                            icon: (
+                                                                                <QuestionCircleOutlined />
+                                                                            ),
+                                                                            content:
+                                                                                "Are you sure you want to delete this data?",
+                                                                            okText: "Yes",
+                                                                            cancelText:
+                                                                                "No",
+                                                                            onOk() {
+                                                                                handleDelete(
+                                                                                    update.id
+                                                                                );
+                                                                            },
+                                                                        }
+                                                                    )
+                                                                }
+                                                            />
+                                                        </>
+                                                    )}
+                                                </Space>
+                                            </div>
+                                            <Divider />
+
+                                            <div className="text-justify text-lg">
+                                                {update.description}
+                                            </div>
+                                            <Divider />
+                                            <div className="my-4 max-w-96">
+                                                <Flex
+                                                    wrap="wrap"
+                                                    vertical
+                                                    gap="small"
+                                                >
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.excavation_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Excavation Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.excavation_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.concrete_works_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Concrete Works
+                                                            Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.concrete_works_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.water_works_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Water Works Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.water_works_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.metal_works_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Metal Works Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.metal_works_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.cement_plaster_and_finishes_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Cement Plaster and
+                                                            Finishes Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.cement_plaster_and_finishes_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                </Flex>
+                                            </div>
+
+                                            <div className="flex flex-wrap gap-4">
+                                                {update.images.map((image) => (
+                                                    <a
+                                                        key={image.id}
+                                                        href={`/storage/project_images/${image.file_path}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <Avatar
+                                                            shape="square"
+                                                            size={92}
+                                                            src={`/storage/project_images/${image.file_path}`}
+                                                        />
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </Timeline.Item>
+                                ))}
+                            </Timeline>
+                        </div>
+                    )}
+                </div>
+                {/* Modal */}
+                <Modal
+                    title="Update"
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    maskClosable={false}
+                    width={800}
+                    footer={null}
+                    className="overflow-hidden"
+                >
+                    <Form
+                        form={form}
+                        onFinish={handleSubmit}
+                        layout="vertical"
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            label="UPDATE NAME"
+                            name="name"
+                            // Custom error handling
+                            validateStatus={errors?.name ? "error" : ""}
+                            help={errors?.name ? errors.name[0] : ""}
+                        >
+                            <Input
+                                placeholder="Update name"
+                                prefix={<DatabaseOutlined />}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            label="DESCRIPTION"
+                            name="description"
+                            validateStatus={errors?.description ? "error" : ""}
+                            help={
+                                errors?.description
+                                    ? errors?.description[0]
+                                    : ""
+                            }
+                        >
+                            <TextArea
+                                placeholder="Project Description"
+                                allowClear
+                                rows={4}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="EXCAVATION PROGRESS"
+                            name="excavation_progress"
+                            validateStatus={
+                                errors?.excavation_progress ? "error" : ""
+                            }
+                            help={
+                                errors?.excavation_progress
+                                    ? errors.excavation_progress[0]
+                                    : ""
+                            }
+                        >
+                            <Slider
+                                min={
+                                    latestUpdate
+                                        ? latestUpdate.excavation_progress
+                                        : 0
+                                }
+                                max={100}
+                                marks={
+                                    latestUpdate?.excavation_progress === 100
+                                        ? { 100: "100%" }
+                                        : {
+                                              ...(latestUpdate
+                                                  ? {
+                                                        [latestUpdate.excavation_progress]: `${latestUpdate.excavation_progress}%`,
+                                                    }
+                                                  : { 0: "0%" }),
+                                              ...Array.from(
+                                                  { length: 10 },
+                                                  (_, i) => i * 10
+                                              ).reduce((acc, value) => {
+                                                  acc[value] = `${value}%`;
+                                                  return acc;
+                                              }, {}),
+                                              100: "100%",
+                                          }
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="CONCRETE WORKS PROGRESS"
+                            name="concrete_works_progress"
+                            validateStatus={
+                                errors?.concrete_works_progress ? "error" : ""
+                            }
+                            help={
+                                errors?.concrete_works_progress
+                                    ? errors.concrete_works_progress[0]
+                                    : ""
+                            }
+                        >
+                            <Slider
+                                min={
+                                    latestUpdate
+                                        ? latestUpdate.concrete_works_progress
+                                        : 0
+                                }
+                                max={100}
+                                marks={
+                                    latestUpdate?.concrete_works_progress ===
+                                    100
+                                        ? { 100: "100%" }
+                                        : {
+                                              ...(latestUpdate
+                                                  ? {
+                                                        [latestUpdate.concrete_works_progress]: `${latestUpdate.concrete_works_progress}%`,
+                                                    }
+                                                  : { 0: "0%" }),
+                                              ...Array.from(
+                                                  { length: 10 },
+                                                  (_, i) => i * 10
+                                              ).reduce((acc, value) => {
+                                                  acc[value] = `${value}%`;
+                                                  return acc;
+                                              }, {}),
+                                              100: "100%",
+                                          }
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="WATER WORKS PROGRESS"
+                            name="water_works_progress"
+                            validateStatus={
+                                errors?.water_works_progress ? "error" : ""
+                            }
+                            help={
+                                errors?.water_works_progress
+                                    ? errors.water_works_progress[0]
+                                    : ""
+                            }
+                        >
+                            <Slider
+                                min={
+                                    latestUpdate
+                                        ? latestUpdate.water_works_progress
+                                        : 0
+                                }
+                                max={100}
+                                marks={
+                                    latestUpdate?.water_works_progress === 100
+                                        ? { 100: "100%" }
+                                        : {
+                                              ...(latestUpdate
+                                                  ? {
+                                                        [latestUpdate.water_works_progress]: `${latestUpdate.water_works_progress}%`,
+                                                    }
+                                                  : { 0: "0%" }),
+                                              ...Array.from(
+                                                  { length: 10 },
+                                                  (_, i) => i * 10
+                                              ).reduce((acc, value) => {
+                                                  acc[value] = `${value}%`;
+                                                  return acc;
+                                              }, {}),
+                                              100: "100%",
+                                          }
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="METAL WORKS PROGRESS"
+                            name="metal_works_progress"
+                            validateStatus={
+                                errors?.metal_works_progress ? "error" : ""
+                            }
+                            help={
+                                errors?.metal_works_progress
+                                    ? errors.metal_works_progress[0]
+                                    : ""
+                            }
+                        >
+                            <Slider
+                                min={
+                                    latestUpdate
+                                        ? latestUpdate.metal_works_progress
+                                        : 0
+                                }
+                                max={100}
+                                marks={
+                                    latestUpdate?.metal_works_progress === 100
+                                        ? { 100: "100%" }
+                                        : {
+                                              ...(latestUpdate
+                                                  ? {
+                                                        [latestUpdate.metal_works_progress]: `${latestUpdate.metal_works_progress}%`,
+                                                    }
+                                                  : { 0: "0%" }),
+                                              ...Array.from(
+                                                  { length: 10 },
+                                                  (_, i) => i * 10
+                                              ).reduce((acc, value) => {
+                                                  acc[value] = `${value}%`;
+                                                  return acc;
+                                              }, {}),
+                                              100: "100%",
+                                          }
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="CEMENT PLASTER & FINISHES PROGRESS"
+                            name="cement_plaster_and_finishes_progress"
+                            validateStatus={
+                                errors?.cement_plaster_and_finishes_progress
+                                    ? "error"
+                                    : ""
+                            }
+                            help={
+                                errors?.cement_plaster_and_finishes_progress
+                                    ? errors
+                                          .cement_plaster_and_finishes_progress[0]
+                                    : ""
+                            }
+                        >
+                            <Slider
+                                min={
+                                    latestUpdate
+                                        ? latestUpdate.cement_plaster_and_finishes_progress
+                                        : 0
+                                }
+                                max={100}
+                                marks={
+                                    latestUpdate?.cement_plaster_and_finishes_progress ===
+                                    100
+                                        ? { 100: "100%" }
+                                        : {
+                                              ...(latestUpdate
+                                                  ? {
+                                                        [latestUpdate.cement_plaster_and_finishes_progress]: `${latestUpdate.cement_plaster_and_finishes_progress}%`,
+                                                    }
+                                                  : { 0: "0%" }),
+                                              ...Array.from(
+                                                  { length: 10 },
+                                                  (_, i) => i * 10
+                                              ).reduce((acc, value) => {
+                                                  acc[value] = `${value}%`;
+                                                  return acc;
+                                              }, {}),
+                                              100: "100%",
+                                          }
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="PROJECT IMAGES"
+                            name="project_images"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.project_images ? "error" : ""
+                            }
+                            help={
+                                errors?.project_images
+                                    ? errors.project_images[0]
+                                    : ""
+                            }
+                        >
+                            <Upload
+                                listType="picture"
+                                multiple
+                                {...Uploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
+
+                        <Row justify="end">
+                            <Space size="small">
+                                <Button type="default" onClick={handleCancel}>
+                                    Cancel
+                                </Button>
+
+                                <Button
+                                    htmlType="submit"
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                    disabled={processing}
+                                    loading={processing}
+                                >
+                                    Saved
+                                </Button>
+                            </Space>
+                        </Row>
+                    </Form>
+                </Modal>
+            </div>
         </AuthenticatedLayout>
     );
 }
