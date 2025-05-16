@@ -30,9 +30,9 @@ class AdminProjectMonitoringController extends Controller
                 ->limit(1); // Fetch only the latest update per project
             }
         ])
-        ->where('category', 'like', "{$request->filter}%")
+        ->where('category', 'like', "%{$request->filter}%")
         ->whereIn('status', ['Ongoing', 'Completed'])
-        ->where('name', 'like', "{$request->search}%")
+        ->where('name', 'like', "%{$request->search}%")
         ->orderBy('id', 'desc')
         ->paginate(10);
     }

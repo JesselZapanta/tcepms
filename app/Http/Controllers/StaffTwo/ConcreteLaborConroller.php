@@ -14,7 +14,7 @@ class ConcreteLaborConroller extends Controller
     public function getData(Request $request)
     {
         return ConcreteLabor::where('project' , $request->project)
-                        ->where('position', 'like', "{$request->search}%")
+                        ->where('position', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

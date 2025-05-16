@@ -77,7 +77,7 @@ class EquipmentController extends Controller
     public function getData(Request $request)
     {
         return Equipment::where('project' , $request->project)
-                        ->where('equipment', 'like', "{$request->search}%")
+                        ->where('equipment', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

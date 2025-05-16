@@ -77,7 +77,7 @@ class MetalController extends Controller
     public function getData(Request $request)
     {
         return Metal::where('project' , $request->project)
-                        ->where('material', 'like', "{$request->search}%")
+                        ->where('material', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

@@ -33,7 +33,7 @@ class StaffTwoProjectMonitoringController extends Controller
         // ->where('engineer', Auth::user()->id)
         ->where('category', 'like', "{$request->filter}%")
         ->whereIn('status', ['Ongoing', 'Completed'])
-        ->where('name', 'like', "{$request->search}%")
+        ->where('name', 'like', "%{$request->search}%")
         ->orderBy('id', 'desc')
         ->paginate(10);
     }

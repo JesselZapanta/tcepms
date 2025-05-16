@@ -27,7 +27,7 @@ class StaffTwoProjectController extends Controller
     {
         return Project::with(['siteEngineer:id,name'])
                         ->where('category', 'like', "{$request->filter}%")
-                        ->where('name', 'like', "{$request->search}%")
+                        ->where('name', 'like', "%{$request->search}%")
                         ->whereIn('status', ['Labor', 'Ongoing', 'Completed'])
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);

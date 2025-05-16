@@ -14,7 +14,7 @@ class MetalLaborController extends Controller
     public function getData(Request $request)
     {
         return MetalLabor::where('project' , $request->project)
-                        ->where('position', 'like', "{$request->search}%")
+                        ->where('position', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

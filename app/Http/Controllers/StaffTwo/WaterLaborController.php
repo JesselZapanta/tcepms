@@ -14,7 +14,7 @@ class WaterLaborController extends Controller
     public function getData(Request $request)
     {
         return WaterLabor::where('project' , $request->project)
-                        ->where('position', 'like', "{$request->search}%")
+                        ->where('position', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }

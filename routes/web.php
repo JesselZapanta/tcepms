@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminContructorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminFundController;
 use App\Http\Controllers\Admin\AdminProjectMonitoringController;
 use App\Http\Controllers\Admin\AdminProjectUpdateController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -79,6 +81,18 @@ Route::middleware(['auth','admin','userStatus'])->group(function() {
     Route::post('/admin/contructor/store', [AdminContructorController::class, 'store']);
     Route::put('/admin/contructor/update/{id}', [AdminContructorController::class, 'update']);
     Route::delete('/admin/contructor/destroy/{id}', [AdminContructorController::class, 'destroy']);
+
+    Route::get('/admin/category', [AdminCategoryController::class, 'index'])->name('admin.category');
+    Route::get('/admin/category/getdata', [AdminCategoryController::class, 'getData']);
+    Route::post('/admin/category/store', [AdminCategoryController::class, 'store']);
+    Route::put('/admin/category/update/{id}', [AdminCategoryController::class, 'update']);
+    Route::delete('/admin/category/destroy/{id}', [AdminCategoryController::class, 'destroy']);
+
+    Route::get('/admin/fund', [AdminFundController::class, 'index'])->name('admin.fund');
+    Route::get('/admin/fund/getdata', [AdminFundController::class, 'getData']);
+    Route::post('/admin/fund/store', [AdminFundController::class, 'store']);
+    Route::put('/admin/fund/update/{id}', [AdminFundController::class, 'update']);
+    Route::delete('/admin/fund/destroy/{id}', [AdminFundController::class, 'destroy']);
 
     Route::get('/admin/contructor/project/{id}', [AdminContructorController::class, 'project'])->name('admin.contructor-project');
     Route::get('/admin/contructor/getprojects', [AdminContructorController::class, 'getprojects']);

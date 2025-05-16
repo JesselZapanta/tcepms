@@ -3,12 +3,15 @@ import {
     AppstoreOutlined,
     BankOutlined,
     DashboardOutlined,
+    DollarCircleOutlined,
     DownOutlined,
     LineChartOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    MoneyCollectOutlined,
     ProjectOutlined,
+    TagsOutlined,
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
@@ -41,6 +44,16 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             label: <Link href={route("admin.contructor")}>Contructor</Link>,
             key: "admin.contructor",
             icon: <BankOutlined />,
+        },
+        {
+            label: <Link href={route("admin.category")}>Category</Link>,
+            key: "admin.category",
+            icon: <TagsOutlined />,
+        },
+        {
+            label: <Link href={route("admin.fund")}>Fund Source</Link>,
+            key: "admin.fund",
+            icon: <DollarCircleOutlined />,
         },
         {
             label: (

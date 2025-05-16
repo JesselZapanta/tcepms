@@ -18,7 +18,7 @@ class AdminContructorController extends Controller
 
     public function getData(Request $request)
     {
-        return Contructor::where('company_name', 'like', "{$request->search}%")
+        return Contructor::where('company_name', 'like', "%{$request->search}%")
                             ->orderBy($request->sortField, $request->sortOrder)
                             ->paginate(10);
     }
@@ -95,7 +95,7 @@ class AdminContructorController extends Controller
                 ->limit(1);
             }
         ])
-        ->where('name', 'like', "{$request->search}%")
+        ->where('name', 'like', "%{$request->search}%")
         ->where('contructor', 'like', "{$request->id}%");
 
     // Apply month filter if not 0
