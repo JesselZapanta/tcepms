@@ -7,6 +7,7 @@ import {
     Space,
     Table,
     message,
+    InputNumber,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -16,6 +17,9 @@ import {
     EditOutlined,
     DeleteOutlined,
     QuestionCircleOutlined,
+    NumberOutlined,
+    CalendarOutlined,
+    DollarCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
@@ -232,7 +236,9 @@ export default function WaterLabor({ project, setCostChange, costs }) {
     return (
         <>
             {contextHolder}
-            <div className="py-2">List of Water Labor</div>
+            <div className="py-2 text-md font-bold uppercase">
+                List of Water Labor
+            </div>
             <div className="flex md:flex-row flex-col gap-2 mb-2">
                 <Search
                     placeholder="Input water labor position"
@@ -252,6 +258,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
             </div>
             <div className="overflow-x-auto">
                 <Table
+                    className="mt-2 custom-ant-table"
                     loading={loading}
                     dataSource={data}
                     rowKey={(data) => data.id}
@@ -278,7 +285,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                 >
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="ID"
                         dataIndex="id"
                         key="id"
@@ -286,21 +293,21 @@ export default function WaterLabor({ project, setCostChange, costs }) {
 
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Position"
                         dataIndex="position"
                         key="position"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Quantity"
                         dataIndex="quantity"
                         key="quantity"
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="No. of Days"
                         dataIndex="no_of_days"
                         key="no_of_days"
@@ -308,7 +315,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Rate / Day"
                         dataIndex="rate"
                         key="rate"
@@ -316,7 +323,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                     />
                     <Column
                         className="whitespace-nowrap bg-white"
-                        sorter={true}
+                        // sorter={true}
                         title="Cost"
                         dataIndex="cost"
                         key="cost"
@@ -396,7 +403,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<NumberOutlined />}
                                     onChange={(e) =>
                                         setQuantity(Number(e.target.value) || 0)
                                     }
@@ -418,7 +425,7 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                             >
                                 <Input
                                     type="number"
-                                    prefix={<PhoneOutlined />}
+                                    prefix={<CalendarOutlined />}
                                     onChange={(e) =>
                                         setNoOfDays(Number(e.target.value) || 0)
                                     }
@@ -434,13 +441,29 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                                 help={errors?.rate ? errors?.rate[0] : ""}
                                 className="w-full"
                             >
-                                <Input
+                                {/* <Input
                                     type="number"
                                     prefix={<PhoneOutlined />}
                                     onChange={(e) =>
                                         setRate(Number(e.target.value) || 0)
                                     }
                                     className="w-full"
+                                /> */}
+                                <InputNumber
+                                    className="w-full"
+                                    onChange={(value) =>
+                                        setRate(Number(value) || 0)
+                                    }
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
+                                    }
+                                    parser={(value) =>
+                                        value.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -450,12 +473,26 @@ export default function WaterLabor({ project, setCostChange, costs }) {
                                 help={errors?.cost ? errors?.cost[0] : ""}
                                 className="w-full"
                             >
-                                <Input
+                                {/* <Input
                                     type="number"
                                     disabled
                                     // value={cost}
                                     prefix={<PhoneOutlined />}
                                     className="w-full"
+                                /> */}
+                                <InputNumber
+                                    disabled
+                                    className="w-full"
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
+                                    }
+                                    parser={(value) =>
+                                        value.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
                         </div>

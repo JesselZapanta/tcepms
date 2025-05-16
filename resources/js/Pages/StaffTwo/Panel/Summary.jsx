@@ -29,12 +29,24 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
         {
             label: "Excavation Cost",
             span: 4,
-            children: formatPeso(costs.ExcavationCost),
+            children: (
+                <>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ExcavationCost)}
+                    </div>
+                </>
+            ),
         },
 
         {
             label: "Concrete Works Cost",
-            children: formatPeso(costs.ConcreteWorksCost),
+            children: (
+                <>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ConcreteWorksCost)}
+                    </div>
+                </>
+            ),
         },
         {
             label: (
@@ -45,8 +57,12 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.ConcreteLaborBudget)}</div>
-                    <div>{formatPeso(costs.ActualConcreteLaborCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ConcreteLaborBudget)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ActualConcreteLaborCost)}
+                    </div>
                 </>
             ),
         },
@@ -59,8 +75,12 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.ConcreteEstimatedSubTotalCost)}</div>
-                    <div>{formatPeso(costs.ConcreteSubTotalCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ConcreteEstimatedSubTotalCost)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ConcreteSubTotalCost)}
+                    </div>
                 </>
             ),
         },
@@ -78,8 +98,12 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.WaterLaborBudget)}</div>
-                    <div>{formatPeso(costs.ActualWaterLaborCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.WaterLaborBudget)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ActualWaterLaborCost)}
+                    </div>
                 </>
             ),
         },
@@ -92,15 +116,25 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.WaterEstimatedSubTotalCost)}</div>
-                    <div>{formatPeso(costs.WaterSubTotalCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.WaterEstimatedSubTotalCost)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.WaterSubTotalCost)}
+                    </div>
                 </>
             ),
         },
         //
         {
             label: "Metal Works Cost",
-            children: formatPeso(costs.MetalWorksCost),
+            children: (
+                <>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.MetalWorksCost)}
+                    </div>
+                </>
+            ),
         },
         {
             label: (
@@ -111,8 +145,12 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.MetalLaborBudget)}</div>
-                    <div>{formatPeso(costs.ActualMetalLaborCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.MetalLaborBudget)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ActualMetalLaborCost)}
+                    </div>
                 </>
             ),
         },
@@ -125,15 +163,25 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.MetalEstimatedSubTotalCost)}</div>
-                    <div>{formatPeso(costs.MetalSubTotalCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.MetalEstimatedSubTotalCost)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.MetalSubTotalCost)}
+                    </div>
                 </>
             ),
         },
         //
         {
             label: "Plaster and Finish Works Cost",
-            children: formatPeso(costs.PlasterFinishWorksCost),
+            children: (
+                <>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.PlasterFinishWorksCost)}
+                    </div>
+                </>
+            ),
         },
         {
             label: (
@@ -146,8 +194,12 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>{formatPeso(costs.PlasterFinishLaborBudget)}</div>
-                    <div>{formatPeso(costs.ActualPlasterFinishLaborCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.PlasterFinishLaborBudget)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ActualPlasterFinishLaborCost)}
+                    </div>
                 </>
             ),
         },
@@ -160,10 +212,12 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             ),
             children: (
                 <>
-                    <div>
+                    <div className="whitespace-nowrap">
                         {formatPeso(costs.PlasterFinishEstimatedSubTotalCost)}
                     </div>
-                    <div>{formatPeso(costs.PlasterFinishSubTotalCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.PlasterFinishSubTotalCost)}
+                    </div>
                 </>
             ),
         },
@@ -171,12 +225,24 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
         {
             label: "Equipment Cost",
             span: 4,
-            children: formatPeso(costs.EquipmentCost),
+            children: (
+                <>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.EquipmentCost)}
+                    </div>
+                </>
+            ),
         },
         {
             label: "Project Estimated Budget",
             span: 2,
-            children: formatPeso(costs.EstimatedBudget),
+            children: (
+                <>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.EstimatedBudget)}
+                    </div>
+                </>
+            ),
         },
         {
             label: (
@@ -188,12 +254,17 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
             span: 2,
             children: (
                 <>
-                    <div>{formatPeso(costs.EstimatedTotalCost)}</div>
-                    <div>{formatPeso(costs.ActualTotalCost)}</div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.EstimatedTotalCost)}
+                    </div>
+                    <div className="whitespace-nowrap">
+                        {formatPeso(costs.ActualTotalCost)}
+                    </div>
                 </>
             ),
         },
     ];
+
 
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (type, placement, title, msg) => {

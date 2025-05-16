@@ -3,9 +3,8 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 
 export default function Details({ costs, formatPeso }) {
-
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-    
+
     useEffect(() => {
         const mediaQuery = window.matchMedia("(max-width: 639px)"); // Tailwind 'sm' max
 
@@ -83,16 +82,6 @@ export default function Details({ costs, formatPeso }) {
             span: 3,
             children: costs?.projectDetails?.location,
         },
-        // {
-        //     label: "Latitude",
-        //     span: 2,
-        //     children: costs?.projectDetails?.latitude || "N/A",
-        // },
-        // {
-        //     label: "Longitude",
-        //     span: 1,
-        //     children: costs?.projectDetails?.longitude || "N/A",
-        // },
         {
             label: "Engineer",
             span: 2,
@@ -101,7 +90,9 @@ export default function Details({ costs, formatPeso }) {
         {
             label: "Constructor",
             span: 1,
-            children: costs?.projectDetails?.contructor?.company_name,
+            children: costs?.projectDetails?.contractual
+                ? costs?.projectDetails?.contructor?.company_name
+                : "Not Contructual",
         },
         {
             label: "Status",
