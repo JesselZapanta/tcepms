@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Engineer;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\RequestDateExtension;
+use App\Models\User;
+use App\Notifications\ProjectExtensionRequested;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class EngineerProjectRequestExtension extends Controller
 {
@@ -18,9 +21,11 @@ class EngineerProjectRequestExtension extends Controller
         ]);
     }
 
-    public function getData(Request $request)
+
+    public function getdata(Request $request, $id)
     {
-        return RequestDateExtension::where('reason', 'like', "%{$request->search}%")
+        return RequestDateExtension::where('project', $id)
+                            ->where('reason', 'like', "%{$request->search}%")
                             ->latest()
                             ->paginate(10);
     }
@@ -29,7 +34,19 @@ class EngineerProjectRequestExtension extends Controller
     {
         $project = Project::with('siteEngineer')->findOrFail($id);
 
-        // return $request;
+        //check if there is a status===0 in under same project RequestDateExtension
+
+        $exist = RequestDateExtension::where('project', $project->id)
+                                    ->where('status', 0)
+                                    ->exists();
+
+        if($exist){
+            return response()->json([
+                'status' => 'exist'
+            ], 422);
+        }
+
+        // return $request->name;
 
         $data = $request->validate([
             'requested_end_date' => 'required|date',
@@ -40,7 +57,19 @@ class EngineerProjectRequestExtension extends Controller
         $data['requested_by'] = $project->siteEngineer->name;
         $data['current_end_date'] = $project->end_date;
 
-        RequestDateExtension::create($data);
+        $req = RequestDateExtension::create($data);
+
+        $data = [
+            'name' => $request->name,
+            'reason' => $req->reason,
+            'requested_by' => $req->requested_by,
+            'status' => 'Pending'
+        ];
+
+        $user = User::where('role',1)->get();
+        
+        Notification::send($user, new ProjectExtensionRequested($data));
+
 
         return response()->json([
             'status' => 'created'

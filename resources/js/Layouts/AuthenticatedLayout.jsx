@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
     AppstoreOutlined,
     BankOutlined,
+    CalendarOutlined,
     DashboardOutlined,
     DollarCircleOutlined,
     DownOutlined,
@@ -78,13 +79,19 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <ProjectOutlined />,
         },
         {
-            label: <Link href={route("staffone.project")}>Request Extention</Link>,
-            key: "staffone.project",
-            icon: <ProjectOutlined />,
+            label: (
+                <Link href={route("staffone.project-request-extension")}>
+                    Request Extention
+                </Link>
+            ),
+            key: "staffone.project-request-extension",
+            icon: <CalendarOutlined />,
         },
         {
-            label: <Link href={route("staffone.project")}>Request Material</Link>,
-            key: "staffone.project",
+            label: (
+                <Link href={route("staffone.project")}>Request Material</Link>
+            ),
+            key: "staffone",
             icon: <ProjectOutlined />,
         },
         {

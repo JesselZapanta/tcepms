@@ -53,7 +53,7 @@ export default function Dashboard({ auth }) {
                                 </span>
                             </div>
                             <p className="text-sm italic">
-                                You are logged in as Staff two
+                                You are logged in as Staff (Project and Labor Division)
                             </p>
                         </div>
                     </div>

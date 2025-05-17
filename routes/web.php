@@ -23,6 +23,7 @@ use App\Http\Controllers\StaffOne\ConcreteController;
 use App\Http\Controllers\StaffOne\EquipmentController;
 use App\Http\Controllers\StaffOne\ExcavationController;
 use App\Http\Controllers\StaffOne\MaterialController;
+use App\Http\Controllers\StaffOne\StaffOneProjectExtensionController;
 use App\Http\Controllers\StaffOne\StaffOneProjectMonitoringController;
 use App\Http\Controllers\StaffOne\StaffOneProjectUpdateController;
 use App\Http\Controllers\StaffOne\WaterController;
@@ -115,7 +116,11 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);
     Route::put('/staffone/project/update/{id}', [StaffOneProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [StaffOneProjectController::class, 'destroy']);
-    
+    //
+    Route::get('/staffone/request-extension', [StaffOneProjectExtensionController::class, 'index'])->name('staffone.project-request-extension');
+    Route::get('/staffone/request-extension/getdata', [StaffOneProjectExtensionController::class, 'getdata']);
+    Route::put('/staffone/request-extension/update/{id}', [StaffOneProjectExtensionController::class, 'update']);
+
     Route::get('/staffone/materials/index/{id}', [MaterialController::class, 'index'])->name('staffone.material');
     Route::get('/staffone/materials/getcost/{id}', [MaterialController::class, 'getCost']);
     Route::put('/staffone/materials/compile/{id}', [MaterialController::class, 'compile']);
@@ -221,7 +226,7 @@ Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
     Route::get('/engineer/project-monitoring/calendar/project/{id}', [EngineerProjectUpdateController::class, 'calendar'])->name('engineer.project-update-calendar');
 
     Route::get('/engineer/request-extension/{id}', [EngineerProjectRequestExtension::class, 'index'])->name('engineer.project-request-extension');
-    Route::get('/admin/request-extension/getdata', [EngineerProjectRequestExtension::class, 'getData']);
+    Route::get('/engineer/project-request-extension/getdata/{id}', [EngineerProjectRequestExtension::class, 'getdata']);
     Route::post('/engineer/request-extension/store/{id}', [EngineerProjectRequestExtension::class, 'store']);
     Route::put('/engineer/request-extension/update/{id}', [EngineerProjectRequestExtension::class, 'update']);
     Route::delete('/engineer/request-extension/destroy/{id}', [EngineerProjectRequestExtension::class, 'destroy']);

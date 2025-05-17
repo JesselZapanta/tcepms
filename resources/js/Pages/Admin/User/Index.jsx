@@ -185,8 +185,8 @@ export default function Index({ auth }) {
 
     const roleLabels = {
         0: "Admin",
-        1: "Staff 1",
-        2: "Staff 2",
+        1: "Staff (Project Material Division)",
+        2: "Staff (Project Labor Division)",
         3: "On-site Engineer",
         4: "Mayor",
     };
@@ -394,8 +394,8 @@ export default function Index({ auth }) {
                                     <Select
                                         options={[
                                             { value: 0, label: "Admin" },
-                                            { value: 1, label: "Staff 1" },
-                                            { value: 2, label: "Staff 2" },
+                                            { value: 1, label: "Staff (Project Material Division)" },
+                                            { value: 2, label: "Staff (Project Labor Division)" },
                                             {
                                                 value: 3,
                                                 label: "On-Site Engineer",

@@ -28,7 +28,7 @@ import Details from "@/Pages/Partials/Details";
 import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
 
-export default function Index({ auth, project }) {
+export default function Index({ auth }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -46,12 +46,11 @@ export default function Index({ auth, project }) {
 
         try {
             const res = await axios.get(
-                `/engineer/project-request-extension/getdata/${project.id}?${params}`
+                `/staffone/request-extension/getdata?${params}`
             );
             setData(res.data.data);
             setTotal(res.data.total);
-            console.log(res);
-        } catch (err){
+        } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -84,29 +83,18 @@ export default function Index({ auth, project }) {
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState({});
 
-    const showCreateModal = () => {
-        setIsModalOpen(true);
-        form.resetFields();
-        form.setFieldsValue({
-            name: project.name,
-            requested_by: project.site_engineer?.name,
-            current_end_date: dayjs(project.end_date),
-            requested_end_date: dayjs(project.end_date).add(7, "day"),
-            status: 0,
-        });
-    };
-
     const showEditModal = (request) => {
         setIsModalOpen(true);
         setRequest(request);
 
         form.setFieldsValue({
-            name: project.name,
+            name: request.project.name,
             requested_by: request.requested_by,
             current_end_date: dayjs(request.current_end_date),
             requested_end_date: dayjs(request.requested_end_date),
             reason: request.reason,
             status: request.status,
+            remarks: request.remarks,
         });
     };
 
@@ -124,7 +112,7 @@ export default function Index({ auth, project }) {
         if (request) {
             try {
                 const res = await axios.put(
-                    `/engineer/request-extension/update/${request.id}`,
+                    `/staffone/request-extension/update/${request.id}`,
                     values
                 );
                 if (res.data.status === "updated") {
@@ -133,7 +121,7 @@ export default function Index({ auth, project }) {
                         "success",
                         "bottomRight",
                         "Updated!",
-                        "The request has been updated successfully."
+                        "Updated successfully."
                     );
                 }
             } catch (err) {
@@ -141,96 +129,23 @@ export default function Index({ auth, project }) {
             } finally {
                 setProcessing(false);
             }
-        } else {
-            try {
-                const res = await axios.post(
-                    `/engineer/request-extension/store/${project.id}`,
-                    values
-                );
-                if (res.data.status === "created") {
-                    handleCancel();
-                    openNotification(
-                        "success",
-                        "bottomRight",
-                        "Created!",
-                        "The request has been created successfully."
-                    );
-                }
-            } catch (err) {
-                setErrors(err.response.data.errors);
-                if(err.response.data.status === 'exist'){
-                    handleCancel();
-                    openNotification(
-                        "error",
-                        "bottomRight",
-                        "Error!",
-                        "A pending extension request already exists for this project."
-                    );
-                }
-            } finally {
-                setProcessing(false);
-            }
-        }
-    };
-
-    const handleDelete = async (id) => {
-        setLoading(true);
-
-        try {
-            const res = await axios.delete(
-                `/engineer/request-extension/destroy/${id}`
-            );
-
-            if (res.data.status === "deleted") {
-                handleCancel();
-                openNotification(
-                    "success",
-                    "bottomRight",
-                    "Deleted!",
-                    "The request has been deleted successfully."
-                );
-            }
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false);
-        }
+        } 
     };
 
     const truncate = (word, limit) => {
-        if(word.length > limit){
-            return word.slice(0,limit) + "..."
+        if (word.length > limit) {
+            return word.slice(0, limit) + "...";
         }
         return word;
-    }
+    };
 
     return (
         <AuthenticatedLayout header="Request Extension" auth={auth}>
             <Head title="Request Extension" />
-            {contextHolder}
+            {/* {contextHolder} */}
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
                 <div className="py-2 text-lg font-bold uppercase">
-                    Request Extension
-                </div>
-                <div className="py-2">
-                    <Details data={project} />
-                </div>
-                <div className="flex md:flex-row flex-col gap-2 mb-2">
-                    <Search
-                        placeholder="Input requests reason"
-                        allowClear
-                        enterButton="Search"
-                        loading={searching}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onSearch={() => getData(true)}
-                    />
-                    <Button
-                        type="primary"
-                        onClick={showCreateModal}
-                        icon={<PlusOutlined />}
-                    >
-                        New
-                    </Button>
+                    List of Request Extension
                 </div>
                 <div className="overflow-x-auto">
                     <Table
@@ -257,6 +172,15 @@ export default function Index({ auth, project }) {
 
                         <Column
                             className="whitespace-nowrap bg-white font-bold"
+                            title="Project Name"
+                            key="project.name"
+                            render={(_, record) =>
+                                truncate(record.project.name, 50)
+                            }
+                        />
+
+                        <Column
+                            className="whitespace-nowrap bg-white"
                             //sorter={true}
                             title="Request Reason"
                             dataIndex="reason"
@@ -264,7 +188,7 @@ export default function Index({ auth, project }) {
                             render={(_, record) => truncate(record.reason, 50)}
                         />
                         <Column
-                            className="whitespace-nowrap bg-white font-bold"
+                            className="whitespace-nowrap bg-white"
                             title="Requested End Date"
                             dataIndex="requested_end_date"
                             key="requested_end_date"
@@ -303,26 +227,6 @@ export default function Index({ auth, project }) {
                                         icon={<EditOutlined />}
                                         onClick={() => showEditModal(record)}
                                     ></Button>
-                                    <Button
-                                        danger
-                                        shape="circle"
-                                        icon={<DeleteOutlined />}
-                                        onClick={() =>
-                                            Modal.confirm({
-                                                title: "Delete?",
-                                                icon: (
-                                                    <QuestionCircleOutlined />
-                                                ),
-                                                content:
-                                                    "Are you sure you want to delete this data?",
-                                                okText: "Yes",
-                                                cancelText: "No",
-                                                onOk() {
-                                                    handleDelete(record.id);
-                                                },
-                                            })
-                                        }
-                                    />
                                 </Space>
                             )}
                         />
@@ -389,7 +293,10 @@ export default function Index({ auth, project }) {
                                                 : ""
                                         }
                                     >
-                                        <DatePicker className="w-full" />
+                                        <DatePicker
+                                            disabled
+                                            className="w-full"
+                                        />
                                     </Form.Item>
                                 </div>
 
@@ -404,6 +311,7 @@ export default function Index({ auth, project }) {
                                     }
                                 >
                                     <TextArea
+                                        disabled
                                         placeholder="Type the reason"
                                         allowClear
                                         rows={4}
@@ -422,12 +330,30 @@ export default function Index({ auth, project }) {
                                     className="w-full"
                                 >
                                     <Select
-                                        disabled
                                         options={[
                                             { value: 2, label: "Rejected" },
                                             { value: 1, label: "Approved" },
                                             { value: 0, label: "Pending" },
                                         ]}
+                                    />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="REMARKS"
+                                    name="remarks"
+                                    validateStatus={
+                                        errors?.remarks ? "error" : ""
+                                    }
+                                    help={
+                                        errors?.remarks
+                                            ? errors?.remarks[0]
+                                            : ""
+                                    }
+                                >
+                                    <TextArea
+                                        placeholder="Type the remarks"
+                                        allowClear
+                                        rows={4}
                                     />
                                 </Form.Item>
                             </Form.Item>
@@ -447,9 +373,7 @@ export default function Index({ auth, project }) {
                                         disabled={processing}
                                         loading={processing}
                                     >
-                                        {request
-                                            ? "Update Request"
-                                            : "Submit Request"}
+                                        Saved
                                     </Button>
                                 </Space>
                             </Row>

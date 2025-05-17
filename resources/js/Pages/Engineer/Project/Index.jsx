@@ -16,9 +16,7 @@ import Search from "antd/es/input/Search";
 import {
     SignatureOutlined,
     AppstoreAddOutlined,
-    DownOutlined,
-    UserOutlined,
-    EditOutlined,
+    CalendarOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
@@ -376,7 +374,7 @@ export default function Index({ auth, categories }) {
                                                         key: "2",
                                                         label: "Request Extension",
                                                         icon: (
-                                                            <SignatureOutlined
+                                                            <CalendarOutlined
                                                                 size={16}
                                                             />
                                                         ),
