@@ -78,6 +78,16 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <ProjectOutlined />,
         },
         {
+            label: <Link href={route("staffone.project")}>Request Extention</Link>,
+            key: "staffone.project",
+            icon: <ProjectOutlined />,
+        },
+        {
+            label: <Link href={route("staffone.project")}>Request Material</Link>,
+            key: "staffone.project",
+            icon: <ProjectOutlined />,
+        },
+        {
             label: (
                 <Link href={route("staffone.project-monitoring")}>
                     Project Monitoring

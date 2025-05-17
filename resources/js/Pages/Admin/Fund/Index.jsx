@@ -13,6 +13,7 @@ import {
     QuestionCircleOutlined,
     UnorderedListOutlined,
     TagOutlined,
+    DollarCircleOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import { useEffect, useState } from "react";
@@ -306,7 +307,7 @@ export default function Index({auth}) {
                             >
                                 <Input
                                     placeholder="Fund Source name"
-                                    prefix={<TagOutlined />}
+                                    prefix={<DollarCircleOutlined />}
                                 />
                             </Form.Item>
 

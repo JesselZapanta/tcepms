@@ -74,6 +74,8 @@ class StaffOneProjectController extends Controller
             $data['actual_start_date'] = $data['start_date'] ?? null;
         }
 
+        // unset($data['status']);
+
         $project = Project::findOrFail($id);
 
         $project->update($data);

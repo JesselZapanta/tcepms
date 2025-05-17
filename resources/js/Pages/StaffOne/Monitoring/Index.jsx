@@ -173,7 +173,7 @@ export default function Index({ auth, categories }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div>{project.name}</div>
+                                        <div className="font-bold">{project.name}</div>
                                         <div className="mt-4">
                                             <Flex
                                                 wrap="wrap"

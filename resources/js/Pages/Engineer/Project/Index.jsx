@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import {
     Carousel,
     Spin,
@@ -16,8 +16,13 @@ import Search from "antd/es/input/Search";
 import {
     SignatureOutlined,
     AppstoreAddOutlined,
+    DownOutlined,
+    UserOutlined,
+    EditOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+
+import { Dropdown, Menu } from "antd";
 
 const contentStyle = {
     margin: 0,
@@ -176,7 +181,9 @@ export default function Index({ auth, categories }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div className="font-bold text-md">{project.name}</div>
+                                        <div className="font-bold text-md">
+                                            {project.name}
+                                        </div>
                                         <div className="mt-4">
                                             <Flex
                                                 wrap="wrap"
@@ -326,8 +333,8 @@ export default function Index({ auth, categories }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-end items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
-                                    <Tooltip title="Make Project Update">
+                                <div className="flex justify-start items-center gap-2 p-4 bg-amber-100 border-t border-gray-300">
+                                    {/* <Tooltip title="Make Project Update">
                                         <Link
                                             href={route(
                                                 "engineer.project-update",
@@ -338,11 +345,57 @@ export default function Index({ auth, categories }) {
                                                 shape="circle"
                                                 icon={<SignatureOutlined />}
                                                 className="bg-blue-500 hover:bg-blue-700 text-white"
-                                            >
-                                                {/* Update */}
-                                            </Button>
+                                            ></Button>
                                         </Link>
-                                    </Tooltip>
+                                    </Tooltip> */}
+
+                                    <div>
+                                        <Dropdown.Button
+                                            type="primary"
+                                            placement="bottomLeft"
+                                            menu={{
+                                                items: [
+                                                    {
+                                                        key: "1",
+                                                        label: "Make Update",
+                                                        icon: (
+                                                            <SignatureOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "engineer.project-update",
+                                                                    project.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                    {
+                                                        key: "2",
+                                                        label: "Request Extension",
+                                                        icon: (
+                                                            <SignatureOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "engineer.project-request-extension",
+                                                                    project.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                ],
+                                            }}
+                                            trigger={["click"]}
+                                        >
+                                            Action
+                                        </Dropdown.Button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

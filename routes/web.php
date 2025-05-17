@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Engineer\EngineerDashboardController;
 use App\Http\Controllers\Engineer\EngineerProjectMonitoringController;
+use App\Http\Controllers\Engineer\EngineerProjectRequestExtension;
 use App\Http\Controllers\Engineer\EngineerProjectUpdateController;
 use App\Http\Controllers\Mayor\MayorDashboardController;
 use App\Http\Controllers\Mayor\MayorProjectMonitoringController;
@@ -219,6 +220,11 @@ Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
 
     Route::get('/engineer/project-monitoring/calendar/project/{id}', [EngineerProjectUpdateController::class, 'calendar'])->name('engineer.project-update-calendar');
 
+    Route::get('/engineer/request-extension/{id}', [EngineerProjectRequestExtension::class, 'index'])->name('engineer.project-request-extension');
+    Route::get('/admin/request-extension/getdata', [EngineerProjectRequestExtension::class, 'getData']);
+    Route::post('/engineer/request-extension/store/{id}', [EngineerProjectRequestExtension::class, 'store']);
+    Route::put('/engineer/request-extension/update/{id}', [EngineerProjectRequestExtension::class, 'update']);
+    Route::delete('/engineer/request-extension/destroy/{id}', [EngineerProjectRequestExtension::class, 'destroy']);
 
 });
 
