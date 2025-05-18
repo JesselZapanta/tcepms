@@ -17,6 +17,7 @@ import {
     SignatureOutlined,
     AppstoreAddOutlined,
     CalendarOutlined,
+    BarChartOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
@@ -372,7 +373,24 @@ export default function Index({ auth, categories }) {
                                                     },
                                                     {
                                                         key: "2",
-                                                        label: "Request Extension",
+                                                        label: "Project Update Performance ",
+                                                        icon: (
+                                                            <BarChartOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "engineer.project-monitoring-graph",
+                                                                    project.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                    {
+                                                        key: "3",
+                                                        label: "Request End Date Extension",
                                                         icon: (
                                                             <CalendarOutlined
                                                                 size={16}
@@ -387,6 +405,40 @@ export default function Index({ auth, categories }) {
                                                             );
                                                         },
                                                     },
+                                                    // {
+                                                    //     key: "4",
+                                                    //     label: "Request Additional Material",
+                                                    //     icon: (
+                                                    //         <CalendarOutlined
+                                                    //             size={16}
+                                                    //         />
+                                                    //     ),
+                                                    //     onClick: () => {
+                                                    //         router.visit(
+                                                    //             route(
+                                                    //                 "engineer.project-request-extension",
+                                                    //                 project.id
+                                                    //             )
+                                                    //         );
+                                                    //     },
+                                                    // },
+                                                    // {
+                                                    //     key: "4",
+                                                    //     label: "Request Additional Labor",
+                                                    //     icon: (
+                                                    //         <CalendarOutlined
+                                                    //             size={16}
+                                                    //         />
+                                                    //     ),
+                                                    //     onClick: () => {
+                                                    //         router.visit(
+                                                    //             route(
+                                                    //                 "engineer.project-request-extension",
+                                                    //                 project.id
+                                                    //             )
+                                                    //         );
+                                                    //     },
+                                                    // },
                                                 ],
                                             }}
                                             trigger={["click"]}

@@ -87,13 +87,13 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "staffone.project-request-extension",
             icon: <CalendarOutlined />,
         },
-        {
-            label: (
-                <Link href={route("staffone.project")}>Request Material</Link>
-            ),
-            key: "staffone",
-            icon: <ProjectOutlined />,
-        },
+        // {
+        //     label: (
+        //         <Link href={route("staffone.project")}>Request Material</Link>
+        //     ),
+        //     key: "staffone",
+        //     icon: <ProjectOutlined />,
+        // },
         {
             label: (
                 <Link href={route("staffone.project-monitoring")}>

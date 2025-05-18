@@ -101,6 +101,7 @@ Route::middleware(['auth','admin','userStatus'])->group(function() {
 
     Route::get('/admin/project-monitoring', [AdminProjectMonitoringController::class, 'index'])->name('admin.project-monitoring');
     Route::get('/admin/project-monitoring/getdata', [AdminProjectMonitoringController::class, 'getData']);
+    Route::get('/admin/project-monitoring/graph/{id}', [AdminProjectMonitoringController::class, 'graph'])->name('admin.project-monitoring-graph');
 
     Route::get('/admin/project-monitoring/project/{id}', [AdminProjectUpdateController::class, 'index'])->name('admin.project-update');
     Route::get('/admin/project-monitoring/project/getData/{id}', [AdminProjectUpdateController::class, 'getData']);
@@ -157,6 +158,7 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     
     Route::get('/staffone/project-monitoring', [StaffOneProjectMonitoringController::class, 'index'])->name('staffone.project-monitoring');
     Route::get('/staffone/project-monitoring/getdata', [StaffOneProjectMonitoringController::class, 'getData']);
+    Route::get('/staffone/project-monitoring/graph/{id}', [StaffOneProjectMonitoringController::class, 'graph'])->name('staffone.project-monitoring-graph');
 
     Route::get('/staffone/project-monitoring/project/{id}', [StaffOneProjectUpdateController::class, 'index'])->name('staffone.project-update');
 
@@ -197,6 +199,7 @@ Route::middleware(['auth', 'stafftwo','userStatus'])->group(function() {
     Route::delete('/stafftwo/labor/plaster-finish/destroy/{id}', [PlasterFinishLaborController::class, 'destroy']);
 
     Route::get('/stafftwo/project-monitoring', [StaffTwoProjectMonitoringController::class, 'index'])->name('stafftwo.project-monitoring');
+    Route::get('/stafftwo/project-monitoring/graph/{id}', [StaffTwoProjectMonitoringController::class, 'graph'])->name('stafftwo.project-monitoring-graph');
     Route::get('/stafftwo/project-monitoring/getdata', [StaffTwoProjectMonitoringController::class, 'getData']);
 
     Route::get('/stafftwo/project-monitoring/project/{id}', [StaffTwoProjectUpdateController::class, 'index'])->name('stafftwo.project-update');
@@ -211,6 +214,7 @@ Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
     Route::get('/engineer/dashboard/getdata', [EngineerDashboardController::class, 'getData']);
 
     Route::get('/engineer/project-monitoring', [EngineerProjectMonitoringController::class, 'index'])->name('engineer.project-monitoring');
+    Route::get('/engineer/project-monitoring/graph/{id}', [EngineerProjectMonitoringController::class, 'graph'])->name('engineer.project-monitoring-graph');
     Route::get('/engineer/project-monitoring/getdata', [EngineerProjectMonitoringController::class, 'getData']);
 
     Route::get('/engineer/project-update/{id}', [EngineerProjectUpdateController::class, 'index'])->name('engineer.project-update');
@@ -240,6 +244,7 @@ Route::middleware(['auth', 'mayor','userStatus'])->group(function() {
     Route::get('/mayor/dashboard/getdata', [MayorDashboardController::class, 'getData']);
 
     Route::get('/mayor/project-monitoring', [MayorProjectMonitoringController::class, 'index'])->name('mayor.project-monitoring');
+    Route::get('/mayor/project-monitoring/graph/{id}', [MayorProjectMonitoringController::class, 'graph'])->name('mayor.project-monitoring-graph');
     Route::get('/mayor/project-monitoring/getdata', [MayorProjectMonitoringController::class, 'getData']);
 
     Route::get('/mayor/project-monitoring/project/{id}', [MayorProjectUpdateController::class, 'index'])->name('mayor.project-update');

@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import {
     Carousel,
     Spin,
@@ -11,9 +11,10 @@ import {
     Button,
     Avatar,
     Select,
+    Dropdown,
 } from "antd";
 import Search from "antd/es/input/Search";
-import { SignatureOutlined, AppstoreAddOutlined } from "@ant-design/icons";
+import { SignatureOutlined, AppstoreAddOutlined, BarChartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 const contentStyle = {
@@ -173,7 +174,9 @@ export default function Index({ auth, categories }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div className="font-bold">{project.name}</div>
+                                        <div className="font-bold">
+                                            {project.name}
+                                        </div>
                                         <div className="mt-4">
                                             <Flex
                                                 wrap="wrap"
@@ -323,8 +326,8 @@ export default function Index({ auth, categories }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-end items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
-                                    <Tooltip title="Project Update">
+                                <div className="flex justify-start items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
+                                    {/* <Tooltip title="Project Update">
                                         <Link
                                             href={route(
                                                 "staffone.project-update",
@@ -336,10 +339,56 @@ export default function Index({ auth, categories }) {
                                                 icon={<SignatureOutlined />}
                                                 className="bg-blue-500 hover:bg-blue-700 text-white"
                                             >
-                                                {/* Update */}
                                             </Button>
                                         </Link>
-                                    </Tooltip>
+                                    </Tooltip> */}
+                                    <div>
+                                        <Dropdown.Button
+                                            type="primary"
+                                            placement="bottomLeft"
+                                            menu={{
+                                                items: [
+                                                    {
+                                                        key: "1",
+                                                        label: "View Update",
+                                                        icon: (
+                                                            <SignatureOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "staffone.project-update",
+                                                                    project.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                    {
+                                                        key: "2",
+                                                        label: "Project Update Performance ",
+                                                        icon: (
+                                                            <BarChartOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "staffone.project-monitoring-graph",
+                                                                    project.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                ],
+                                            }}
+                                            trigger={["click"]}
+                                        >
+                                            Action
+                                        </Dropdown.Button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

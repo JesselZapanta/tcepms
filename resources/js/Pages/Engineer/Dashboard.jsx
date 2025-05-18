@@ -54,7 +54,7 @@ export default function Dashboard({ auth }) {
                                     {auth.user.name}
                                 </span>
                             </div>
-                            <p className="text-sm italic">Engineer</p>
+                            <p className="text-sm italic">On-Site Engineer</p>
                         </div>
                     </div>
                     <div className="m-4 grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">

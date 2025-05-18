@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Engineer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Project;
+use App\Models\ProjectUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,4 +40,31 @@ class EngineerProjectMonitoringController extends Controller
         ->orderBy('id', 'desc')
         ->paginate(10);
     }
+
+    
+    public function graph($id)
+    {
+        $updates = ProjectUpdate::where('project', $id)
+            ->orderBy('update_date')
+            ->get([
+                'update_date',
+                'excavation_progress',
+                'concrete_works_progress',
+                'water_works_progress',
+                'metal_works_progress',
+                'cement_plaster_and_finishes_progress',
+            ]);
+
+        return inertia('Engineer/Project/Graph', [
+            'rawData' => [
+                'dates' => $updates->pluck('update_date')->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString())->all(),
+                'excavation' => $updates->pluck('excavation_progress')->all(),
+                'concrete' => $updates->pluck('concrete_works_progress')->all(),
+                'water' => $updates->pluck('water_works_progress')->all(),
+                'metal' => $updates->pluck('metal_works_progress')->all(),
+                'plaster' => $updates->pluck('cement_plaster_and_finishes_progress')->all(),
+            ]
+        ]);
+    }
+
 }
