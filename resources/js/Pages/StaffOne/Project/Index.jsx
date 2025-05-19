@@ -402,6 +402,19 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                         type="primary"
                                         shape="circle"
                                         icon={<EditOutlined />}
+                                        onClick={() =>
+                                            router.visit(
+                                                route(
+                                                    "staffone.project.report",
+                                                    record.id
+                                                )
+                                            )
+                                        }
+                                    ></Button>
+                                    <Button
+                                        type="primary"
+                                        shape="circle"
+                                        icon={<EditOutlined />}
                                         onClick={() => showEditModal(record)}
                                     ></Button>
                                     <Link

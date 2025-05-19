@@ -94,4 +94,37 @@ class StaffOneProjectController extends Controller
             'status' => 'deleted'
         ], 200);
     }
+
+    public function report($id)
+    {
+        $data =  Project::with([
+            'siteEngineer:id,name', 
+            'contructor:id,company_name', 
+
+            'excavation',
+            'concrete',
+            'water',
+            'metal',
+            'plasterFinish',
+            'equipment',
+
+            'concreteLabor',
+            'waterLabor',
+            'metalLabor',
+            'plasterFinishLabor',
+
+            // 'updates',
+        ])
+        ->findOrFail($id);
+
+        
+
+        // $data = [
+        //     'project' => $project,
+        // ];
+
+        return inertia('StaffOne/Project/Report',[
+            'data' => $data,
+        ]);
+    }
 }
