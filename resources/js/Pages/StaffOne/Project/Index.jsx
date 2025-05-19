@@ -552,7 +552,7 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                     <DatePicker className="w-full" />
                                 </Form.Item>
                             </div>
-                            <div className="flex md:flex-row flex-col gap-4">
+                            {/* <div className="flex md:flex-row flex-col gap-4">
                                 <Form.Item
                                     label="ACTUAL START DATE"
                                     name="actual_start_date"
@@ -589,7 +589,7 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                         className="w-full"
                                     />
                                 </Form.Item>
-                            </div>
+                            </div> */}
 
                             <Divider orientation="left">
                                 Financial Information

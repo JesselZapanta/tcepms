@@ -44,24 +44,24 @@ export default function Details({ costs, formatPeso }) {
                 ? dayjs(costs?.projectDetails?.end_date).format("YYYY-MM-DD")
                 : "N/A",
         },
-        {
-            label: "Actual Start Date",
-            span: 2,
-            children: costs?.projectDetails?.actual_start_date
-                ? dayjs(costs?.projectDetails?.actual_start_date).format(
-                      "YYYY-MM-DD"
-                  )
-                : "N/A",
-        },
-        {
-            label: "Actual End Date",
-            span: 1,
-            children: costs?.projectDetails?.actual_end_date
-                ? dayjs(costs?.projectDetails?.actual_end_date).format(
-                      "YYYY-MM-DD"
-                  )
-                : "N/A",
-        },
+        // {
+        //     label: "Actual Start Date",
+        //     span: 2,
+        //     children: costs?.projectDetails?.actual_start_date
+        //         ? dayjs(costs?.projectDetails?.actual_start_date).format(
+        //               "YYYY-MM-DD"
+        //           )
+        //         : "N/A",
+        // },
+        // {
+        //     label: "Actual End Date",
+        //     span: 1,
+        //     children: costs?.projectDetails?.actual_end_date
+        //         ? dayjs(costs?.projectDetails?.actual_end_date).format(
+        //               "YYYY-MM-DD"
+        //           )
+        //         : "N/A",
+        // },
         {
             label: "Budget",
             span: 3,

@@ -194,14 +194,14 @@ export default function Dashboard({ auth }) {
                             <p className="text-md">Completed Projects</p>
                         </div>
                     </div>
-                    <div className="bg-white m-4 p-4 rounded-2xl shadow-md grid md:grid-cols-1 lg:grid-cols-2">
+                    {/* <div className="bg-white m-4 p-4 rounded-2xl shadow-md grid md:grid-cols-1 lg:grid-cols-2">
                         <div>
                             <h2 className="text-xl font-semibold mb-2">
                                 Project Progress Tracking
                             </h2>
                             <Line data={chartData} options={options} />
                         </div>
-                    </div>
+                    </div> */}
                 </>
             )}
         </AuthenticatedLayout>

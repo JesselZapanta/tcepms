@@ -324,7 +324,7 @@ export default function Index({ auth, categories }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-end items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
+                                <div className="flex justify-start items-center gap-2 p-4 bg-gray-100 border-t border-gray-300">
                                     {/* <Tooltip title="Project Update">
                                         <Link
                                             href={route(

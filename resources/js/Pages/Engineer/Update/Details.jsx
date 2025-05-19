@@ -51,20 +51,20 @@ export default function Details({ data }) {
                 ? dayjs(data.end_date).format("YYYY-MM-DD")
                 : "N/A",
         },
-        {
-            label: "Actual Start Date",
-            span: 2,
-            children: data.actual_start_date
-                ? dayjs(data.actual_start_date).format("YYYY-MM-DD")
-                : "N/A",
-        },
-        {
-            label: "Actual End Date",
-            span: 1,
-            children: data.actual_end_date
-                ? dayjs(data.actual_end_date).format("YYYY-MM-DD")
-                : "N/A",
-        },
+        // {
+        //     label: "Actual Start Date",
+        //     span: 2,
+        //     children: data.actual_start_date
+        //         ? dayjs(data.actual_start_date).format("YYYY-MM-DD")
+        //         : "N/A",
+        // },
+        // {
+        //     label: "Actual End Date",
+        //     span: 1,
+        //     children: data.actual_end_date
+        //         ? dayjs(data.actual_end_date).format("YYYY-MM-DD")
+        //         : "N/A",
+        // },
         {
             label: "Budget",
             span: 3,
