@@ -16,6 +16,7 @@ use App\Http\Controllers\Engineer\EngineerProjectMonitoringController;
 use App\Http\Controllers\Engineer\EngineerProjectRequestExtension;
 use App\Http\Controllers\Engineer\EngineerProjectUpdateController;
 use App\Http\Controllers\Mayor\MayorDashboardController;
+use App\Http\Controllers\Mayor\MayorProjectController;
 use App\Http\Controllers\Mayor\MayorProjectMonitoringController;
 use App\Http\Controllers\Mayor\MayorProjectUpdateController;
 use App\Http\Controllers\ProfileController;
@@ -261,6 +262,10 @@ Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
 Route::middleware(['auth', 'mayor','userStatus'])->group(function() {
     Route::get('/mayor/dashboard', [MayorDashboardController::class, 'index'])->name('mayor.dashboard');
     Route::get('/mayor/dashboard/getdata', [MayorDashboardController::class, 'getData']);
+
+    Route::get('/mayor/project', [MayorProjectController::class, 'index'])->name('mayor.project');
+    Route::get('/mayor/project/getdata', [MayorProjectController::class, 'getdata']);
+    Route::get('/mayor/project/get-report/{id}', [MayorProjectController::class, 'report']);
 
     Route::get('/mayor/project-monitoring', [MayorProjectMonitoringController::class, 'index'])->name('mayor.project-monitoring');
     Route::get('/mayor/project-monitoring/graph/{id}', [MayorProjectMonitoringController::class, 'graph'])->name('mayor.project-monitoring-graph');

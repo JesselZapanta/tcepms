@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Engineer;
+namespace App\Http\Controllers\Mayor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -8,7 +8,7 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class EngineerProjectController extends Controller
+class MayorProjectController extends Controller
 {
     public function index()
     {
@@ -18,7 +18,7 @@ class EngineerProjectController extends Controller
                         
         $categories = Category::where('status', 1)->get();
         
-        return inertia('Engineer/Project/Index',[
+        return inertia('Mayor/Project/Index',[
             'engineers' => $engineers,
             'categories' => $categories,
         ]);

@@ -29,7 +29,7 @@ class AdminProjectController extends Controller
         return Project::with(['siteEngineer:id,name'])
                         // ->where('category', $request->filter)
                         ->where('category', 'like', "%{$request->filter}%")
-                        ->where('name', 'like', "{$request->search}%")
+                        ->where('name', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }
