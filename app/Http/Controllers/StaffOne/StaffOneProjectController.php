@@ -113,15 +113,10 @@ class StaffOneProjectController extends Controller
             'metalLabor',
             'plasterFinishLabor',
 
-            // 'updates',
+            'updates',
         ])
         ->findOrFail($id);
 
-        
-
-        // $data = [
-        //     'project' => $project,
-        // ];
 
         return inertia('StaffOne/Project/Report',[
             'data' => $data,

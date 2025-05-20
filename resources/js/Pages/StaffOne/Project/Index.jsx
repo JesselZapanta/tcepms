@@ -28,6 +28,7 @@ import {
     EnvironmentOutlined,
     UnorderedListOutlined,
     CodeOutlined,
+    SignatureOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
@@ -35,8 +36,15 @@ import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
+import Dropdown from "antd/es/dropdown/dropdown";
 
-export default function Index({ auth, contructors, engineers, categories, funds }) {
+export default function Index({
+    auth,
+    contructors,
+    engineers,
+    categories,
+    funds,
+}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -157,9 +165,7 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                     const project = res.data.project;
 
                     if (project.contractual === 0) {
-                        router.visit(
-                            `/staffone/materials/index/${project.id}`
-                        );
+                        router.visit(`/staffone/materials/index/${project.id}`);
                         // console.log(project);
                     }
 
@@ -398,57 +404,93 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                             key="action"
                             render={(_, record) => (
                                 <Space>
-                                    <Button
-                                        type="primary"
-                                        shape="circle"
-                                        icon={<EditOutlined />}
-                                        onClick={() =>
-                                            router.visit(
-                                                route(
-                                                    "staffone.project.report",
-                                                    record.id
-                                                )
-                                            )
-                                        }
-                                    ></Button>
-                                    <Button
-                                        type="primary"
-                                        shape="circle"
-                                        icon={<EditOutlined />}
-                                        onClick={() => showEditModal(record)}
-                                    ></Button>
-                                    <Link
-                                        href={route(
-                                            "staffone.material",
-                                            record.id
-                                        )}
-                                    >
-                                        <Button
-                                            type="default"
-                                            shape="circle"
-                                            icon={<UnorderedListOutlined />}
-                                        />
-                                    </Link>
-                                    <Button
-                                        danger
-                                        shape="circle"
-                                        icon={<DeleteOutlined />}
-                                        onClick={() =>
-                                            Modal.confirm({
-                                                title: "Delete?",
-                                                icon: (
-                                                    <QuestionCircleOutlined />
-                                                ),
-                                                content:
-                                                    "Are you sure you want to delete this data?",
-                                                okText: "Yes",
-                                                cancelText: "No",
-                                                onOk() {
-                                                    handleDelete(record.id);
-                                                },
-                                            })
-                                        }
-                                    />
+                                    <div>
+                                        <Dropdown.Button
+                                            type="primary"
+                                            placement="bottomRight"
+                                            menu={{
+                                                items: [
+                                                    {
+                                                        key: "1",
+                                                        label: "Edit Project",
+                                                        icon: (
+                                                            <SignatureOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () =>
+                                                            showEditModal(
+                                                                record
+                                                            ),
+                                                    },
+                                                    {
+                                                        key: "2",
+                                                        label: "Project Material",
+                                                        icon: (
+                                                            <UnorderedListOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "staffone.material",
+                                                                    record.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                    {
+                                                        key: "3",
+                                                        label: "Generate Detailed Report",
+                                                        icon: (
+                                                            <SignatureOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "staffone.project.report",
+                                                                    record.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                    {
+                                                        key: "4",
+                                                        label: "Delete Project",
+                                                        icon: (
+                                                            <DeleteOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            Modal.confirm({
+                                                                title: "Delete?",
+                                                                icon: (
+                                                                    <QuestionCircleOutlined />
+                                                                ),
+                                                                content:
+                                                                    "Are you sure you want to delete this data?",
+                                                                okText: "Yes",
+                                                                cancelText:
+                                                                    "No",
+                                                                onOk() {
+                                                                    handleDelete(
+                                                                        record.id
+                                                                    );
+                                                                },
+                                                            });
+                                                        },
+                                                    },
+                                                ],
+                                            }}
+                                            trigger={["click"]}
+                                        >
+                                            Action
+                                        </Dropdown.Button>
+                                    </div>
                                 </Space>
                             )}
                         />
@@ -565,44 +607,6 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                     <DatePicker className="w-full" />
                                 </Form.Item>
                             </div>
-                            {/* <div className="flex md:flex-row flex-col gap-4">
-                                <Form.Item
-                                    label="ACTUAL START DATE"
-                                    name="actual_start_date"
-                                    validateStatus={
-                                        errors?.actual_start_date ? "error" : ""
-                                    }
-                                    help={
-                                        errors?.actual_start_date
-                                            ? errors?.actual_start_date[0]
-                                            : ""
-                                    }
-                                    className="w-full"
-                                >
-                                    <DatePicker
-                                        disabled={true}
-                                        className="w-full"
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label="ACTUAL END DATE"
-                                    name="actual_end_date"
-                                    validateStatus={
-                                        errors?.actual_end_date ? "error" : ""
-                                    }
-                                    help={
-                                        errors?.actual_end_date
-                                            ? errors?.actual_end_date[0]
-                                            : ""
-                                    }
-                                    className="w-full"
-                                >
-                                    <DatePicker
-                                        disabled={true}
-                                        className="w-full"
-                                    />
-                                </Form.Item>
-                            </div> */}
 
                             <Divider orientation="left">
                                 Financial Information
@@ -694,43 +698,6 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                 />
                             </Form.Item>
 
-                            {/* <div className="flex gap-4">
-                            <Form.Item
-                                label="LATITUDE (OPTIONAL)"
-                                name="latitude"
-                                validateStatus={errors?.latitude ? "error" : ""}
-                                help={
-                                    errors?.latitude ? errors?.latitude[0] : ""
-                                }
-                                className="w-full"
-                            >
-                                <Input
-                                    type="number"
-                                    prefix={<CompassOutlined />}
-                                    className="w-full"
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                label="LONGITUDE (OPTIONAL)"
-                                name="longitude"
-                                validateStatus={
-                                    errors?.longitude ? "error" : ""
-                                }
-                                help={
-                                    errors?.longitude
-                                        ? errors?.longitude[0]
-                                        : ""
-                                }
-                                className="w-full"
-                            >
-                                <Input
-                                    type="number"
-                                    prefix={<CompassOutlined />}
-                                    className="w-full"
-                                />
-                            </Form.Item>
-                        </div> */}
-
                             <Divider orientation="left">
                                 Other Information
                             </Divider>
@@ -803,22 +770,6 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                     }
                                     className="w-full"
                                 >
-                                    {/* <Select
-                                        options={[
-                                            {
-                                                value: "Roadwork",
-                                                label: "Roadwork",
-                                            },
-                                            {
-                                                value: "Building",
-                                                label: "Building",
-                                            },
-                                            {
-                                                value: "Waterworks",
-                                                label: "Waterworks",
-                                            },
-                                        ]}
-                                    /> */}
                                     <Select
                                         showSearch
                                         options={categories.map((category) => ({
@@ -912,119 +863,6 @@ export default function Index({ auth, contructors, engineers, categories, funds 
                                 </Form.Item>
                             </div>
                         </Form.Item>
-                        {/* 
-                    <div className="w-full">
-                        <div>
-                            <h2>Project Phases</h2>
-                            <div style={{ marginBottom: 16 }}>
-                                <span>Phase 1: </span>
-                                <Slider
-                                    value={phases.phase1}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase1")
-                                    }
-                                    min={0}
-                                    max={phases.phase1 + remaining}
-                                    step={1}
-                                />
-                                <InputNumber
-                                    value={phases.phase1}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase1")
-                                    }
-                                    min={0}
-                                    max={phases.phase1 + remaining}
-                                />
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <span>Phase 2: </span>
-                                <Slider
-                                    value={phases.phase2}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase2")
-                                    }
-                                    min={0}
-                                    max={phases.phase2 + remaining}
-                                    step={1}
-                                />
-                                <InputNumber
-                                    value={phases.phase2}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase2")
-                                    }
-                                    min={0}
-                                    max={phases.phase2 + remaining}
-                                />
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <span>Phase 3: </span>
-                                <Slider
-                                    value={phases.phase3}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase3")
-                                    }
-                                    min={0}
-                                    max={phases.phase3 + remaining}
-                                    step={1}
-                                />
-                                <InputNumber
-                                    value={phases.phase3}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase3")
-                                    }
-                                    min={0}
-                                    max={phases.phase3 + remaining}
-                                />
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <span>Phase 4: </span>
-                                <Slider
-                                    value={phases.phase4}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase4")
-                                    }
-                                    min={0}
-                                    max={phases.phase4 + remaining}
-                                    step={1}
-                                />
-                                <InputNumber
-                                    value={phases.phase4}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase4")
-                                    }
-                                    min={0}
-                                    max={phases.phase4 + remaining}
-                                />
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <span>Phase 5: </span>
-                                <Slider
-                                    value={phases.phase5}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase5")
-                                    }
-                                    min={0}
-                                    max={phases.phase5 + remaining}
-                                    step={1}
-                                />
-                                <InputNumber
-                                    value={phases.phase5}
-                                    onChange={(val) =>
-                                        handleChange(val, "phase5")
-                                    }
-                                    min={0}
-                                    max={phases.phase5 + remaining}
-                                />
-                            </div>
-                            <div style={{ marginTop: 16, fontWeight: "bold" }}>
-                                <span>Total: {sliderTotal}%</span>
-                                <br />
-                                <span>
-                                    Remaining: {remaining >= 0 ? remaining : 0}%
-                                </span>
-                            </div>
-                        </div>
-                    </div> */}
 
                         <Row justify="end">
                             <Space size="small">

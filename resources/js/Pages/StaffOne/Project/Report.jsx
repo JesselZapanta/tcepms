@@ -96,8 +96,7 @@ export default function Report({ data }) {
         <>
             <div className="max-w-3xl mx-auto bg-white">
                 <div className="p-2 font-times">
-                    {/* ... header and project info unchanged ... */}
-
+                    {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
                     <div className="flex justify-around">
                         <img
                             src="/images/tangub.png"
@@ -107,7 +106,7 @@ export default function Report({ data }) {
                         <div className="mt-4 text-center font-bold text-lg">
                             <p>Republic of the Philippines</p>
                             <p>CITY OF TANGUB</p>
-                            <p>CITY OF ENGINEER'S OFFICE</p>
+                            <p>CITY ENGINEER'S OFFICE</p>
                             {/* <p>PROJECT UPDATE</p> */}
                         </div>
                         <img
@@ -379,6 +378,96 @@ export default function Report({ data }) {
                             </tr>
                         </tbody>
                     </table>
+                    {/* Project Progress by Category */}
+                    <p className="text-lg text-center font-bold py-8">
+                        PROJECT PROGRESS
+                    </p>
+
+                    {data?.updates.length > 1 ? (
+                        data?.updates.map((update) => (
+                            <table className="min-w-full border border-gray-100 mb-6">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th
+                                            className="border px-4 py-2 text-left"
+                                            // colSpan={2}
+                                        >
+                                            {update?.name}
+                                        </th>
+                                        <th className="border px-4 py-2 text-right">
+                                            {update?.update_date.slice(0, 10)}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th
+                                            className="border px-4 py-2 font-light text-md text-justify"
+                                            colSpan={2}
+                                        >
+                                            {update?.description}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th className="border px-4 py-2 text-left">
+                                            Category
+                                        </th>
+                                        <th className="border px-4 py-2 text-right">
+                                            Progress (%)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className="border px-4 py-2">
+                                            Excavation
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {update?.excavation_progress ?? 0}%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border px-4 py-2">
+                                            Concrete Works
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {update?.concrete_works_progress ??
+                                                0}
+                                            %
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border px-4 py-2">
+                                            Water Works
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {update?.water_works_progress ?? 0}%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border px-4 py-2">
+                                            Metal Works
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {update?.metal_works_progress ?? 0}%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border px-4 py-2">
+                                            Cement Plaster & Finishes
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {update?.cement_plaster_and_finishes_progress ??
+                                                0}
+                                            %
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        ))
+                    ) : (
+                        <div className="mx-auto border px-4 py-2 text-center text-gray-500 italic">
+                            No updates found.
+                        </div>
+                    )}
                 </div>
             </div>
         </>

@@ -20,7 +20,7 @@ export default function Report({ contructor, projects }) {
                         <div className="mt-4 text-center">
                             <p>Republic of the Philippines</p>
                             <p>CITY OF TANGUB</p>
-                            <p>CITY OF ENGINEER'S OFFICE</p>
+                            <p>CITY ENGINEER'S OFFICE</p>
                             <p>CONTRUCTOR'S PROJECTS</p>
                             <p className="mt-2 uppercase text-lg">
                                 {contructor}
