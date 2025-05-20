@@ -117,7 +117,6 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);
     Route::put('/staffone/project/update/{id}', [StaffOneProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [StaffOneProjectController::class, 'destroy']);
-    Route::get('/staffone/project/report/{id}', [StaffOneProjectController::class, 'reports'])->name('staffone.project.report');
     Route::get('/staffone/project/get-report/{id}', [StaffOneProjectController::class, 'report']);
     //
     Route::get('/staffone/request-extension', [StaffOneProjectExtensionController::class, 'index'])->name('staffone.project-request-extension');
@@ -175,6 +174,7 @@ Route::middleware(['auth', 'stafftwo','userStatus'])->group(function() {
 
     Route::get('/stafftwo/project', [StaffTwoProjectController::class, 'index'])->name('stafftwo.project');
     Route::get('/stafftwo/project/getdata', [StaffTwoProjectController::class, 'getdata']);
+    Route::get('/stafftwo/project/get-report/{id}', [StaffTwoProjectController::class, 'report']);
 
     Route::get('/stafftwo/labor/index/{id}', [LaborController::class, 'index'])->name('stafftwo.labor');
     Route::get('/stafftwo/labor/getcost/{id}', action: [LaborController::class, 'getCost']);

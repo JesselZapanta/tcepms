@@ -1,11 +1,17 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
-import { Button, Select, Space, Table, Tag } from "antd";
+import { Head, Link, router } from "@inertiajs/react";
+import { Button, Dropdown, Select, Space, Table, Tag } from "antd";
 import Search from "antd/es/input/Search";
-import { EditOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import {
+    EditOutlined,
+    FileTextOutlined,
+    UnorderedListOutlined,
+} from "@ant-design/icons";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Column from "antd/es/table/Column";
+import { useReactToPrint } from "react-to-print";
+import DetailedReport from "@/Pages/Partials/DetailedReport";
 
 export default function Index({ auth, categories }) {
     const [data, setData] = useState([]);
@@ -64,6 +70,36 @@ export default function Index({ auth, categories }) {
 
         return text;
     };
+
+    //print report
+    const componentRef = useRef();
+    const [reportData, setReportData] = useState(null); // set to null for better condition handling
+    const [shouldPrint, setShouldPrint] = useState(false);
+
+    const handlePrint = async (id) => {
+        try {
+            const res = await axios.get(`/stafftwo/project/get-report/${id}`);
+
+            if (res.status === 200) {
+                setReportData(res.data.data);
+                setShouldPrint(true); // mark that we should print after data is set
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const triggerPrint = useReactToPrint({
+        documentTitle: "Project Detailed Report",
+        content: () => componentRef.current,
+    });
+
+    useEffect(() => {
+        if (shouldPrint && reportData) {
+            triggerPrint();
+            setShouldPrint(false); // reset the flag
+        }
+    }, [reportData, shouldPrint]);
 
     return (
         <AuthenticatedLayout header="Project Labor Management" auth={auth}>
@@ -196,7 +232,7 @@ export default function Index({ auth, categories }) {
                             key="action"
                             render={(_, record) => (
                                 <Space>
-                                    <Link
+                                    {/* <Link
                                         href={route(
                                             "stafftwo.labor",
                                             record.id
@@ -207,11 +243,60 @@ export default function Index({ auth, categories }) {
                                             shape="circle"
                                             icon={<EditOutlined />}
                                         />
-                                    </Link>
+                                    </Link> */}
+                                    <div>
+                                        <Dropdown.Button
+                                            type="primary"
+                                            placement="bottomRight"
+                                            menu={{
+                                                items: [
+                                                    {
+                                                        key: "1",
+                                                        label: "Project Material",
+                                                        icon: (
+                                                            <UnorderedListOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            router.visit(
+                                                                route(
+                                                                    "stafftwo.labor",
+                                                                    record.id
+                                                                )
+                                                            );
+                                                        },
+                                                    },
+                                                    {
+                                                        key: "2",
+                                                        label: "Generate Detailed Report",
+                                                        icon: (
+                                                            <FileTextOutlined
+                                                                size={16}
+                                                            />
+                                                        ),
+                                                        onClick: () => {
+                                                            handlePrint(
+                                                                record.id
+                                                            );
+                                                        },
+                                                    },
+                                                ],
+                                            }}
+                                            trigger={["click"]}
+                                        >
+                                            Action
+                                        </Dropdown.Button>
+                                    </div>
                                 </Space>
                             )}
                         />
                     </Table>
+                </div>
+                <div ref={componentRef}>
+                    <div className="print-container mx-auto bg-white">
+                        {reportData && <DetailedReport data={reportData} />}
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

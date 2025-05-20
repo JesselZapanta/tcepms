@@ -32,4 +32,31 @@ class StaffTwoProjectController extends Controller
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
     }
+
+    public function report($id)
+    {
+        $data =  Project::with([
+            'siteEngineer:id,name', 
+            'contructor:id,company_name', 
+
+            'excavation',
+            'concrete',
+            'water',
+            'metal',
+            'plasterFinish',
+            'equipment',
+
+            'concreteLabor',
+            'waterLabor',
+            'metalLabor',
+            'plasterFinishLabor',
+
+            'updates',
+        ])
+        ->findOrFail($id);
+
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
 }

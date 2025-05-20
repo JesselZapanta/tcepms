@@ -37,7 +37,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 import Dropdown from "antd/es/dropdown/dropdown";
 import { useReactToPrint } from "react-to-print";
-import Report from "./Report";
+import DetailedReport from "@/Pages/Partials/DetailedReport";
 
 export default function Index({
     auth,
@@ -246,7 +246,7 @@ export default function Index({
         return text;
     };
 
-    //
+    //print report
     const componentRef = useRef();
     const [reportData, setReportData] = useState(null); // set to null for better condition handling
     const [shouldPrint, setShouldPrint] = useState(false);
@@ -507,7 +507,7 @@ export default function Index({
 
                 <div ref={componentRef}>
                     <div className="print-container mx-auto bg-white">
-                        {reportData && <Report data={reportData} />}
+                        {reportData && <DetailedReport data={reportData} />}
                     </div>
                 </div>
 

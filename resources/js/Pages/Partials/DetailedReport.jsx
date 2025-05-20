@@ -1,25 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export default function Report({ data }) {
-
-    // const [data, setData] = useState({});
-
-    // const getData = async () => {
-    //     try{
-    //         const res = await axios.get(`/staffone/project/get-report/${id}`);
-
-    //         setData(res.data);
-    //     }catch(err){
-    //         console.log(err);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getData();
-    // }, [])
-
-    // console.log(data);
+export default function DetailedReport({ data }) {
 
     const currency = (amount) =>
         Number(amount).toLocaleString("en-PH", {
