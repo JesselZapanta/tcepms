@@ -38,6 +38,11 @@ class MetalLaborController extends Controller
 
         $project->metalLabor()->create($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost + $data['cost'], 
+        ]);
+
         return response()->json([
             'status' => 'created',
         ], 201);
@@ -48,6 +53,8 @@ class MetalLaborController extends Controller
         $data = $request->validated();
 
         $metalLabor = MetalLabor::findOrFail($id);
+
+        $prevCost = $metalLabor->cost;
 
         $project = Project::with(['metal', 'metalLabor'])->findOrFail($metalLabor->project);
 
@@ -64,6 +71,12 @@ class MetalLaborController extends Controller
         // Update the record with new data
         $metalLabor->update($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost - $prevCost + $data['cost'],
+        ]);
+
+
         return response()->json([
             'status' => 'updated'
         ], 200);
@@ -73,7 +86,16 @@ class MetalLaborController extends Controller
     {
         $metalLabor = MetalLabor::findOrFail($id);
 
+        $laborCost = $metalLabor->cost; // Store cost before deletion
+
+        $project = Project::findOrFail($metalLabor->project);
+
         $metalLabor->delete();
+
+        // Update the project cost
+        $project->update([
+            'cost' => $project->cost - $laborCost,
+        ]);
 
         return response()->json([
             'status' => 'deleted'

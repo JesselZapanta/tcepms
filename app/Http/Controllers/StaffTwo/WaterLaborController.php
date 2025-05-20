@@ -38,6 +38,11 @@ class WaterLaborController extends Controller
 
         $project->waterLabor()->create($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost + $data['cost'], 
+        ]);
+
         return response()->json([
             'status' => 'created',
         ], 201);
@@ -48,6 +53,8 @@ class WaterLaborController extends Controller
         $data = $request->validated();
 
         $waterLabor = WaterLabor::findOrFail($id);
+
+        $prevCost = $waterLabor->cost;
 
         $project = Project::with(['water', 'waterLabor'])->findOrFail($waterLabor->project);
 
@@ -64,6 +71,11 @@ class WaterLaborController extends Controller
         // Update the record with new data
         $waterLabor->update($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost - $prevCost + $data['cost'],
+        ]);
+
         return response()->json([
             'status' => 'updated'
         ], 200);
@@ -73,7 +85,16 @@ class WaterLaborController extends Controller
     {
         $waterLabor = WaterLabor::findOrFail($id);
 
+        $laborCost = $waterLabor->cost; // Store cost before deletion
+
+        $project = Project::findOrFail($waterLabor->project);
+
         $waterLabor->delete();
+
+        // Update the project cost
+        $project->update([
+            'cost' => $project->cost - $laborCost,
+        ]);
 
         return response()->json([
             'status' => 'deleted'

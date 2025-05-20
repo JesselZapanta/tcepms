@@ -48,10 +48,14 @@ class ConcreteController extends Controller
 
         $TotalCost = collect([
             'ExcavationCost' => $ExcavationCost,
-            'ConcreteSubTotal' => $ConcreteSubTotal,
-            'WaterSubTotal' => $WaterSubTotal,
-            'MetalSubTotal' => $MetalSubTotal,
-            'PlasterFinishSubTotal' => $PlasterFinishSubTotal,
+            // 'ConcreteSubTotal' => $ConcreteSubTotal,//remove for now
+            'ConcreteWorksCost' => $ConcreteWorksCost,
+            // 'WaterSubTotal' => $WaterSubTotal,//remove for now
+            'WaterCost' => $WaterCost,
+            // 'MetalSubTotal' => $MetalSubTotal,//remove for now
+            'MetalCost' => $MetalCost,
+            // 'PlasterFinishSubTotal' => $PlasterFinishSubTotal,//remove for now
+            'PlasterFinishCost' => $PlasterFinishCost,
             'EquipmentCost' => $EquipmentCost,
         ])->sum();
 

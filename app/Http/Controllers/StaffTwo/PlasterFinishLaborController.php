@@ -38,6 +38,11 @@ class PlasterFinishLaborController extends Controller
 
         $project->plasterFinishLabor()->create($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost + $data['cost'], 
+        ]);
+
         return response()->json([
             'status' => 'created',
         ], 201);
@@ -48,6 +53,8 @@ class PlasterFinishLaborController extends Controller
         $data = $request->validated();
 
         $plasterFinishLabor = PlasterFinishLabor::findOrFail($id);
+
+        $prevCost = $plasterFinishLabor->cost;
 
         $project = Project::with(['plasterFinish', 'plasterFinishLabor'])->findOrFail($plasterFinishLabor->project);
 
@@ -64,6 +71,11 @@ class PlasterFinishLaborController extends Controller
         // Update the record with new data
         $plasterFinishLabor->update($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost - $prevCost + $data['cost'],
+        ]);
+
         return response()->json([
             'status' => 'updated'
         ], 200);
@@ -73,7 +85,17 @@ class PlasterFinishLaborController extends Controller
     {
         $plasterFinishLabor = PlasterFinishLabor::findOrFail($id);
 
+        $laborCost = $plasterFinishLabor->cost; // Store cost before deletion
+
+        $project = Project::findOrFail($plasterFinishLabor->project);
+
         $plasterFinishLabor->delete();
+
+        // Update the project cost
+        $project->update([
+            'cost' => $project->cost - $laborCost,
+        ]);
+
 
         return response()->json([
             'status' => 'deleted'

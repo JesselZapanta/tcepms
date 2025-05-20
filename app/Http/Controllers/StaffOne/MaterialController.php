@@ -108,7 +108,7 @@ class MaterialController extends Controller
             'PlasterFinishEstimatedSubTotalCost' => $PlasterFinishEstimatedSubTotalCost,
             'EquipmentCost' => $EquipmentCost,
         ])->sum(),
-
+        //mao ni ma save dapat sa project->costs //todos
         'ActualTotalCost' => collect([
             'ExcavationCost' => $ExcavationCost,
             'ConcreteSubTotalCost' => $ConcreteSubTotalCost,

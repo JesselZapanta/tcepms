@@ -276,7 +276,7 @@ export default function Summary({ costs, formatPeso, setCostChange }) {
     };
 
     // Determine the background color based on the condition
-    const isBudgetExceeded = costs.EstimatedBudget <= costs.EstimatedTotalCost;
+    const isBudgetExceeded = costs.EstimatedBudget < costs.EstimatedTotalCost;
     const backgroundColor = isBudgetExceeded
         ? "rgba(255, 204, 204, 0.3)"
         : "rgba(204, 255, 204, 0.3)";

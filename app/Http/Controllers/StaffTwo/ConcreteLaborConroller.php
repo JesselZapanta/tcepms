@@ -36,6 +36,11 @@ class ConcreteLaborConroller extends Controller
 
         $project->concreteLabor()->create($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost + $data['cost'], 
+        ]);
+
         return response()->json([
             'status' => 'created',
         ], 201);
@@ -46,6 +51,8 @@ class ConcreteLaborConroller extends Controller
         $data = $request->validated();
 
         $concreteLabor = ConcreteLabor::findOrFail($id);
+
+        $prevCost = $concreteLabor->cost;
 
         $project = Project::with(['concrete', 'concreteLabor'])->findOrFail($concreteLabor->project);
 
@@ -62,6 +69,11 @@ class ConcreteLaborConroller extends Controller
         // Update the record with new data
         $concreteLabor->update($data);
 
+        //update the project cost
+        $project->update([
+            'cost' => $project->cost - $prevCost + $data['cost'],
+        ]);
+
         return response()->json([
             'status' => 'updated'
         ], 200);
@@ -71,10 +83,20 @@ class ConcreteLaborConroller extends Controller
     {
         $concreteLabor = ConcreteLabor::findOrFail($id);
 
+        $laborCost = $concreteLabor->cost; // Store cost before deletion
+
+        $project = Project::findOrFail($concreteLabor->project);
+
         $concreteLabor->delete();
+
+        // Update the project cost
+        $project->update([
+            'cost' => $project->cost - $laborCost,
+        ]);
 
         return response()->json([
             'status' => 'deleted'
         ], 200);
     }
+
 }
