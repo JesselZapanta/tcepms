@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminProjectUpdateController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Engineer\EngineerDashboardController;
+use App\Http\Controllers\Engineer\EngineerProjectController;
 use App\Http\Controllers\Engineer\EngineerProjectMonitoringController;
 use App\Http\Controllers\Engineer\EngineerProjectRequestExtension;
 use App\Http\Controllers\Engineer\EngineerProjectUpdateController;
@@ -226,6 +227,10 @@ Route::middleware(['auth', 'stafftwo','userStatus'])->group(function() {
 Route::middleware(['auth', 'engineer','userStatus'])->group(function() {
     Route::get('/engineer/dashboard', [EngineerDashboardController::class, 'index'])->name('engineer.dashboard');
     Route::get('/engineer/dashboard/getdata', [EngineerDashboardController::class, 'getData']);
+
+    Route::get('/engineer/project', [EngineerProjectController::class, 'index'])->name('engineer.project');
+    Route::get('/engineer/project/getdata', [EngineerProjectController::class, 'getdata']);
+    Route::get('/engineer/project/get-report/{id}', [EngineerProjectController::class, 'report']);
 
     Route::get('/engineer/project-monitoring', [EngineerProjectMonitoringController::class, 'index'])->name('engineer.project-monitoring');
     Route::get('/engineer/project-monitoring/graph/{id}', [EngineerProjectMonitoringController::class, 'graph'])->name('engineer.project-monitoring-graph');

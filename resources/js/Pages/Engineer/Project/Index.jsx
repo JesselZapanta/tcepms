@@ -49,10 +49,10 @@ export default function Index({ auth, categories }) {
         ].join("&");
 
         try {
-            const res = await axios.get(`/admin/project/getdata?${params}`);
+            const res = await axios.get(`/engineer/project/getdata?${params}`);
             setData(res.data.data);
             setTotal(res.data.total);
-        } catch (err){
+        } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -108,7 +108,7 @@ export default function Index({ auth, categories }) {
 
     const handlePrint = async (id) => {
         try {
-            const res = await axios.get(`/admin/project/get-report/${id}`);
+            const res = await axios.get(`/engineer/project/get-report/${id}`);
 
             if (res.status === 200) {
                 setReportData(res.data.data);

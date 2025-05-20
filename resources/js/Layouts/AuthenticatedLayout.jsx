@@ -148,6 +148,11 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <DashboardOutlined />,
         },
         {
+            label: <Link href={route("engineer.project")}>Project</Link>,
+            key: "engineer.project",
+            icon: <ProjectOutlined />,
+        },
+        {
             label: (
                 <Link href={route("engineer.project-monitoring")}>
                     Project Monitoring
