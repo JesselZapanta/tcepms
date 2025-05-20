@@ -11,8 +11,6 @@ import {
     Select,
     Space,
     Table,
-    Slider,
-    Col,
     InputNumber,
     Tag,
 } from "antd";
@@ -29,14 +27,17 @@ import {
     UnorderedListOutlined,
     CodeOutlined,
     SignatureOutlined,
+    FileTextOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 import Dropdown from "antd/es/dropdown/dropdown";
+import { useReactToPrint } from "react-to-print";
+import Report from "./Report";
 
 export default function Index({
     auth,
@@ -230,26 +231,6 @@ export default function Index({
             setLoading(false);
         }
     };
-    // console.log(data);
-
-    // const [phases, setPhases] = useState({
-    //     phase1: 20,
-    //     phase2: 20,
-    //     phase3: 20,
-    //     phase4: 20,
-    //     phase5: 20,
-    // });
-
-    // const sliderTotal = Object.values(phases).reduce((sum, val) => sum + val, 0);
-    // const remaining = 100 - sliderTotal;
-
-    // const handleChange = (value, phaseKey) => {
-    //     setPhases((prevPhases) => ({
-    //         ...prevPhases,
-    //         [phaseKey]: value,
-    //     }));
-    // };
-
     // Tracks the contractual status
     const [con, setCon] = useState();
 
@@ -264,6 +245,36 @@ export default function Index({
 
         return text;
     };
+
+    //
+    const componentRef = useRef();
+    const [reportData, setReportData] = useState(null); // set to null for better condition handling
+    const [shouldPrint, setShouldPrint] = useState(false);
+
+    const handlePrint = async (id) => {
+        try {
+            const res = await axios.get(`/staffone/project/get-report/${id}`);
+
+            if (res.status === 200) {
+                setReportData(res.data.data);
+                setShouldPrint(true); // mark that we should print after data is set
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const triggerPrint = useReactToPrint({
+        documentTitle: "Project Detailed Report",
+        content: () => componentRef.current,
+    });
+
+    useEffect(() => {
+        if (shouldPrint && reportData) {
+            triggerPrint();
+            setShouldPrint(false); // reset the flag
+        }
+    }, [reportData, shouldPrint]);
 
     return (
         <AuthenticatedLayout header="Project Management" auth={auth}>
@@ -444,16 +455,13 @@ export default function Index({
                                                         key: "3",
                                                         label: "Generate Detailed Report",
                                                         icon: (
-                                                            <SignatureOutlined
+                                                            <FileTextOutlined
                                                                 size={16}
                                                             />
                                                         ),
                                                         onClick: () => {
-                                                            router.visit(
-                                                                route(
-                                                                    "staffone.project.report",
-                                                                    record.id
-                                                                )
+                                                            handlePrint(
+                                                                record.id
                                                             );
                                                         },
                                                     },
@@ -495,6 +503,12 @@ export default function Index({
                             )}
                         />
                     </Table>
+                </div>
+
+                <div ref={componentRef}>
+                    <div className="print-container mx-auto bg-white">
+                        {reportData && <Report data={reportData} />}
+                    </div>
                 </div>
 
                 <Modal

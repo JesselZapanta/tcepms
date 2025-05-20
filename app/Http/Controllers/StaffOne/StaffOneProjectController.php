@@ -95,6 +95,12 @@ class StaffOneProjectController extends Controller
         ], 200);
     }
 
+    public function reports($id)
+    {
+        return inertia('StaffOne/Project/Report', [
+            'id' => $id
+        ]);
+    }
     public function report($id)
     {
         $data =  Project::with([
@@ -118,8 +124,11 @@ class StaffOneProjectController extends Controller
         ->findOrFail($id);
 
 
-        return inertia('StaffOne/Project/Report',[
-            'data' => $data,
-        ]);
+        // return inertia('StaffOne/Project/Report',[
+        //     'data' => $data,
+        // ]);
+        return response()->json([
+            'data' => $data
+        ], 200);
     }
 }

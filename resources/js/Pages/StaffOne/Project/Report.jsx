@@ -1,6 +1,26 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 export default function Report({ data }) {
+
+    // const [data, setData] = useState({});
+
+    // const getData = async () => {
+    //     try{
+    //         const res = await axios.get(`/staffone/project/get-report/${id}`);
+
+    //         setData(res.data);
+    //     }catch(err){
+    //         console.log(err);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     getData();
+    // }, [])
+
+    // console.log(data);
+
     const currency = (amount) =>
         Number(amount).toLocaleString("en-PH", {
             style: "currency",
@@ -167,22 +187,26 @@ export default function Report({ data }) {
                                         {data?.end_date?.slice(0, 10)}
                                     </td>
                                 </tr>
-                                <tr className="border-t">
-                                    <td className="p-2 font-bold bg-gray-100 border-r">
-                                        Budget:
-                                    </td>
-                                    <td className="p-2">
-                                        {currency(data?.budget)}
-                                    </td>
-                                </tr>
-                                <tr className="border-t">
-                                    <td className="p-2 font-bold bg-gray-100 border-r">
-                                        Cost:
-                                    </td>
-                                    <td className="p-2">
-                                        {currency(data?.cost)}
-                                    </td>
-                                </tr>
+                                {data?.contractual === 1 && (
+                                    <tr className="border-t">
+                                        <td className="p-2 font-bold bg-gray-100 border-r">
+                                            Budget:
+                                        </td>
+                                        <td className="p-2">
+                                            {currency(data?.budget)}
+                                        </td>
+                                    </tr>
+                                )}
+                                {data?.contractual === 0 && (
+                                    <tr className="border-t">
+                                        <td className="p-2 font-bold bg-gray-100 border-r">
+                                            Cost:
+                                        </td>
+                                        <td className="p-2">
+                                            {currency(data?.cost)}
+                                        </td>
+                                    </tr>
+                                )}
                                 <tr className="border-t">
                                     <td className="p-2 font-bold bg-gray-100 border-r">
                                         Source:
@@ -237,153 +261,273 @@ export default function Report({ data }) {
                         </table>
                     </div>
 
-                    {/* Materials */}
-                    <p className="text-lg text-center font-bold py-8">
-                        PROJECT MATERIAL DETAILS
-                    </p>
+                    {data?.contractual === 0 && (
+                        <div>
+                            {/* Materials */}
+                            <p className="text-lg text-center font-bold py-8">
+                                PROJECT MATERIAL DETAILS
+                            </p>
 
-                    {renderMaterialsTable(
-                        "Excavation Materials",
-                        data?.excavation,
-                        ["Material", "Quantity", "No. of Days", "Rate", "Cost"],
-                        ["material", "quantity", "no_of_days", "rate", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Concrete Works Materials",
-                        data?.concrete,
-                        ["Material", "Unit", "Quantity", "Unit Cost", "Cost"],
-                        ["material", "unit", "quantity", "unit_cost", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Water Works Materials",
-                        data?.water,
-                        ["Material", "Unit", "Quantity", "Unit Cost", "Cost"],
-                        ["material", "unit", "quantity", "unit_cost", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Metal Works Materials",
-                        data?.metal,
-                        ["Material", "Unit", "Quantity", "Unit Cost", "Cost"],
-                        ["material", "unit", "quantity", "unit_cost", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Plaster & Finish Works Materials",
-                        data?.plaster_finish,
-                        ["Material", "Unit", "Quantity", "Unit Cost", "Cost"],
-                        ["material", "unit", "quantity", "unit_cost", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Equipment",
-                        data?.equipment,
-                        [
-                            "Equipment",
-                            "Quantity",
-                            "No. of Days",
-                            "Rate",
-                            "Cost",
-                        ],
-                        ["equipment", "quantity", "no_of_days", "rate", "cost"]
+                            {renderMaterialsTable(
+                                "Excavation Materials",
+                                data?.excavation,
+                                [
+                                    "Material",
+                                    "Quantity",
+                                    "No. of Days",
+                                    "Rate",
+                                    "Cost",
+                                ],
+                                [
+                                    "material",
+                                    "quantity",
+                                    "no_of_days",
+                                    "rate",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Concrete Works Materials",
+                                data?.concrete,
+                                [
+                                    "Material",
+                                    "Unit",
+                                    "Quantity",
+                                    "Unit Cost",
+                                    "Cost",
+                                ],
+                                [
+                                    "material",
+                                    "unit",
+                                    "quantity",
+                                    "unit_cost",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Water Works Materials",
+                                data?.water,
+                                [
+                                    "Material",
+                                    "Unit",
+                                    "Quantity",
+                                    "Unit Cost",
+                                    "Cost",
+                                ],
+                                [
+                                    "material",
+                                    "unit",
+                                    "quantity",
+                                    "unit_cost",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Metal Works Materials",
+                                data?.metal,
+                                [
+                                    "Material",
+                                    "Unit",
+                                    "Quantity",
+                                    "Unit Cost",
+                                    "Cost",
+                                ],
+                                [
+                                    "material",
+                                    "unit",
+                                    "quantity",
+                                    "unit_cost",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Plaster & Finish Works Materials",
+                                data?.plaster_finish,
+                                [
+                                    "Material",
+                                    "Unit",
+                                    "Quantity",
+                                    "Unit Cost",
+                                    "Cost",
+                                ],
+                                [
+                                    "material",
+                                    "unit",
+                                    "quantity",
+                                    "unit_cost",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Equipment",
+                                data?.equipment,
+                                [
+                                    "Equipment",
+                                    "Quantity",
+                                    "No. of Days",
+                                    "Rate",
+                                    "Cost",
+                                ],
+                                [
+                                    "equipment",
+                                    "quantity",
+                                    "no_of_days",
+                                    "rate",
+                                    "cost",
+                                ]
+                            )}
+
+                            {/* Labor */}
+                            <p className="text-lg text-center font-bold py-8">
+                                PROJECT LABOR DETAILS
+                            </p>
+                            {renderMaterialsTable(
+                                "Concrete Labor",
+                                data?.concrete_labor,
+                                [
+                                    "Position",
+                                    "Quantity",
+                                    "No. of Days",
+                                    "Rate",
+                                    "Cost",
+                                ],
+                                [
+                                    "position",
+                                    "quantity",
+                                    "no_of_days",
+                                    "rate",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Water Labor",
+                                data?.water_labor,
+                                [
+                                    "Position",
+                                    "Quantity",
+                                    "No. of Days",
+                                    "Rate",
+                                    "Cost",
+                                ],
+                                [
+                                    "position",
+                                    "quantity",
+                                    "no_of_days",
+                                    "rate",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Metal Labor",
+                                data?.metal_labor,
+                                [
+                                    "Position",
+                                    "Quantity",
+                                    "No. of Days",
+                                    "Rate",
+                                    "Cost",
+                                ],
+                                [
+                                    "position",
+                                    "quantity",
+                                    "no_of_days",
+                                    "rate",
+                                    "cost",
+                                ]
+                            )}
+                            {renderMaterialsTable(
+                                "Plaster & Finish Labor",
+                                data?.plaster_finish_labor,
+                                [
+                                    "Position",
+                                    "Quantity",
+                                    "No. of Days",
+                                    "Rate",
+                                    "Cost",
+                                ],
+                                [
+                                    "position",
+                                    "quantity",
+                                    "no_of_days",
+                                    "rate",
+                                    "cost",
+                                ]
+                            )}
+
+                            {/* Cost Summary */}
+                            <p className="text-lg text-center font-bold py-8">
+                                PROJECT COST SUMMARY
+                            </p>
+                            <table className="min-w-full border border-gray-100 mb-6">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="border px-4 py-2 text-left">
+                                            Category
+                                        </th>
+                                        <th className="border px-4 py-2 text-right">
+                                            Cost
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {materialCategories.map((cat, idx) => (
+                                        <tr key={idx}>
+                                            <td className="border px-4 py-2">
+                                                {cat.name} Materials
+                                            </td>
+                                            <td className="border px-4 py-2 text-right">
+                                                {currency(getTotal(cat.data))}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {laborCategories.map((cat, idx) => (
+                                        <tr key={`labor-${idx}`}>
+                                            <td className="border px-4 py-2">
+                                                {cat.name}
+                                            </td>
+                                            <td className="border px-4 py-2 text-right">
+                                                {currency(getTotal(cat.data))}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    <tr className="font-semibold bg-gray-50">
+                                        <td className="border px-4 py-2">
+                                            Total Materials Cost
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {currency(totalMaterialCost)}
+                                        </td>
+                                    </tr>
+                                    <tr className="font-semibold bg-gray-50">
+                                        <td className="border px-4 py-2">
+                                            Total Labor Cost
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {currency(totalLaborCost)}
+                                        </td>
+                                    </tr>
+                                    <tr className="font-bold bg-gray-200">
+                                        <td className="border px-4 py-2">
+                                            Grand Total
+                                        </td>
+                                        <td className="border px-4 py-2 text-right">
+                                            {currency(
+                                                totalMaterialCost +
+                                                    totalLaborCost
+                                            )}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     )}
 
-                    {/* Labor */}
-                    <p className="text-lg text-center font-bold py-8">
-                        PROJECT LABOR DETAILS
-                    </p>
-                    {renderMaterialsTable(
-                        "Concrete Labor",
-                        data?.concrete_labor,
-                        ["Position", "Quantity", "No. of Days", "Rate", "Cost"],
-                        ["position", "quantity", "no_of_days", "rate", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Water Labor",
-                        data?.water_labor,
-                        ["Position", "Quantity", "No. of Days", "Rate", "Cost"],
-                        ["position", "quantity", "no_of_days", "rate", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Metal Labor",
-                        data?.metal_labor,
-                        ["Position", "Quantity", "No. of Days", "Rate", "Cost"],
-                        ["position", "quantity", "no_of_days", "rate", "cost"]
-                    )}
-                    {renderMaterialsTable(
-                        "Plaster & Finish Labor",
-                        data?.plaster_finish_labor,
-                        ["Position", "Quantity", "No. of Days", "Rate", "Cost"],
-                        ["position", "quantity", "no_of_days", "rate", "cost"]
-                    )}
-
-                    {/* Cost Summary */}
-                    <p className="text-lg text-center font-bold py-8">
-                        PROJECT COST SUMMARY
-                    </p>
-                    <table className="min-w-full border border-gray-100 mb-6">
-                        <thead className="bg-gray-100">
-                            <tr>
-                                <th className="border px-4 py-2 text-left">
-                                    Category
-                                </th>
-                                <th className="border px-4 py-2 text-right">
-                                    Cost
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {materialCategories.map((cat, idx) => (
-                                <tr key={idx}>
-                                    <td className="border px-4 py-2">
-                                        {cat.name} Materials
-                                    </td>
-                                    <td className="border px-4 py-2 text-right">
-                                        {currency(getTotal(cat.data))}
-                                    </td>
-                                </tr>
-                            ))}
-                            {laborCategories.map((cat, idx) => (
-                                <tr key={`labor-${idx}`}>
-                                    <td className="border px-4 py-2">
-                                        {cat.name}
-                                    </td>
-                                    <td className="border px-4 py-2 text-right">
-                                        {currency(getTotal(cat.data))}
-                                    </td>
-                                </tr>
-                            ))}
-                            <tr className="font-semibold bg-gray-50">
-                                <td className="border px-4 py-2">
-                                    Total Materials Cost
-                                </td>
-                                <td className="border px-4 py-2 text-right">
-                                    {currency(totalMaterialCost)}
-                                </td>
-                            </tr>
-                            <tr className="font-semibold bg-gray-50">
-                                <td className="border px-4 py-2">
-                                    Total Labor Cost
-                                </td>
-                                <td className="border px-4 py-2 text-right">
-                                    {currency(totalLaborCost)}
-                                </td>
-                            </tr>
-                            <tr className="font-bold bg-gray-200">
-                                <td className="border px-4 py-2">
-                                    Grand Total
-                                </td>
-                                <td className="border px-4 py-2 text-right">
-                                    {currency(
-                                        totalMaterialCost + totalLaborCost
-                                    )}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                     {/* Project Progress by Category */}
                     <p className="text-lg text-center font-bold py-8">
                         PROJECT PROGRESS
                     </p>
 
-                    {data?.updates.length > 1 ? (
+                    {data?.updates?.length > 1 ? (
                         data?.updates.map((update) => (
                             <table className="min-w-full border border-gray-100 mb-6">
                                 <thead className="bg-gray-100">

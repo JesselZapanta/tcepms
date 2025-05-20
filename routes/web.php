@@ -117,7 +117,8 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);
     Route::put('/staffone/project/update/{id}', [StaffOneProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [StaffOneProjectController::class, 'destroy']);
-    Route::get('/staffone/project/report/{id}', [StaffOneProjectController::class, 'report'])->name('staffone.project.report');
+    Route::get('/staffone/project/report/{id}', [StaffOneProjectController::class, 'reports'])->name('staffone.project.report');
+    Route::get('/staffone/project/get-report/{id}', [StaffOneProjectController::class, 'report']);
     //
     Route::get('/staffone/request-extension', [StaffOneProjectExtensionController::class, 'index'])->name('staffone.project-request-extension');
     Route::get('/staffone/request-extension/getdata', [StaffOneProjectExtensionController::class, 'getdata']);
