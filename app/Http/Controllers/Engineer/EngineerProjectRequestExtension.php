@@ -66,7 +66,7 @@ class EngineerProjectRequestExtension extends Controller
             'status' => 'Pending'
         ];
 
-        $user = User::where('role',1)->get();
+        $user = User::where('role',0)->get(); //0 === admin
         
         Notification::send($user, new ProjectExtensionRequested($data));
 

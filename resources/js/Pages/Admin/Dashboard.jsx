@@ -146,7 +146,7 @@ export default function Dashboard({ auth }) {
                                 </span>
                             </div>
                             <p className="text-sm italic">
-                                You are logged in as Administrator
+                                You are logged in as Administrator (Officer in Charge)
                             </p>
                         </div>
                     </div>

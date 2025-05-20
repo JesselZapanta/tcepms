@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminContructorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminFundController;
 use App\Http\Controllers\Admin\AdminProjectController;
+use App\Http\Controllers\Admin\AdminProjectExtensionController;
 use App\Http\Controllers\Admin\AdminProjectMonitoringController;
 use App\Http\Controllers\Admin\AdminProjectUpdateController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -103,7 +104,12 @@ Route::middleware(['auth','admin','userStatus'])->group(function() {
     Route::get('/admin/project', [AdminProjectController::class, 'index'])->name('admin.project');
     Route::get('/admin/project/getdata', [AdminProjectController::class, 'getdata']);
     Route::get('/admin/project/get-report/{id}', [AdminProjectController::class, 'report']);
-    
+
+    //ibalhin sa admin
+    Route::get('/admin/request-extension', [AdminProjectExtensionController::class, 'index'])->name('admin.project-request-extension');
+    Route::get('/admin/request-extension/getdata', [AdminProjectExtensionController::class, 'getdata']);
+    Route::put('/admin/request-extension/update/{id}', [AdminProjectExtensionController::class, 'update']);
+
     Route::get('/admin/project-monitoring', [AdminProjectMonitoringController::class, 'index'])->name('admin.project-monitoring');
     Route::get('/admin/project-monitoring/getdata', [AdminProjectMonitoringController::class, 'getData']);
     Route::get('/admin/project-monitoring/graph/{id}', [AdminProjectMonitoringController::class, 'graph'])->name('admin.project-monitoring-graph');
@@ -123,10 +129,11 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::put('/staffone/project/update/{id}', [StaffOneProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [StaffOneProjectController::class, 'destroy']);
     Route::get('/staffone/project/get-report/{id}', [StaffOneProjectController::class, 'report']);
-    //ibalhin sa admin
-    Route::get('/staffone/request-extension', [StaffOneProjectExtensionController::class, 'index'])->name('staffone.project-request-extension');
-    Route::get('/staffone/request-extension/getdata', [StaffOneProjectExtensionController::class, 'getdata']);
-    Route::put('/staffone/request-extension/update/{id}', [StaffOneProjectExtensionController::class, 'update']);
+    
+    //transfer to admin 
+    // Route::get('/staffone/request-extension', [StaffOneProjectExtensionController::class, 'index'])->name('staffone.project-request-extension');
+    // Route::get('/staffone/request-extension/getdata', [StaffOneProjectExtensionController::class, 'getdata']);
+    // Route::put('/staffone/request-extension/update/{id}', [StaffOneProjectExtensionController::class, 'update']);
 
     Route::get('/staffone/materials/index/{id}', [MaterialController::class, 'index'])->name('staffone.material');
     Route::get('/staffone/materials/getcost/{id}', [MaterialController::class, 'getCost']);

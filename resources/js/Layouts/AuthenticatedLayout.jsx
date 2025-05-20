@@ -63,11 +63,11 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         },
         {
             label: (
-                <Link href={route("staffone.project-request-extension")}>
+                <Link href={route("admin.project-request-extension")}>
                     Request Extention
                 </Link>
             ),
-            key: "staffone.project-request-extension",
+            key: "admin.project-request-extension",
             icon: <CalendarOutlined />,
         },
         {
@@ -92,15 +92,15 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             key: "staffone.project",
             icon: <ProjectOutlined />,
         },
-        {
-            label: (
-                <Link href={route("staffone.project-request-extension")}>
-                    Request Extention
-                </Link>
-            ),
-            key: "staffone.project-request-extension",
-            icon: <CalendarOutlined />,
-        },
+        // {
+        //     label: (
+        //         <Link href={route("staffone.project-request-extension")}>
+        //             Request Extention
+        //         </Link>
+        //     ),
+        //     key: "staffone.project-request-extension",
+        //     icon: <CalendarOutlined />,
+        // },
         // {
         //     label: (
         //         <Link href={route("staffone.project")}>Request Material</Link>

@@ -23,7 +23,7 @@ class EngineerProjectUpdateController extends Controller
     {
         $currentProject = Project::whereIn('status', ['Ongoing', 'Completed'])->findOrFail($id);
 
-        return inertia('Engineer/Update/Index', [
+        return inertia('Engineer/Monitoring/Update/Index', [
             'currentProject' => $currentProject, 
         ]);
     }
@@ -33,7 +33,7 @@ class EngineerProjectUpdateController extends Controller
     {
         $project = Project::with('updates')->findOrFail($id);
 
-        return inertia('Engineer/Update/UpdateCalendar',[
+        return inertia('Engineer/Monitoring/Update/UpdateCalendar',[
             'project' => $project
         ]);
     }

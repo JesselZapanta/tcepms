@@ -15,7 +15,7 @@ class EngineerProjectMonitoringController extends Controller
     {
         $categories = Category::where('status', 1)->get();
 
-        return inertia('Engineer/Project/Index', [
+        return inertia('Engineer/Monitoring/Index', [
             'categories' => $categories
         ]);
     }
@@ -55,7 +55,7 @@ class EngineerProjectMonitoringController extends Controller
                 'cement_plaster_and_finishes_progress',
             ]);
 
-        return inertia('Engineer/Project/Graph', [
+        return inertia('Engineer/Monitoring/Graph', [
             'rawData' => [
                 'dates' => $updates->pluck('update_date')->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString())->all(),
                 'excavation' => $updates->pluck('excavation_progress')->all(),
