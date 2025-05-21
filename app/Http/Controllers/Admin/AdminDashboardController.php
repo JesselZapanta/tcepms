@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contructor;
 use App\Models\Project;
+use App\Models\RequestDateExtension;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,7 @@ class AdminDashboardController extends Controller
         $pendingLabors = Project::where('status', 'Labor')->count();
         $OngoingProjectCount = Project::where('status', 'Ongoing')->count();
         $CompletedProjectCount = Project::where('status', 'Completed')->count();
+        $pendingRequest = RequestDateExtension::where('status', 0)->count();
         
 
         $data = [
@@ -35,6 +37,7 @@ class AdminDashboardController extends Controller
             'pendingLabors' => $pendingLabors,
             'OngoingProjectCount' => $OngoingProjectCount,
             'CompletedProjectCount' => $CompletedProjectCount,
+            'pendingRequest' => $pendingRequest,
         ];
         return $data;
     }

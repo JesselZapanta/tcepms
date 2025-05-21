@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\RequestDateExtension;
 use App\Models\User;
 use App\Notifications\ProjectExtensionRequested;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 
@@ -34,6 +35,7 @@ class EngineerProjectRequestExtension extends Controller
     {
         $project = Project::with('siteEngineer')->findOrFail($id);
 
+        
         //check if there is a status===0 in under same project RequestDateExtension
 
         $exist = RequestDateExtension::where('project', $project->id)
@@ -52,6 +54,10 @@ class EngineerProjectRequestExtension extends Controller
             'requested_end_date' => 'required|date',
             'reason' => 'required',
         ]);
+
+        $data['requested_end_date']  = Carbon::parse($request->requested_end_date, 'UTC')
+                ->setTimezone('Asia/Manila')
+                ->format('Y-m-d H:i:s');
 
         $data['project'] = $project->id;
         $data['requested_by'] = $project->siteEngineer->name;

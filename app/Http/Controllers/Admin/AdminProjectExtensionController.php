@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\RequestDateExtension;
 use App\Models\User;
 use App\Notifications\ProjectExtensionRequestedStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 
@@ -42,6 +43,14 @@ class AdminProjectExtensionController extends Controller
         ]);
 
         $siteEngineer = $project->siteEngineer;
+
+        $request->requested_end_date = Carbon::parse($request->requested_end_date, 'UTC')
+        ->setTimezone('Asia/Manila')
+        ->format('Y-m-d H:i:s');
+
+        $request->current_end_date = Carbon::parse($request->current_end_date, 'UTC')
+        ->setTimezone('Asia/Manila')
+        ->format('Y-m-d H:i:s');
 
         if($request->status === 1){
             //approved

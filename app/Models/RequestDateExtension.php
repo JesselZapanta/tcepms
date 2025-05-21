@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ManilaDateTimeCast;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestDateExtension extends Model
@@ -17,6 +18,12 @@ class RequestDateExtension extends Model
         'remarks',
         'status',
     ];
+
+    // protected $casts = [
+    //     'current_end_date' => ManilaDateTimeCast::class,
+    //     'requested_end_date' => ManilaDateTimeCast::class,
+    // ];
+    
 
     public function project()
     {

@@ -146,7 +146,8 @@ export default function Dashboard({ auth }) {
                                 </span>
                             </div>
                             <p className="text-sm italic">
-                                You are logged in as Administrator (Officer in Charge)
+                                You are logged in as Administrator (Officer in
+                                Charge)
                             </p>
                         </div>
                     </div>
@@ -192,6 +193,12 @@ export default function Dashboard({ auth }) {
                                 {data.CompletedProjectCount}
                             </h2>
                             <p className="text-md">Completed Projects</p>
+                        </div>
+                        <div className="bg-white p-4 rounded ">
+                            <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                {data.pendingRequest}
+                            </h2>
+                            <p className="text-md">Pending Date Request</p>
                         </div>
                     </div>
                     {/* <div className="bg-white m-4 p-4 rounded-2xl shadow-md grid md:grid-cols-1 lg:grid-cols-2">

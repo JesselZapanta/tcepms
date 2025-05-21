@@ -268,11 +268,12 @@ export default function Index({ auth, project }) {
                             title="Requested End Date"
                             dataIndex="requested_end_date"
                             key="requested_end_date"
-                            render={(_, record) =>
-                                dayjs(record.requested_end_date).format(
-                                    "YYYY-MM-DD"
-                                )
-                            }
+                            // render={(_, record) =>
+                            //     dayjs(record.requested_end_date).format(
+                            //         "YYYY-MM-DD"
+                            //     )
+                            // }
+                            render={(_, record) => record.requested_end_date.slice(0,10)}
                         />
 
                         <Column

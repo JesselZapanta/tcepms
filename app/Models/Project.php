@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ManilaDateTimeCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -30,6 +31,13 @@ class Project extends Model
         'contractual',
         'status',
     ];
+
+    // protected $casts = [
+    //     'start_date' => ManilaDateTimeCast::class,
+    //     'end_date' => ManilaDateTimeCast::class,
+    // ];
+    
+
     public function siteEngineer()
     {
         return $this->belongsTo(User::class, 'engineer');
