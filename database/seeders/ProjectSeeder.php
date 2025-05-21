@@ -15,6 +15,25 @@ class ProjectSeeder extends Seeder
     {
         $projects = [
             [
+                'name' => 'Construction of Steel Water Tank Concrete Platform',
+                'project_code' => 'TNK-CON-2019-001',
+                'description' => 'The Construction of Steel Water Tank Concrete Platform project (Project Code: TNK-CON-2019-001) is situated at GADTC Sports Complex, Misamis Occidental, Philippines. This infrastructure initiative involves the development of a reinforced concrete platform designed to securely support a steel water tank. The platform will serve as a critical component in improving water storage and distribution facilities within the area, enhancing both operational capacity and community access to water resources.',
+                'start_date' => '2019-03-14',
+                'end_date' => '2019-05-14',
+                'actual_start_date' => null,
+                'actual_end_date' => null, // ongoing project
+                'budget' => 1700000.00,
+                'cost' => null,
+                'source' => 'LGU Infrastructure Fund',
+                'location' => 'Gadtc Sports Complex, Misamis Occidental, Philippines',
+                'engineer' => 5,
+                'contructor' => 6,
+                'category' => 'Public Buildings',
+                'priority' => 'High',
+                'contractual' => 0,//need materials and labors
+                'status' => 'Ongoing',
+            ],
+            [
                 'name' => 'Tangub City Hall Renovation',
                 'project_code' => 'TC-RENOV-2025-001',
                 'description' => 'A full renovation of Tangub City Hall including structural upgrades, interior remodeling, and landscaping.',

@@ -391,6 +391,7 @@ export default function MetalPanel({ project, costs, setCostChange }) {
                                             label: "Board Feet (bd.ft.)",
                                         },
                                         { value: "kg", label: "Kilogram (kg)" },
+                                        { value: "set", label: "Set" },
                                         { value: "liter", label: "Liter (L)" },
                                         {
                                             value: "gallon",

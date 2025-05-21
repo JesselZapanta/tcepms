@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             ContructorSeeder::class,
             CategorySeeder::class,
             FundSeeder::class,
-            ProjectSeeder::class
+            ProjectSeeder::class,
+            MaterialSeeder::class,
         ]);
     }
 }
