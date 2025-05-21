@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             FundSeeder::class,
             ProjectSeeder::class,
             MaterialSeeder::class,
+            LaborerSeeder::class,
         ]);
     }
 }

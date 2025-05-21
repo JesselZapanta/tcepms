@@ -22,8 +22,8 @@ class ProjectSeeder extends Seeder
                 'end_date' => '2019-05-14',
                 'actual_start_date' => null,
                 'actual_end_date' => null, // ongoing project
-                'budget' => 1700000.00,
-                'cost' => null,
+                'budget' => 1127664.00,
+                'cost' => 1127664.00,
                 'source' => 'LGU Infrastructure Fund',
                 'location' => 'Gadtc Sports Complex, Misamis Occidental, Philippines',
                 'engineer' => 5,

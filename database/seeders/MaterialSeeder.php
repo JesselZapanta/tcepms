@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Concrete;
+use App\Models\Equipment;
 use App\Models\Excavation;
 use App\Models\Metal;
 use App\Models\PlasterFinish;
@@ -271,5 +272,6 @@ class MaterialSeeder extends Seeder
         Water::insertOrIgnore($water);
         Metal::insertOrIgnore($metal);
         PlasterFinish::insertOrIgnore($cementPlaster);
+        Equipment::insertOrIgnore($eqipment);
     }
 }
