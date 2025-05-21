@@ -147,7 +147,7 @@ export default function Index({ auth, categories }) {
                         onChange={handleTableChange}
                     >
                         <Column
-                            className="whitespace-nowrap bg-green"
+                            className="whitespace-nowrap"
                             //sorter={true}
                             title="CODE"
                             dataIndex="project_code"
@@ -155,7 +155,7 @@ export default function Index({ auth, categories }) {
                         />
 
                         <Column
-                            className="whitespace-nowrap bg-white"
+                            className="whitespace-nowrap bg-white font-bold"
                             // sorter={true}
                             title="Project Name"
                             dataIndex="name"

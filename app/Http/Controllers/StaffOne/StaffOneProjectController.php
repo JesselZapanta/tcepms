@@ -33,7 +33,7 @@ class StaffOneProjectController extends Controller
 
     public function getData(Request $request)
     {
-        return Project::with(['siteEngineer:id,name'])
+        return Project::with(['siteEngineer:id,name', 'contructor:id,company_name'])
                         // ->where('category', $request->filter)
                         ->where('category', 'like', "%{$request->filter}%")
                         ->where('name', 'like', "%{$request->search}%")
