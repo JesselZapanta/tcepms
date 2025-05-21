@@ -27,7 +27,6 @@ export default function UpdateCalendar({ auth, project }) {
     const dateCellRender = (value) => {
         const dateStr = value.format("YYYY-MM-DD");
         const updates = updatesByDate[dateStr] || [];
-
         return (
             <ul className="events">
                 {updates.map((item) => (
@@ -39,7 +38,9 @@ export default function UpdateCalendar({ auth, project }) {
                                     onClick={() => showModal(item)}
                                     className="text-blue-600 underline hover:text-blue-800"
                                 >
-                                    {"New Update"}
+                                    {dayjs(item.update_date).format(
+                                        "h:mm A"
+                                    )}
                                 </button>
                             }
                         />
@@ -56,8 +57,15 @@ export default function UpdateCalendar({ auth, project }) {
                 <div className="py-2 text-lg font-bold uppercase">
                     Project Updates
                 </div>
+                {/* <div>{project.updates.update_date}</div> */}
                 <div className="py-2">
-                    <Calendar className="p-4" dateCellRender={dateCellRender} />
+                    {/* <pre>{JSON.stringify(project, null, 2)}</pre> */}
+                    <div className="overflow-x-auto">
+                        <Calendar
+                            className="p-4"
+                            dateCellRender={dateCellRender}
+                        />
+                    </div>
 
                     {/* Modal for update progress */}
                     <Modal

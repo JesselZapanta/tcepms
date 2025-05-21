@@ -25,29 +25,30 @@ export default function UpdateCalendar({ auth, project }) {
     };
 
     const dateCellRender = (value) => {
-        const dateStr = value.format("YYYY-MM-DD");
-        const updates = updatesByDate[dateStr] || [];
-
-        return (
-            <ul className="events">
-                {updates.map((item) => (
-                    <li key={item.id}>
-                        <Badge
-                            status="success"
-                            text={
-                                <button
-                                    onClick={() => showModal(item)}
-                                    className="text-blue-600 underline hover:text-blue-800"
-                                >
-                                    {"New Update"}
-                                </button>
-                            }
-                        />
-                    </li>
-                ))}
-            </ul>
-        );
-    };
+            const dateStr = value.format("YYYY-MM-DD");
+            const updates = updatesByDate[dateStr] || [];
+            return (
+                <ul className="events">
+                    {updates.map((item) => (
+                        <li key={item.id}>
+                            <Badge
+                                status="success"
+                                text={
+                                    <button
+                                        onClick={() => showModal(item)}
+                                        className="text-blue-600 underline hover:text-blue-800"
+                                    >
+                                        {dayjs(item.update_date).format(
+                                            "h:mm A"
+                                        )}
+                                    </button>
+                                }
+                            />
+                        </li>
+                    ))}
+                </ul>
+            );
+        };
 
     return (
         <AuthenticatedLayout header="Project update calendar" auth={auth}>
