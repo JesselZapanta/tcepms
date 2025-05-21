@@ -50,8 +50,10 @@ class EngineerProjectRequestExtension extends Controller
 
         // return $request->name;
 
+        $current_end_date = $project->end_date;
+
         $data = $request->validate([
-            'requested_end_date' => 'required|date',
+            'requested_end_date' => 'required|date|after_or_equal:' . $current_end_date,
             'reason' => 'required',
         ]);
 
@@ -89,8 +91,10 @@ class EngineerProjectRequestExtension extends Controller
 
         // return $request;
 
-        $request->validate([
-            'requested_end_date' => 'required|date',
+        $current_end_date = $req->current_end_date;
+
+        $data = $request->validate([
+            'requested_end_date' => 'required|date|after_or_equal:' . $current_end_date,
             'reason' => 'required',
         ]);
 
