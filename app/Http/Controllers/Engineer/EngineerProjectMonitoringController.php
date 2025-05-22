@@ -55,6 +55,8 @@ class EngineerProjectMonitoringController extends Controller
                 'cement_plaster_and_finishes_progress',
             ]);
 
+        $project = Project::findOrFail($id);
+
         return inertia('Engineer/Monitoring/Graph', [
             'rawData' => [
                 'dates' => $updates->pluck('update_date')->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString())->all(),
@@ -63,7 +65,8 @@ class EngineerProjectMonitoringController extends Controller
                 'water' => $updates->pluck('water_works_progress')->all(),
                 'metal' => $updates->pluck('metal_works_progress')->all(),
                 'plaster' => $updates->pluck('cement_plaster_and_finishes_progress')->all(),
-            ]
+            ], 
+            'project' => $project
         ]);
     }
 

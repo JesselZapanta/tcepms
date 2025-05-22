@@ -51,7 +51,10 @@ class AdminProjectMonitoringController extends Controller
                 'cement_plaster_and_finishes_progress',
             ]);
 
-        return inertia('StaffOne/Monitoring/Graph', [
+        $project = Project::findOrFail($id);
+
+
+        return inertia('Admin/Monitoring/Graph', [
             'rawData' => [
                 'dates' => $updates->pluck('update_date')->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString())->all(),
                 'excavation' => $updates->pluck('excavation_progress')->all(),
@@ -59,7 +62,8 @@ class AdminProjectMonitoringController extends Controller
                 'water' => $updates->pluck('water_works_progress')->all(),
                 'metal' => $updates->pluck('metal_works_progress')->all(),
                 'plaster' => $updates->pluck('cement_plaster_and_finishes_progress')->all(),
-            ]
+            ], 
+            'project' => $project
         ]);
     }
 

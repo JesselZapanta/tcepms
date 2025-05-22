@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import React from "react";
+import React, { useRef } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,6 +13,10 @@ import {
     Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { Button } from "antd";
+import { useReactToPrint } from "react-to-print";
+
+import {  PrinterOutlined } from "@ant-design/icons";
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +29,7 @@ ChartJS.register(
     Legend
 );
 
-export default function LineGraph({ auth, rawData }) {
+export default function LineGraph({ auth, rawData, project }) {
     const labels = ["Start", ...rawData.dates];
 
     const datasets = [
@@ -75,17 +79,62 @@ export default function LineGraph({ auth, rawData }) {
         },
     };
 
+    const componentRef = useRef();
+
+    const handlePrint = useReactToPrint({
+        documentTitle: "Project Update Report",
+        content: () => componentRef.current,
+    });
+
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
             <Head title="Project Monitoring" />
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
                 <div className="py-2 text-lg font-bold uppercase">
-                    Project Update Performance
+                    Project Progress Performance
                 </div>
                 <div className="bg-amber-300 font-bold text-md rounded text-gray-700 p-4 mb-4">
-                    Project Progress Tracking
+                    {project?.name}
                 </div>
-                <Line data={chartData} options={options} />
+                {/* <pre>{JSON.stringify(project, null, 2)}</pre> */}
+                <div className="w-full flex justify-end">
+                    <Button
+                        className="md:w-24 w-full"
+                        onClick={() => handlePrint()}
+                        icon={<PrinterOutlined />}
+                    >
+                        Print
+                    </Button>
+                </div>
+                <div ref={componentRef}>
+                    <div className="print-container mb-8">
+                        <div className="flex justify-around">
+                            <img
+                                src="/images/tangub.png"
+                                alt="tangub.png"
+                                className="h-48"
+                            />
+                            <div className="mt-4 text-center">
+                                <p>Republic of the Philippines</p>
+                                <p>CITY OF TANGUB</p>
+                                <p>CITY ENGINEER'S OFFICE</p>
+                                <p>CONTRUCTOR'S PROJECTS</p>
+                                <p className="mt-2 uppercase text-lg">
+                                    Project Update Performance Graph
+                                </p>
+                                <p className="mt-2 uppercase text-lg">
+                                    {project?.name}
+                                </p>
+                            </div>
+                            <img
+                                src="/images/tcepms.png"
+                                alt="tcepms.png"
+                                className="h-48"
+                            />
+                        </div>
+                    </div>
+                    <Line data={chartData} options={options} />
+                </div>
             </div>
         </AuthenticatedLayout>
     );

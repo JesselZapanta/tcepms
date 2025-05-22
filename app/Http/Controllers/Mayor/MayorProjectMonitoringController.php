@@ -52,6 +52,8 @@ class MayorProjectMonitoringController extends Controller
                 'metal_works_progress',
                 'cement_plaster_and_finishes_progress',
             ]);
+        
+        $project = Project::findOrFail($id);
 
         return inertia('Mayor/Monitoring/Graph', [
             'rawData' => [
@@ -61,7 +63,8 @@ class MayorProjectMonitoringController extends Controller
                 'water' => $updates->pluck('water_works_progress')->all(),
                 'metal' => $updates->pluck('metal_works_progress')->all(),
                 'plaster' => $updates->pluck('cement_plaster_and_finishes_progress')->all(),
-            ]
+            ], 
+            'project' => $project
         ]);
     }
 }
