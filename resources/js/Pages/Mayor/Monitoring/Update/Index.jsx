@@ -13,12 +13,11 @@ import {
     Typography,
     Button,
     Select,
+    Carousel,
+    Modal,
 } from "antd";
 
-import {
-    CalendarOutlined,
-    PrinterOutlined,
-} from "@ant-design/icons";
+import { CalendarOutlined, PrinterOutlined } from "@ant-design/icons";
 
 import Details from "./Details";
 import { useEffect, useRef, useState } from "react";
@@ -50,7 +49,7 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [year,month ]);
+    }, [year, month]);
 
     const [years, setYears] = useState([]);
 
@@ -64,7 +63,7 @@ export default function Index({ auth, currentProject }) {
         }
 
         setYears(yearArray);
-    }, []); 
+    }, []);
 
     function formatDate(updateDate) {
         const date = new Date(updateDate);
@@ -80,12 +79,35 @@ export default function Index({ auth, currentProject }) {
     }
 
     const componentRef = useRef();
-        
-        const handlePrint = useReactToPrint({
-            documentTitle: "Project Update Report",
-            content: () => componentRef.current,
-        });
-    
+
+    const handlePrint = useReactToPrint({
+        documentTitle: "Project Update Report",
+        content: () => componentRef.current,
+    });
+
+    //
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentUpdateImages, setCurrentUpdateImages] = useState([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const carouselRef = useRef(null); // ✅ useRef instead of useState
+
+    const showImageModal = (images, index) => {
+        setCurrentUpdateImages(images);
+        setCurrentImageIndex(index);
+        setIsModalVisible(true);
+
+        setTimeout(() => {
+            if (carouselRef.current) {
+                carouselRef.current.goTo(index, true);
+            }
+        }, 50); // ensure modal renders before goTo
+    };
+
+    const handleModalCancel = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
@@ -167,118 +189,178 @@ export default function Index({ auth, currentProject }) {
                             <Empty description="No updates available for this project" />
                         </div>
                     ) : (
-                        <Timeline mode="left">
-                            {data.updates.map((update) => (
-                                <Timeline.Item key={update.id}>
-                                    <div className="p-4 bg-gray-100 rounded">
-                                        <div className="flex justify-between">
-                                            <Space direction="vertical">
-                                                <Text className="font-bold text-xl">
-                                                    {update.name}
-                                                </Text>
-                                                <Text>
-                                                    {formatDate(
-                                                        update.update_date
-                                                    )}
-                                                </Text>
-                                            </Space>
-                                        </div>
-                                        <Divider />
+                        <>
+                            <Timeline mode="left">
+                                {data.updates.map((update) => (
+                                    <Timeline.Item key={update.id}>
+                                        <div className="p-4 bg-gray-100 rounded">
+                                            <div className="flex justify-between">
+                                                <Space direction="vertical">
+                                                    <Text className="font-bold text-xl">
+                                                        {update.name}
+                                                    </Text>
+                                                    <Text>
+                                                        {formatDate(
+                                                            update.update_date
+                                                        )}
+                                                    </Text>
+                                                </Space>
+                                            </div>
+                                            <Divider />
 
-                                        <div className="text-justify text-lg">
-                                            {update.description}
+                                            <div className="text-justify text-lg">
+                                                {update.description}
+                                            </div>
+                                            <Divider />
+                                            <div className="my-4 max-w-96">
+                                                <Flex
+                                                    wrap="wrap"
+                                                    vertical
+                                                    gap="small"
+                                                >
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.excavation_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Excavation Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.excavation_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.concrete_works_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Concrete Works
+                                                            Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.concrete_works_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.water_works_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Water Works Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.water_works_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.metal_works_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Metal Works Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.metal_works_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip
+                                                        title={`Progress is at ${update.cement_plaster_and_finishes_progress}`}
+                                                    >
+                                                        <div className="font-bold text-lg">
+                                                            Cement Plaster and
+                                                            Finishes Progress
+                                                        </div>
+                                                        <Progress
+                                                            percent={
+                                                                update.cement_plaster_and_finishes_progress
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                </Flex>
+                                            </div>
+
+                                            <div className="flex flex-wrap gap-4">
+                                                {update.images.map(
+                                                    (image, index) => (
+                                                        <div
+                                                            key={image.id}
+                                                            onClick={() =>
+                                                                showImageModal(
+                                                                    update.images,
+                                                                    index
+                                                                )
+                                                            }
+                                                            className="cursor-pointer"
+                                                        >
+                                                            <Avatar
+                                                                shape="square"
+                                                                size={92}
+                                                                src={`/storage/project_images/${image.file_path}`}
+                                                            />
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
                                         </div>
-                                        <Divider />
-                                        <div className="my-4 max-w-96">
-                                            <Flex
-                                                wrap="wrap"
-                                                vertical
-                                                gap="small"
+                                    </Timeline.Item>
+                                ))}
+                            </Timeline>
+                            <Modal
+                                open={isModalVisible}
+                                onCancel={handleModalCancel}
+                                footer={null}
+                                style={{
+                                    top: 0,
+                                    padding: 0,
+                                }}
+                                bodyStyle={{
+                                    height: "90vh",
+                                    padding: 0,
+                                }}
+                                width="90"
+                                centered
+                            >
+                                <div className="relative">
+                                    <Carousel ref={carouselRef} dots>
+                                        {currentUpdateImages.map((image) => (
+                                            <div
+                                                key={image.id}
+                                                className="flex justify-center items-center py-6"
                                             >
-                                                <Tooltip
-                                                    title={`Progress is at ${update.excavation_progress}`}
-                                                >
-                                                    <div className="font-bold text-lg">
-                                                        Excavation Progress
-                                                    </div>
-                                                    <Progress
-                                                        percent={
-                                                            update.excavation_progress
-                                                        }
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title={`Progress is at ${update.concrete_works_progress}`}
-                                                >
-                                                    <div className="font-bold text-lg">
-                                                        Concrete Works Progress
-                                                    </div>
-                                                    <Progress
-                                                        percent={
-                                                            update.concrete_works_progress
-                                                        }
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title={`Progress is at ${update.water_works_progress}`}
-                                                >
-                                                    <div className="font-bold text-lg">
-                                                        Water Works Progress
-                                                    </div>
-                                                    <Progress
-                                                        percent={
-                                                            update.water_works_progress
-                                                        }
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title={`Progress is at ${update.metal_works_progress}`}
-                                                >
-                                                    <div className="font-bold text-lg">
-                                                        Metal Works Progress
-                                                    </div>
-                                                    <Progress
-                                                        percent={
-                                                            update.metal_works_progress
-                                                        }
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title={`Progress is at ${update.cement_plaster_and_finishes_progress}`}
-                                                >
-                                                    <div className="font-bold text-lg">
-                                                        Cement Plaster and
-                                                        Finishes Progress
-                                                    </div>
-                                                    <Progress
-                                                        percent={
-                                                            update.cement_plaster_and_finishes_progress
-                                                        }
-                                                    />
-                                                </Tooltip>
-                                            </Flex>
-                                        </div>
+                                                <img
+                                                    src={`/storage/project_images/${image.file_path}`}
+                                                    alt="Preview"
+                                                    className="max-h-[80vh] w-full object-contain"
+                                                />
+                                            </div>
+                                        ))}
+                                    </Carousel>
 
-                                        <div className="flex flex-wrap gap-4">
-                                            {update.images.map((image) => (
-                                                <a
-                                                    key={image.id}
-                                                    href={`/storage/project_images/${image.file_path}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <Avatar
-                                                        shape="square"
-                                                        size={92}
-                                                        src={`/storage/project_images/${image.file_path}`}
-                                                    />
-                                                </a>
-                                            ))}
-                                        </div>
+                                    <div className="flex justify-between gap-4">
+                                        <Button
+                                            onClick={() =>
+                                                carouselRef.current?.prev()
+                                            }
+                                            type="primary"
+                                        >
+                                            Prev
+                                        </Button>
+                                        <Button
+                                            onClick={() =>
+                                                carouselRef.current?.next()
+                                            }
+                                            type="primary"
+                                        >
+                                            Next
+                                        </Button>
                                     </div>
-                                </Timeline.Item>
-                            ))}
-                        </Timeline>
+                                </div>
+                            </Modal>
+                        </>
                     )}
                 </div>
             </div>

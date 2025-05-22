@@ -350,7 +350,7 @@ export default function Index({ auth, categories }) {
                                                 items: [
                                                     {
                                                         key: "1",
-                                                        label: "Make Update",
+                                                        label: "View Update",
                                                         icon: (
                                                             <SignatureOutlined
                                                                 size={16}

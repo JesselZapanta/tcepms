@@ -21,6 +21,7 @@ import {
     Typography,
     notification,
     Select,
+    Carousel,
 } from "antd";
 
 import {
@@ -341,6 +342,27 @@ export default function Index({ auth, currentProject }) {
     //     content: () => componentRef.current,
     // });
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentUpdateImages, setCurrentUpdateImages] = useState([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const carouselRef = useRef(null); // ✅ useRef instead of useState
+
+    const showImageModal = (images, index) => {
+        setCurrentUpdateImages(images);
+        setCurrentImageIndex(index);
+        setIsModalVisible(true);
+
+        setTimeout(() => {
+            if (carouselRef.current) {
+                carouselRef.current.goTo(index, true);
+            }
+        }, 50); // ensure modal renders before goTo
+    };
+
+    const handleModalCancel = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
             <Head title="Project Update and Timeline" />
@@ -578,25 +600,82 @@ export default function Index({ auth, currentProject }) {
                                             </div>
 
                                             <div className="flex flex-wrap gap-4">
-                                                {update.images.map((image) => (
-                                                    <a
-                                                        key={image.id}
-                                                        href={`/storage/project_images/${image.file_path}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        <Avatar
-                                                            shape="square"
-                                                            size={92}
-                                                            src={`/storage/project_images/${image.file_path}`}
-                                                        />
-                                                    </a>
-                                                ))}
+                                                {update.images.map(
+                                                    (image, index) => (
+                                                        <div
+                                                            key={image.id}
+                                                            onClick={() =>
+                                                                showImageModal(
+                                                                    update.images,
+                                                                    index
+                                                                )
+                                                            }
+                                                            className="cursor-pointer"
+                                                        >
+                                                            <Avatar
+                                                                shape="square"
+                                                                size={92}
+                                                                src={`/storage/project_images/${image.file_path}`}
+                                                            />
+                                                        </div>
+                                                    )
+                                                )}
                                             </div>
                                         </div>
                                     </Timeline.Item>
                                 ))}
                             </Timeline>
+                            <Modal
+                                open={isModalVisible}
+                                onCancel={handleModalCancel}
+                                footer={null}
+                                style={{
+                                    top: 0,
+                                    padding: 0,
+                                }}
+                                bodyStyle={{
+                                    height: "90vh",
+                                    padding: 0,
+                                }}
+                                width="90"
+                                centered
+                            >
+                                <div className="relative">
+                                    <Carousel ref={carouselRef} dots>
+                                        {currentUpdateImages.map((image) => (
+                                            <div
+                                                key={image.id}
+                                                className="flex justify-center items-center py-6"
+                                            >
+                                                <img
+                                                    src={`/storage/project_images/${image.file_path}`}
+                                                    alt="Preview"
+                                                    className="max-h-[80vh] w-full object-contain"
+                                                />
+                                            </div>
+                                        ))}
+                                    </Carousel>
+
+                                    <div className="flex justify-between gap-4">
+                                        <Button
+                                            onClick={() =>
+                                                carouselRef.current?.prev()
+                                            }
+                                            type="primary"
+                                        >
+                                            Prev
+                                        </Button>
+                                        <Button
+                                            onClick={() =>
+                                                carouselRef.current?.next()
+                                            }
+                                            type="primary"
+                                        >
+                                            Next
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Modal>
                         </div>
                     )}
                 </div>
