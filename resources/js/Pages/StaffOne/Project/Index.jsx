@@ -507,7 +507,12 @@ export default function Index({
 
                 <div ref={componentRef}>
                     <div className="print-container mx-auto bg-white">
-                        {reportData && <DetailedReport data={reportData} />}
+                        {reportData && (
+                            <DetailedReport
+                                data={reportData.project}
+                                signatories={reportData.signatories}
+                            />
+                        )}
                     </div>
                 </div>
 

@@ -306,9 +306,16 @@ export default function Index({ auth, categories }) {
 
                 <div ref={componentRef}>
                     <div className="print-container mx-auto bg-white">
-                        {reportData && <DetailedReport data={reportData} />}
+                        {reportData && (
+                            <DetailedReport
+                                data={reportData.project}
+                                signatories={reportData.signatories}
+                            />
+                        )}
                     </div>
                 </div>
+
+                {/* <DetailedReport data={reportData} /> */}
 
                 <Modal
                     title="PROJECT DETAILS"
@@ -411,7 +418,9 @@ export default function Index({ auth, categories }) {
                                         Contractual:
                                     </td>
                                     <td className="p-2">
-                                        {project?.contractual === 1 ? "Yes" : "No"}
+                                        {project?.contractual === 1
+                                            ? "Yes"
+                                            : "No"}
                                     </td>
                                 </tr>
                                 <tr className="border-t">

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export default function DetailedReport({ data }) {
+export default function DetailedReport({ data, signatories }) {
 
     const currency = (amount) =>
         Number(amount).toLocaleString("en-PH", {
@@ -93,6 +93,8 @@ export default function DetailedReport({ data }) {
         (sum, cat) => sum + getTotal(cat.data),
         0
     );
+
+    // console.log(signatories);
 
     return (
         <>
@@ -594,6 +596,69 @@ export default function DetailedReport({ data }) {
                             No updates found.
                         </div>
                     )}
+                </div>
+                {/* <p className="uppercase font-bold text-lg">{signatories?.admin[0]?.name}</p> */}
+                <div className="mt-12">
+                    <p>Prepared by:</p>
+                    <div className="mt-12 flex justify-between">
+                        <div className="min-w-[200px]">
+                            <div className="text-center">
+                                <p className="uppercase font-bold text-md">
+                                    {signatories?.staffone[0]?.name}
+                                </p>
+                                <p className="border-t border-gray-950">
+                                    Project and Materials Division
+                                </p>
+                            </div>
+                        </div>
+                        <div className="min-w-[200px] ">
+                            <div className="text-center">
+                                <p className="uppercase font-bold text-md">
+                                    {signatories?.stafftwo[0]?.name}
+                                </p>
+                                <p className="border-t border-gray-950">
+                                    Project and Labor Division
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <p className="mt-12">Checked by:</p>
+                    <div className="mt-12 flex justify-between">
+                        <div className="min-w-[200px]">
+                            <div className="text-center">
+                                <p className="uppercase font-bold text-md">
+                                    {signatories?.engineer}
+                                </p>
+                                <p className="border-t border-gray-950">
+                                    on-Site Engineer
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-12 flex justify-between">
+                        <div className="min-w-[200px]">
+                            <p className="mb-12">Recommending Approval:</p>
+                            <div className="text-center">
+                                <p className="uppercase font-bold text-md">
+                                    {signatories?.admin[0]?.name}
+                                </p>
+                                <p className="border-t border-gray-950">
+                                    Officer in Charge
+                                </p>
+                            </div>
+                        </div>
+                        <div className="min-w-[200px] ">
+                            <p className="mb-12">Approved by:</p>
+                            <div className="text-center">
+                                <p className="uppercase font-bold text-md">
+                                    {signatories?.mayor[0]?.name}
+                                </p>
+                                <p className="border-t border-gray-950">
+                                    City Mayor
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

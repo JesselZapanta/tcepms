@@ -1,17 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import {
-    Row,
-    Select,
-    Space,
-    Table,
-    Tag,
-} from "antd";
+import { Row, Select, Space, Table, Tag } from "antd";
 import Search from "antd/es/input/Search";
-import {
-    FileTextOutlined,
-    EyeOutlined,
-} from "@ant-design/icons";
+import { FileTextOutlined, EyeOutlined } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useRef, useState } from "react";
@@ -52,7 +43,7 @@ export default function Index({ auth, categories }) {
             const res = await axios.get(`/mayor/project/getdata?${params}`);
             setData(res.data.data);
             setTotal(res.data.total);
-        } catch (err){
+        } catch (err) {
             console.log(err);
         } finally {
             setLoading(false);
@@ -99,7 +90,6 @@ export default function Index({ auth, categories }) {
             style: "currency",
             currency: "PHP",
         });
-    
 
     //print report
     const componentRef = useRef();
@@ -306,7 +296,12 @@ export default function Index({ auth, categories }) {
 
                 <div ref={componentRef}>
                     <div className="print-container mx-auto bg-white">
-                        {reportData && <DetailedReport data={reportData} />}
+                        {reportData && (
+                            <DetailedReport
+                                data={reportData.project}
+                                signatories={reportData.signatories}
+                            />
+                        )}
                     </div>
                 </div>
 
@@ -411,7 +406,9 @@ export default function Index({ auth, categories }) {
                                         Contractual:
                                     </td>
                                     <td className="p-2">
-                                        {project?.contractual === 1 ? "Yes" : "No"}
+                                        {project?.contractual === 1
+                                            ? "Yes"
+                                            : "No"}
                                     </td>
                                 </tr>
                                 <tr className="border-t">

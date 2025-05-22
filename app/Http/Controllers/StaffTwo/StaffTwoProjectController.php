@@ -35,7 +35,7 @@ class StaffTwoProjectController extends Controller
 
     public function report($id)
     {
-        $data =  Project::with([
+        $project = Project::with([
             'siteEngineer:id,name', 
             'contructor:id,company_name', 
 
@@ -52,11 +52,22 @@ class StaffTwoProjectController extends Controller
             'plasterFinishLabor',
 
             'updates',
-        ])
-        ->findOrFail($id);
+        ])->findOrFail($id);
+
+        // signatories
+        $signatories = [
+            'admin' => User::where('role', 0)->latest()->get(['name']),
+            'staffone' => User::where('role', 1)->latest()->get(['name']),
+            'stafftwo' => User::where('role', 2)->latest()->get(['name']),
+            'engineer' => $project->siteEngineer->name,
+            'mayor' => User::where('role', 4)->latest()->get(['name']),
+        ];
 
         return response()->json([
-            'data' => $data
+            'data' => [
+                'project' => $project,
+                'signatories' => $signatories,
+            ]
         ], 200);
     }
 }
