@@ -19,10 +19,12 @@ export default function Index({ auth, categories }) {
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("");
     const [searching, setSearching] = useState(false);
     const [sortField, setSortField] = useState("id");
     const [sortOrder, setSortOrder] = useState("desc");
+    
+    const [category, setCategory] = useState("");
+    const [status, setStatus] = useState("");
 
     const getData = async (isSearch = false) => {
         if (isSearch) {
@@ -35,7 +37,8 @@ export default function Index({ auth, categories }) {
             `search=${search}`,
             `sortField=${sortField}`,
             `sortOrder=${sortOrder}`,
-            `filter=${filter}`,
+            `category=${category}`,
+            `status=${status}`,
         ].join("&");
 
         try {
@@ -59,7 +62,7 @@ export default function Index({ auth, categories }) {
 
     useEffect(() => {
         getData(false);
-    }, [page, sortField, sortOrder, filter]);
+    }, [page, sortField, sortOrder, category, status]);
 
     // console.log(data);
 
@@ -108,7 +111,7 @@ export default function Index({ auth, categories }) {
                 <div className="py-2 text-lg font-bold uppercase">
                     List of Project
                 </div>
-                <div className="flex gap-2 items-center justify-between">
+                <div className="flex mt-2 md:flex-row flex-col gap-2 mb-2">
                     <Search
                         placeholder="Input project name"
                         allowClear
@@ -117,19 +120,41 @@ export default function Index({ auth, categories }) {
                         onChange={(e) => setSearch(e.target.value)}
                         onSearch={() => getData(true)}
                     />
-                    <Select
-                        defaultValue="All"
-                        className="w-40"
-                        showSearch
-                        onChange={(value) => setFilter(value)}
-                    >
-                        <Option value="">All</Option>
-                        {categories.map((category) => (
-                            <Option key={category.id} value={category.name}>
-                                {category.name}
-                            </Option>
-                        ))}
-                    </Select>
+                    <div className="flex gap-2 items-center justify-between">
+                        <Select
+                            defaultValue="All"
+                            className="w-full md:w-40"
+                            showSearch
+                            onChange={(value) => setStatus(value)}
+                        >
+                            <Select.Option value="">All</Select.Option>
+                            <Select.Option value="Material">
+                                Pending Material
+                            </Select.Option>
+                            <Select.Option value="Labor">
+                                Pending Labor
+                            </Select.Option>
+                            <Select.Option value="Ongoing">
+                                Ongoing
+                            </Select.Option>
+                            <Select.Option value="Completed">
+                                Completed
+                            </Select.Option>
+                        </Select>
+                        <Select
+                            defaultValue="All Categories"
+                            className="w-40"
+                            showSearch
+                            onChange={(value) => setCategory(value)}
+                        >
+                            <Option value="">All</Option>
+                            {categories.map((category) => (
+                                <Option key={category.id} value={category.name}>
+                                    {category.name}
+                                </Option>
+                            ))}
+                        </Select>
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <Table

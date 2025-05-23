@@ -31,11 +31,11 @@ class StaffOneProjectMonitoringController extends Controller
                 ->limit(1); // Fetch only the latest update per project
             }
         ])
-        // ->where('engineer', Auth::user()->id)
-        ->where('category', 'like', "{$request->filter}%")
-        ->whereIn('status', ['Ongoing', 'Completed'])
+        ->where('category', 'like', "%{$request->category}%")
+        ->where('status', 'like', "%{$request->status}%")
+        // ->whereIn('status', ['Ongoing', 'Completed'])
         ->where('name', 'like', "%{$request->search}%")
-        ->orderBy('id', 'desc')
+        ->orderBy('id', $request->order)
         ->paginate(10);
     }
 

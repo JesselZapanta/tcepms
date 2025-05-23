@@ -23,7 +23,8 @@ export default function Index({ auth, categories }) {
     const [searching, setSearching] = useState(false);
     const [sortField, setSortField] = useState("id");
     const [sortOrder, setSortOrder] = useState("desc");
-    const [filter, setFilter] = useState("");
+    const [category, setCategory] = useState("");
+    const [status, setStatus] = useState("");
 
     const getData = async (isSearch = false) => {
         if (isSearch) {
@@ -36,7 +37,8 @@ export default function Index({ auth, categories }) {
             `search=${search}`,
             `sortField=${sortField}`,
             `sortOrder=${sortOrder}`,
-            `filter=${filter}`,
+            `category=${category}`,
+            `status=${status}`,
         ].join("&");
 
         try {
@@ -60,7 +62,7 @@ export default function Index({ auth, categories }) {
 
     useEffect(() => {
         getData(false);
-    }, [page, sortField, sortOrder, filter]);
+    }, [page, sortField, sortOrder, category, status]);
 
     const truncate = (text, limit) => {
         if (text.length > limit) {
@@ -140,9 +142,29 @@ export default function Index({ auth, categories }) {
                     <div className="flex gap-2 items-center justify-between">
                         <Select
                             defaultValue="All"
+                            className="w-full md:w-40"
+                            showSearch
+                            onChange={(value) => setStatus(value)}
+                        >
+                            <Select.Option value="">All</Select.Option>
+                            <Select.Option value="Material">
+                                Pending Material
+                            </Select.Option>
+                            <Select.Option value="Labor">
+                                Pending Labor
+                            </Select.Option>
+                            <Select.Option value="Ongoing">
+                                Ongoing
+                            </Select.Option>
+                            <Select.Option value="Completed">
+                                Completed
+                            </Select.Option>
+                        </Select>
+                        <Select
+                            defaultValue="All Categories"
                             className="w-40"
                             showSearch
-                            onChange={(value) => setFilter(value)}
+                            onChange={(value) => setCategory(value)}
                         >
                             <Option value="">All</Option>
                             {categories.map((category) => (

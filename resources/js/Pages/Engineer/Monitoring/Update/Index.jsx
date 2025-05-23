@@ -49,12 +49,13 @@ export default function Index({ auth, currentProject }) {
 
     const [month, setMonth] = useState(0);
     const [year, setYear] = useState(0);
+    const [order, setOrder] = useState('desc');
 
     const getData = async () => {
         setLoading(true);
         try {
             const res = await axios.get(
-                `/engineer/project-update/getData/${currentProject.id}?month=${month}&year=${year}`
+                `/engineer/project-update/getData/${currentProject.id}?month=${month}&year=${year}&order=${order}`
             );
             setData(res.data.projectDetails);
             setLatestUpdate(res.data.latestUpdate);
@@ -67,7 +68,7 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [month, year]);
+    }, [month, year, order]);
 
     const [years, setYears] = useState([]);
 
@@ -401,7 +402,17 @@ export default function Index({ auth, currentProject }) {
                             </Button>
                         </Link>
                         <Select
-                            placeholder="Select a month"
+                            defaultValue="Latest"
+                            className="md:w-24 w-full"
+                            showSearch
+                            onChange={(value) => setOrder(value)}
+                        >
+                            <Select.Option value="desc">Latest</Select.Option>
+                            <Select.Option value="asc">Oldest</Select.Option>
+                        </Select>
+                        <Select
+                            p
+                            defaultValue="All Month"
                             onChange={(value) => setMonth(value)}
                             className="md:w-24 w-full"
                         >
@@ -420,7 +431,7 @@ export default function Index({ auth, currentProject }) {
                             <Option value={12}>December</Option>
                         </Select>
                         <Select
-                            placeholder="Select a Year"
+                            defaultValue="All Year"
                             onChange={(value) => setYear(value)}
                             className="md:w-24 w-full"
                         >
@@ -528,7 +539,7 @@ export default function Index({ auth, currentProject }) {
                                                 {update.description}
                                             </div>
                                             <Divider />
-                                            <div className="my-4 max-w-96">
+                                            <div className="my-4 max-w-96 font-bold">
                                                 <Flex
                                                     wrap="wrap"
                                                     vertical

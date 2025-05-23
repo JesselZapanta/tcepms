@@ -32,12 +32,13 @@ export default function Index({ auth, currentProject }) {
 
     const [month, setMonth] = useState(0);
     const [year, setYear] = useState(0);
+    const [order, setOrder] = useState("desc");
 
     const getData = async () => {
         setLoading(true);
         try {
             const res = await axios.get(
-                `/mayor/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}`
+                `/mayor/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}&order=${order}`
             );
             setData(res.data.projectDetails);
         } catch (err) {
@@ -49,7 +50,7 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [year, month]);
+    }, [year, month, order]);
 
     const [years, setYears] = useState([]);
 
@@ -133,6 +134,15 @@ export default function Index({ auth, currentProject }) {
                             Calendar
                         </Button>
                     </Link>
+                    <Select
+                        defaultValue="Latest"
+                        className="md:w-24 w-full"
+                        showSearch
+                        onChange={(value) => setOrder(value)}
+                    >
+                        <Select.Option value="desc">Latest</Select.Option>
+                        <Select.Option value="asc">Oldest</Select.Option>
+                    </Select>
                     <Select
                         placeholder="Select a month"
                         onChange={(value) => setMonth(value)}

@@ -35,7 +35,8 @@ class StaffOneProjectController extends Controller
     {
         return Project::with(['siteEngineer:id,name', 'contructor:id,company_name'])
                         // ->where('category', $request->filter)
-                        ->where('category', 'like', "%{$request->filter}%")
+                        ->where('status', 'like', "%{$request->status}%")
+                        ->where('category', 'like', "%{$request->category}%")
                         ->where('name', 'like', "%{$request->search}%")
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);

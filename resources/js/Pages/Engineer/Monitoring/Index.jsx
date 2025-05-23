@@ -36,8 +36,10 @@ export default function Index({ auth, categories }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("");
     const [searching, setSearching] = useState(false);
+    const [category, setCategory] = useState("");
+    const [status, setStatus] = useState("Ongoing");
+    const [order, setOrder] = useState("desc");
 
     const [pagination, setPagination] = useState({
         current: 1,
@@ -58,7 +60,9 @@ export default function Index({ auth, categories }) {
         const params = [
             `search=${search}`,
             `page=${page}`,
-            `filter=${filter}`,
+            `category=${category}`,
+            `status=${status}`,
+            `order=${order}`,
         ].join("&");
 
         try {
@@ -81,7 +85,7 @@ export default function Index({ auth, categories }) {
 
     useEffect(() => {
         getData(false);
-    }, [filter]);
+    }, [category, status, order]);
 
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
@@ -93,12 +97,21 @@ export default function Index({ auth, categories }) {
                 <div className="bg-amber-300 font-bold  text-md rounded text-gray-700 p-4 mb-4">
                     Monitor the project progress here!
                 </div>
-                <div className="flex gap-2 mb-2">
+                <div className="flex flex-col md:flex-row gap-2 mb-2">
+                    <Select
+                        defaultValue="Latest"
+                        className="w-full md:w-40"
+                        showSearch
+                        onChange={(value) => setOrder(value)}
+                    >
+                        <Select.Option value="desc">Latest</Select.Option>
+                        <Select.Option value="asc">Oldest</Select.Option>
+                    </Select>
                     <Select
                         defaultValue="All"
-                        className="w-40"
+                        className="w-full md:w-40"
                         showSearch
-                        onChange={(value) => setFilter(value)}
+                        onChange={(value) => setCategory(value)}
                     >
                         <Select.Option value="">All</Select.Option>
                         {categories.map((category) => (
@@ -109,6 +122,17 @@ export default function Index({ auth, categories }) {
                                 {category.name}
                             </Select.Option>
                         ))}
+                    </Select>
+                    <Select
+                        defaultValue="Ongoing"
+                        className="w-full md:w-40"
+                        showSearch
+                        onChange={(value) => setStatus(value)}
+                    >
+                        <Select.Option value="Ongoing">Ongoing</Select.Option>
+                        <Select.Option value="Completed">
+                            Completed
+                        </Select.Option>
                     </Select>
                     <Search
                         placeholder="Input project name"
@@ -180,10 +204,10 @@ export default function Index({ auth, categories }) {
                                         )}
                                     </div>
                                     <div className="p-4">
-                                        <div className="font-bold text-md">
+                                        <div className="font-bold text-lg">
                                             {project.name}
                                         </div>
-                                        <div className="mt-4">
+                                        <div className="mt-4 font-bold">
                                             <Flex
                                                 wrap="wrap"
                                                 vertical

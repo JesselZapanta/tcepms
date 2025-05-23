@@ -30,8 +30,9 @@ class MayorProjectUpdateController extends Controller
     {
         $month = $request->month;
         $year = $request->year;
+        $order = $request->order;
 
-        $projectDetails = Project::with(['siteEngineer', 'contructor', 'updates' => function ($query) use ($month, $year) {
+        $projectDetails = Project::with(['siteEngineer', 'contructor', 'updates' => function ($query) use ($month, $year, $order) {
             // Apply filters only if year or month is not 0
             if ($year != 0) {
                 $query->whereYear('update_date', $year);
@@ -39,7 +40,7 @@ class MayorProjectUpdateController extends Controller
             if ($month != 0) {
                 $query->whereMonth('update_date', $month);
             }
-            $query->orderBy('update_date', 'desc')
+            $query->orderBy('update_date', $order)
                     ->with(['siteEngineer', 'images']);
         }])->findOrFail($id);
 
