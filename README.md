@@ -54,7 +54,7 @@ Set up your `.env` file based on the `.env.example` provided. Ensure the databas
 Execute the following command to set up the database schema and seed initial data:
 
 ```bash
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 ### Step 6: Create a Storage Link
