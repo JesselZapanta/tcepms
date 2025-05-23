@@ -19,7 +19,11 @@ import {
 
 const { Option } = Select;
 
-import { CalendarOutlined, PrinterOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+    CalendarOutlined,
+    PrinterOutlined,
+    SearchOutlined,
+} from "@ant-design/icons";
 
 import Details from "./Details";
 import { useEffect, useRef, useState } from "react";
@@ -34,6 +38,7 @@ export default function Index({ auth, currentProject }) {
 
     const [month, setMonth] = useState(0);
     const [year, setYear] = useState(0);
+    const [order, setOrder] = useState("desc");
 
     console.log(year);
 
@@ -42,8 +47,8 @@ export default function Index({ auth, currentProject }) {
 
         try {
             const res = await axios.get(
-                `/admin/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}`
-            );
+                `/admin/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}&order=${order}`
+            );            
 
             setData(res.data.projectDetails);
         } catch (err) {
@@ -55,7 +60,7 @@ export default function Index({ auth, currentProject }) {
 
     useEffect(() => {
         getData();
-    }, [month, year]);
+    }, [month, year, order]);
 
     const [years, setYears] = useState([]);
 
@@ -96,7 +101,6 @@ export default function Index({ auth, currentProject }) {
     //     documentTitle: "Project Update Report",
     //     content: () => componentRef.current,
     // });
-
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentUpdateImages, setCurrentUpdateImages] = useState([]);
@@ -146,7 +150,17 @@ export default function Index({ auth, currentProject }) {
                         </Button>
                     </Link>
                     <Select
-                        placeholder="Select a month"
+                        defaultValue="Latest"
+                        className="md:w-24 w-full"
+                        showSearch
+                        onChange={(value) => setOrder(value)}
+                    >
+                        <Select.Option value="desc">Latest</Select.Option>
+                        <Select.Option value="asc">Oldest</Select.Option>
+                    </Select>
+                    <Select
+                        // placeholder="Select a month"
+                        defaultValue="All Month"
                         onChange={(value) => setMonth(value)}
                         className="md:w-24 w-full"
                     >
@@ -165,7 +179,8 @@ export default function Index({ auth, currentProject }) {
                         <Option value={12}>December</Option>
                     </Select>
                     <Select
-                        placeholder="Select a Year"
+                        // placeholder="Select a Year"
+                        defaultValue="All Year"
                         onChange={(value) => setYear(value)}
                         className="md:w-24 w-full"
                     >

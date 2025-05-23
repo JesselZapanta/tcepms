@@ -27,21 +27,23 @@ class AdminProjectUpdateController extends Controller
     }
 
     public function getData($id, Request $request)
-    {
+    {   
+        
         $month = $request->month;
         $year = $request->year;
+        $order = $request->order;
 
-        $projectDetails = Project::with(['siteEngineer', 'contructor', 'updates' => function ($query) use ($month, $year) {
-            // Apply filters only if year or month is not 0
+        $projectDetails = Project::with(['siteEngineer', 'contructor', 'updates' => function ($query) use ($month, $year, $order) {
             if ($year != 0) {
                 $query->whereYear('update_date', $year);
             }
             if ($month != 0) {
                 $query->whereMonth('update_date', $month);
             }
-            $query->orderBy('update_date', 'desc')
+            $query->orderBy('update_date', $order)
                     ->with(['siteEngineer', 'images']);
         }])->findOrFail($id);
+        
 
         // Retrieve the latest update
         $latestUpdate = $projectDetails->updates()
@@ -53,6 +55,9 @@ class AdminProjectUpdateController extends Controller
                                         })
                                         ->latest('created_at')
                                         ->first();
+                                        // ->orderBy('id', 'desc') 
+                                        // ->get();
+
 
         // Extract the progress values if a latest update exists
         $latestUpdate = $latestUpdate ? [
@@ -63,7 +68,7 @@ class AdminProjectUpdateController extends Controller
             'metal_works_progress' => $latestUpdate->metal_works_progress,
             'cement_plaster_and_finishes_progress' => $latestUpdate->cement_plaster_and_finishes_progress,
         ] : null;
-
+        
         return response()->json([
             'projectDetails' => $projectDetails,
             'latestUpdate' => $latestUpdate,
