@@ -40,7 +40,7 @@
 }
 
 /* Hide print content by default on screen */
-@media screen {
+/* @media screen {
     .print-container {
         display: none;
     }
@@ -54,4 +54,45 @@
     @page {
             margin: 1in; 
     }
+
+    .landscape-print {
+      page: landscape;
+    }
+  
+    @page landscape {
+      size: A4 landscape;
+    }
+} */
+
+
+@media screen {
+  .print-container {
+      /* Don't use display: none */
+      position: absolute !important;
+      
+      width: 1000px !important;
+      left: -9999px !important;
+      visibility: hidden !important;
+  }
 }
+
+@media print {
+  .print-container {
+      position: static !important;
+      visibility: visible !important;
+      display: block !important;
+  }
+
+  @page {
+      margin: 1in;
+  }
+
+  .landscape-print {
+      page: landscape;
+  }
+
+  @page landscape {
+      size: A4 landscape;
+  }
+}
+

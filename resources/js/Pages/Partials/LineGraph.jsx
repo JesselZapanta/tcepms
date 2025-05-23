@@ -12,11 +12,13 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Line } from "react-chartjs-2";
 import { Button } from "antd";
 import { useReactToPrint } from "react-to-print";
 
-import {  PrinterOutlined } from "@ant-design/icons";
+import { PrinterOutlined } from "@ant-design/icons";
+import ReportGraft from "./ReportGraft";
 
 ChartJS.register(
     CategoryScale,
@@ -26,7 +28,8 @@ ChartJS.register(
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    ChartDataLabels
 );
 
 export default function LineGraph({ auth, rawData, project }) {
@@ -71,10 +74,32 @@ export default function LineGraph({ auth, rawData, project }) {
     };
 
     const options = {
-        responsive: true,
+        responsive: false,
+        maintainAspectRatio: false,
+        width: 1200,
         plugins: {
+            title: {
+                display: true,
+                text: "Project Progress Graph",
+                font: {
+                    size: 20,
+                },
+                padding: {
+                    top: 10,
+                    bottom: 30,
+                },
+            },
             legend: {
-                position: "top",
+                position: "bottom",
+            },
+            datalabels: {
+                display: true,
+                align: "top", //the 100% is not visible
+                formatter: (value) => `${value}%`,
+                font: {
+                    weight: "bold",
+                },
+                clip: false,
             },
         },
     };
@@ -106,34 +131,27 @@ export default function LineGraph({ auth, rawData, project }) {
                         Print
                     </Button>
                 </div>
-                <div ref={componentRef}>
-                    <div className="print-container mb-8">
-                        <div className="flex justify-around">
-                            <img
-                                src="/images/tangub.png"
-                                alt="tangub.png"
-                                className="h-48"
-                            />
-                            <div className="mt-4 text-center">
-                                <p>Republic of the Philippines</p>
-                                <p>CITY OF TANGUB</p>
-                                <p>CITY ENGINEER'S OFFICE</p>
-                                <p>CONTRUCTOR'S PROJECTS</p>
-                                <p className="mt-2 uppercase text-lg">
-                                    Project Update Performance Graph
-                                </p>
-                                <p className="mt-2 uppercase text-lg">
-                                    {project?.name}
-                                </p>
-                            </div>
-                            <img
-                                src="/images/tcepms.png"
-                                alt="tcepms.png"
-                                className="h-48"
-                            />
-                        </div>
+                <div>
+                    <div
+                        ref={componentRef}
+                        className="landscape-print print-container"
+                    >
+                        <ReportGraft rawData={rawData} project={project} />
                     </div>
-                    <Line data={chartData} options={options} />
+                </div>
+                {/* working */}
+                {/* <div ref={componentRef} className="landscape-print">
+                    <ReportGraft rawData={rawData} project={project} />
+                </div> */}
+                <div className="w-full overflow-x-auto">
+                    <div className="min-w-[1200px] h-full">
+                        <Line
+                            data={chartData}
+                            options={options}
+                            height={600}
+                            width={1200}
+                        />
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

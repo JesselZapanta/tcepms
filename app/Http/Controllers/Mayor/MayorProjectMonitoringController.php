@@ -53,7 +53,10 @@ class MayorProjectMonitoringController extends Controller
                 'cement_plaster_and_finishes_progress',
             ]);
         
-        $project = Project::findOrFail($id);
+        $project = Project::with([
+                'siteEngineer:id,name', 
+                'contructor:id,company_name', 
+        ])->findOrFail($id);
 
         return inertia('Mayor/Monitoring/Graph', [
             'rawData' => [
