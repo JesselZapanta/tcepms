@@ -107,7 +107,6 @@ Route::middleware(['auth','admin','userStatus'])->group(function() {
     Route::get('/admin/project/getdata', [AdminProjectController::class, 'getdata']);
     Route::get('/admin/project/get-report/{id}', [AdminProjectController::class, 'report']);
 
-    //ibalhin sa admin
     Route::get('/admin/request-extension', [AdminProjectExtensionController::class, 'index'])->name('admin.project-request-extension');
     Route::get('/admin/request-extension/getdata', [AdminProjectExtensionController::class, 'getdata']);
     Route::put('/admin/request-extension/update/{id}', [AdminProjectExtensionController::class, 'update']);

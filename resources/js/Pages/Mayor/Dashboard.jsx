@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { Spin, Card, Statistic } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -49,7 +49,7 @@ export default function Dashboard({ auth }) {
                             <div className="text-2xl uppercase">
                                 Welcome back,{" "}
                                 <span className="font-bold text-orange-500">
-                                    Mayor{" "}{auth.user.name}
+                                    Mayor {auth.user.name}
                                 </span>
                             </div>
                             <p className="text-sm italic">
@@ -58,24 +58,28 @@ export default function Dashboard({ auth }) {
                         </div>
                     </div>
                     <div className="m-4 grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.projectCount}
-                            </h2>
-                            <p className="text-md">Total Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.OngoingProjectCount}
-                            </h2>
-                            <p className="text-md">Ongoing Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
+                        <Link href={route("mayor.project")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.projectCount}
+                                </h2>
+                                <p className="text-md">Total Projects</p>
+                            </div>
+                        </Link>
+                        <Link href={route("mayor.project-monitoring")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.OngoingProjectCount}
+                                </h2>
+                                <p className="text-md">Ongoing Projects</p>
+                            </div>
+                        </Link>
+                        {/* <div className="bg-white p-4 rounded ">
                             <h2 className="font-bold text-4xl py-2 text-orange-500">
                                 {data.CompletedProjectCount}
                             </h2>
                             <p className="text-md">Completed Projects</p>
-                        </div>
+                        </div> */}
                     </div>
                 </>
                 // <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">

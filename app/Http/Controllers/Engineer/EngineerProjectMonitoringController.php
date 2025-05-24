@@ -33,6 +33,7 @@ class EngineerProjectMonitoringController extends Controller
                 ->limit(1); // Fetch only the latest update per project
             }
         ])
+        ->where('engineer', Auth::user()->id)
         ->where('category', 'like', "%{$request->category}%")
         ->where('status', 'like', "%{$request->status}%")
         // ->whereIn('status', ['Ongoing', 'Completed'])

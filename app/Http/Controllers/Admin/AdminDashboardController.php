@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Contructor;
+use App\Models\Fund;
 use App\Models\Project;
 use App\Models\RequestDateExtension;
 use App\Models\User;
@@ -22,8 +24,8 @@ class AdminDashboardController extends Controller
         $activeContructorCount = Contructor::where('status', 1)->count();
         
         $projectCount = Project::count();
-        $pendingMaterials = Project::where('status', 'Material')->count();
-        $pendingLabors = Project::where('status', 'Labor')->count();
+        $categoryCount = Category::where('status', 1)->count();
+        $fundCount = Fund::where('status', 1)->count();
         $OngoingProjectCount = Project::where('status', 'Ongoing')->count();
         $CompletedProjectCount = Project::where('status', 'Completed')->count();
         $pendingRequest = RequestDateExtension::where('status', 0)->count();
@@ -33,8 +35,8 @@ class AdminDashboardController extends Controller
             'activeUserCount' => $activeUserCount,
             'activeContructorCount' => $activeContructorCount,
             'projectCount' => $projectCount,
-            'pendingMaterials' => $pendingMaterials,
-            'pendingLabors' => $pendingLabors,
+            'categoryCount' => $categoryCount,
+            'fundCount' => $fundCount,
             'OngoingProjectCount' => $OngoingProjectCount,
             'CompletedProjectCount' => $CompletedProjectCount,
             'pendingRequest' => $pendingRequest,

@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { Spin, Card, Statistic } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -152,54 +152,71 @@ export default function Dashboard({ auth }) {
                         </div>
                     </div>
                     <div className="m-4 grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.activeUserCount}
-                            </h2>
-                            <p className="text-md">Active Users</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.activeContructorCount}
-                            </h2>
-                            <p className="text-md">Active Contractors</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.projectCount}
-                            </h2>
-                            <p className="text-md">Total Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.pendingMaterials}
-                            </h2>
-                            <p className="text-md">Pending Materials</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.pendingLabors}
-                            </h2>
-                            <p className="text-md">Pending Labor</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.OngoingProjectCount}
-                            </h2>
-                            <p className="text-md">Ongoing Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.CompletedProjectCount}
-                            </h2>
-                            <p className="text-md">Completed Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.pendingRequest}
-                            </h2>
-                            <p className="text-md">Pending Date Request</p>
-                        </div>
+                        <Link href={route("admin.user")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.activeUserCount}
+                                </h2>
+                                <p className="text-md">Active Users</p>
+                            </div>
+                        </Link>
+                        <Link href={route("admin.contructor")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.activeContructorCount}
+                                </h2>
+                                <p className="text-md">Active Contractors</p>
+                            </div>
+                        </Link>
+                        <Link href={route("admin.category")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.categoryCount}
+                                </h2>
+                                <p className="text-md">Active Categories</p>
+                            </div>
+                        </Link>
+                        <Link href={route("admin.fund")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.fundCount}
+                                </h2>
+                                <p className="text-md">Active Fund Source</p>
+                            </div>
+                        </Link>
+                        <Link href={route("admin.project")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.projectCount}
+                                </h2>
+                                <p className="text-md">Total Projects</p>
+                            </div>
+                        </Link>
+
+                        <Link href={route("admin.project-monitoring")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.OngoingProjectCount}
+                                </h2>
+                                <p className="text-md">Ongoing Projects</p>
+                            </div>
+                        </Link>
+                        <Link href={route("admin.project-monitoring")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.CompletedProjectCount}
+                                </h2>
+                                <p className="text-md">Completed Projects</p>
+                            </div>
+                        </Link>
+                        <Link href={route("admin.project-request-extension")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.pendingRequest}
+                                </h2>
+                                <p className="text-md">Pending Date Request</p>
+                            </div>
+                        </Link>
                     </div>
                     {/* <div className="bg-white m-4 p-4 rounded-2xl shadow-md grid md:grid-cols-1 lg:grid-cols-2">
                         <div>

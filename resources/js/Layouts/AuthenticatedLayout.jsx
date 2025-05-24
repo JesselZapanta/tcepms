@@ -197,9 +197,15 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                 className="min-h-screen p-4 bg-orange-200"
                 width="300"
             >
-                <div className="w-full flex justify-center mb-4">
+                <div className="w-full flex justify-center gap-2 mb-4">
                     <Avatar
-                        className={collapsed ? "w-12 h-12" : "w-32 h-32"}
+                        className={collapsed ? "w-6 h-6" : "w-32 h-32"}
+                        shape="circle"
+                        src="/images/tangub.jpg"
+                        alt="Tangub City Logo"
+                    />
+                    <Avatar
+                        className={collapsed ? "w-6 h-6" : "w-32 h-32"}
                         shape="circle"
                         src="/images/tcepms.png"
                         alt="Tangub City Engineering Office Logo"

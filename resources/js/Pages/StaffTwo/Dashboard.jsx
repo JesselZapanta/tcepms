@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { Spin, Row, Col, Card, Statistic } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -53,41 +53,52 @@ export default function Dashboard({ auth }) {
                                 </span>
                             </div>
                             <p className="text-sm italic">
-                                You are logged in as Staff (Project and Labor Division)
+                                You are logged in as Staff (Project and Labor
+                                Division)
                             </p>
                         </div>
                     </div>
                     <div className="m-4 grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.projectCount}
-                            </h2>
-                            <p className="text-md">Total Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.pendingMaterials}
-                            </h2>
-                            <p className="text-md">Pending Materials</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.pendingLabors}
-                            </h2>
-                            <p className="text-md">Pending Labor</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.OngoingProjectCount}
-                            </h2>
-                            <p className="text-md">Ongoing Projects</p>
-                        </div>
-                        <div className="bg-white p-4 rounded ">
-                            <h2 className="font-bold text-4xl py-2 text-orange-500">
-                                {data.CompletedProjectCount}
-                            </h2>
-                            <p className="text-md">Completed Projects</p>
-                        </div>
+                        <Link href={route("stafftwo.project")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.projectCount}
+                                </h2>
+                                <p className="text-md">Total Projects</p>
+                            </div>
+                        </Link>
+                        {/* <Link href={route("stafftwo.project")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.pendingMaterials}
+                                </h2>
+                                <p className="text-md">Pending Materials</p>
+                            </div>
+                        </Link> */}
+                        <Link href={route("stafftwo.project")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.pendingLabors}
+                                </h2>
+                                <p className="text-md">Pending Labor</p>
+                            </div>
+                        </Link>
+                        <Link href={route("stafftwo.project-monitoring")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.OngoingProjectCount}
+                                </h2>
+                                <p className="text-md">Ongoing Projects</p>
+                            </div>
+                        </Link>
+                        <Link href={route("stafftwo.project-monitoring")}>
+                            <div className="bg-white p-4 rounded ">
+                                <h2 className="font-bold text-4xl py-2 text-orange-500">
+                                    {data.CompletedProjectCount}
+                                </h2>
+                                <p className="text-md">Completed Projects</p>
+                            </div>
+                        </Link>
                     </div>
                 </>
             )}
