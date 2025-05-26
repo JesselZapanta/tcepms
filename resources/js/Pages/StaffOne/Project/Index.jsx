@@ -329,6 +329,13 @@ export default function Index({
                                 </Option>
                             ))}
                         </Select>
+                        <Button
+                            type="primary"
+                            onClick={showCreateModal}
+                            icon={<PlusOutlined />}
+                        >
+                            New
+                        </Button>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
