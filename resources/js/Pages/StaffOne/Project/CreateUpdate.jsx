@@ -166,7 +166,8 @@ export default function CreateUpdate({
         <div>
             {contextHolder}
 
-            <pre>{JSON.stringify(project, null, 2)}</pre>
+            {/* <pre>{JSON.stringify(project, null, 2)}</pre> */}
+
             <Form
                 form={form}
                 layout="vertical"
@@ -278,11 +279,19 @@ export default function CreateUpdate({
                             help={errors?.cost ? errors?.cost[0] : ""}
                             className="w-full"
                         >
-                            <Input
-                                type="number"
+                            <InputNumber
                                 disabled
-                                prefix={<DollarOutlined />}
                                 className="w-full"
+                                formatter={(value) =>
+                                    `${value}`.replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ","
+                                    )
+                                }
+                                parser={(value) =>
+                                    value.replace(/\$\s?|(,*)/g, "")
+                                }
+                                prefix={<DollarOutlined />}
                             />
                         </Form.Item>
 

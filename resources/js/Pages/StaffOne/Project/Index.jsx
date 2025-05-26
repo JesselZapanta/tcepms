@@ -691,11 +691,19 @@ export default function Index({
                                     help={errors?.cost ? errors?.cost[0] : ""}
                                     className="w-full"
                                 >
-                                    <Input
-                                        type="number"
+                                    <InputNumber
                                         disabled
-                                        prefix={<DollarOutlined />}
                                         className="w-full"
+                                        formatter={(value) =>
+                                            `${value}`.replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                        }
+                                        parser={(value) =>
+                                            value.replace(/\$\s?|(,*)/g, "")
+                                        }
+                                        prefix={<DollarOutlined />}
                                     />
                                 </Form.Item>
 
