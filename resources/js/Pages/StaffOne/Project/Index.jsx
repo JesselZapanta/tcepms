@@ -593,7 +593,7 @@ export default function Index({
                                 />
                             </Form.Item>
                             <Form.Item
-                                label="DESCRIPTION"
+                                label="DESCRIPTION/OBJECTIVES"
                                 name="description"
                                 validateStatus={
                                     errors?.description ? "error" : ""
