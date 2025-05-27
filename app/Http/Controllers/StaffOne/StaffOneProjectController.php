@@ -195,6 +195,55 @@ class StaffOneProjectController extends Controller
             'status' => 'error'
         ], 200);
     }
+    //zoning
+
+    public function zoningTempUpload(Request $request){
+        $request->validate([
+            'zoning_clearance' => ['required','mimes:pdf']
+        ]);
+        
+        $file = $request->zoning_clearance;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $fileName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('temp', $fileName, 'public');
+        $name = explode('/', $filePath);
+        return $name[1];
+    }
+    public function zoningRemoveUpload($fileName){
+
+        // return $fileName;
+        if (Storage::disk('public')->exists('temp/' . $fileName)) {
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json([
+                'status' => 'remove'
+            ], 200);
+        }
+    }
+    public function zoningReplaceUpload($id, $fileName){
+        $data = Project::find($id);
+        $oldFile = $data->zoning_clearance;
+
+        // return $oldFile;
+        $data->zoning_clearance = null;
+        $data->save();
+
+        if (Storage::disk('public')->exists('zoning_clearance/' . $oldFile)) {
+            Storage::disk('public')->delete('zoning_clearance/' . $oldFile);
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+
+            return response()->json([
+                'status' => 'replace'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error'
+        ], 200);
+    }
 
     
     public function store(ProjectStoreRequest $request)
@@ -235,6 +284,18 @@ class StaffOneProjectController extends Controller
             if (Storage::disk('public')->exists('temp/' . $fileName)) {
                 // Move the file
                 Storage::disk('public')->move('temp/' . $fileName, 'barangay_clearance/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        }
+
+        //zoning_clearance
+        if(!empty($data['zoning_clearance']) && isset($request->zoning_clearance[0]['response'])){
+            $fileName = $request->zoning_clearance[0]['response'];
+            $data['zoning_clearance'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'zoning_clearance/' . $fileName); 
                 Storage::disk('public')->delete('temp/' . $fileName);
             }
         }
@@ -303,6 +364,19 @@ class StaffOneProjectController extends Controller
         } else {
             unset($data['barangay_clearance']); 
         }
+        //zoning_clearance
+        if(!empty($data['zoning_clearance']) && isset($request->zoning_clearance[0]['response'])){
+            $fileName = $request->zoning_clearance[0]['response'];
+            $data['zoning_clearance'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'zoning_clearance/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        } else {
+            unset($data['zoning_clearance']); 
+        }
 
         if($data['contractual'] === 0){
             $data['status'] = 'Material';
@@ -343,6 +417,12 @@ class StaffOneProjectController extends Controller
         //barangay_clearance
         if (!empty($project->barangay_clearance)) {
             if (Storage::disk('public')->exists('barangay_clearance/' . $project->barangay_clearance)) {
+                Storage::disk('public')->delete('environmental_compliance_certificate/' . $project->environmental_compliance_certificate);
+            }
+        }
+        //zoning_clearance
+        if (!empty($project->zoning_clearance)) {
+            if (Storage::disk('public')->exists('zoning_clearance/' . $project->zoning_clearance)) {
                 Storage::disk('public')->delete('environmental_compliance_certificate/' . $project->environmental_compliance_certificate);
             }
         }

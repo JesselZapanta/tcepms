@@ -112,6 +112,16 @@ export default function CreateUpdate({
                               },
                           ]
                         : [],
+                zoning_clearance:
+                    project.zoning_clearance
+                        ? [
+                              {
+                                  uid: "-1",
+                                  name: project.zoning_clearance,
+                                  url: `${window.location.origin}/storage/zoning_clearance/${project.zoning_clearance}`,
+                              },
+                          ]
+                        : [],
             });
         } else {
             form.resetFields();
@@ -294,13 +304,16 @@ export default function CreateUpdate({
         },
     };
 
-    //for barangay_clearance upload 
+    //for barangay_clearance upload
 
-    const [isBarangayClearanceUpload, setIsBarangayClearanceUpload] = useState(false);
+    const [isBarangayClearanceUpload, setIsBarangayClearanceUpload] =
+        useState(false);
 
     const removeBarangayClearance = (barangayClearance) => {
         axios
-            .post(`/staffone/barangay-clearance-temp-remove/${barangayClearance}`)
+            .post(
+                `/staffone/barangay-clearance-temp-remove/${barangayClearance}`
+            )
             .then((res) => {
                 if (res.data.status === "remove") {
                     message.success("Barangay clearance removed.");
@@ -356,9 +369,7 @@ export default function CreateUpdate({
                     setIsEnvironmentalUpload(true);
                 }
             } else if (info.file.status === "error") {
-                message.error(
-                    "Barangay clearance upload failed."
-                );
+                message.error("Barangay clearance upload failed.");
             }
         },
 
@@ -429,6 +440,80 @@ export default function CreateUpdate({
                 setProcessing(false);
             }
         }
+    };
+
+    //for zoning_clearance upload
+
+    const [isZoningUpload, setIsZoningUpload] = useState(false);
+
+    const removeZoning = (zoning) => {
+        axios.post(`/staffone/zoning-temp-remove/${zoning}`).then((res) => {
+            if (res.data.status === "remove") {
+                message.success("Zoning clearance removed.");
+                setIsZoningUpload(false);
+            }
+            if (res.data.status === "error") {
+                alert("error");
+            }
+        });
+    };
+
+    const zoningUploadprops = {
+        name: "zoning_clearance",
+        action: "/staffone/zoning-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isZoningUpload) {
+                message.error(
+                    "You cannot upload a new zoning clearance while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/zoning-replace/${project.id}/${project.zoning_clearance}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success("Zoning clearance uploaded successfully.");
+                    // setTempBuildingPermit(info.file.response);
+                    setIsZoningUpload(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error("Zoning clearance upload failed.");
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error("You cannot remove the  zoning clearance .");
+                return false; // Prevent file removal
+            }
+
+            removeZoning(info.response);
+            return true;
+        },
     };
 
     // Tracks the contractual status
@@ -693,6 +778,35 @@ export default function CreateUpdate({
                                 "building_permit"
                             )}
                             {...barangayClearanceUploadprops}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Click to Upload
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="ZONING CLEARANCE"
+                        name="zoning_clearance"
+                        valuePropName="fileList"
+                        className="w-full"
+                        getValueFromEvent={(e) =>
+                            Array.isArray(e) ? e : e?.fileList
+                        }
+                        validateStatus={errors?.zoning_clearance ? "error" : ""}
+                        help={
+                            errors?.zoning_clearance
+                                ? errors.zoning_clearance[0]
+                                : ""
+                        }
+                    >
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            defaultFileList={form.getFieldValue(
+                                "zoning_clearance"
+                            )}
+                            {...zoningUploadprops}
                         >
                             <Button icon={<UploadOutlined />}>
                                 Click to Upload

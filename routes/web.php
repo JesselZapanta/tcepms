@@ -143,6 +143,11 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     Route::post('/staffone/barangay-clearance-temp-upload', [StaffOneProjectController::class, 'barangayTempUpload']);
     Route::post('/staffone/barangay-clearance-temp-remove/{filename}', [StaffOneProjectController::class, 'barangayRemoveUpload']);
     Route::post('/staffone/barangay-clearance-replace/{id}/{filename}', [StaffOneProjectController::class, 'barangayReplaceUpload']);
+    
+    //zoning
+    Route::post('/staffone/zoning-temp-upload', [StaffOneProjectController::class, 'zoningTempUpload']);
+    Route::post('/staffone/zoning-temp-remove/{filename}', [StaffOneProjectController::class, 'zoningRemoveUpload']);
+    Route::post('/staffone/zoning-replace/{id}/{filename}', [StaffOneProjectController::class, 'zoningReplaceUpload']);
 
 
     Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);
