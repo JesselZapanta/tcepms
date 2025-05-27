@@ -102,29 +102,43 @@ export default function CreateUpdate({
                               },
                           ]
                         : [],
-                barangay_clearance:
-                    project.barangay_clearance
-                        ? [
-                              {
-                                  uid: "-1",
-                                  name: project.barangay_clearance,
-                                  url: `${window.location.origin}/storage/barangay_clearance/${project.barangay_clearance}`,
-                              },
-                          ]
-                        : [],
-                zoning_clearance:
-                    project.zoning_clearance
-                        ? [
-                              {
-                                  uid: "-1",
-                                  name: project.zoning_clearance,
-                                  url: `${window.location.origin}/storage/zoning_clearance/${project.zoning_clearance}`,
-                              },
-                          ]
-                        : [],
+                barangay_clearance: project.barangay_clearance
+                    ? [
+                          {
+                              uid: "-1",
+                              name: project.barangay_clearance,
+                              url: `${window.location.origin}/storage/barangay_clearance/${project.barangay_clearance}`,
+                          },
+                      ]
+                    : [],
+                zoning_clearance: project.zoning_clearance
+                    ? [
+                          {
+                              uid: "-1",
+                              name: project.zoning_clearance,
+                              url: `${window.location.origin}/storage/zoning_clearance/${project.zoning_clearance}`,
+                          },
+                      ]
+                    : [],
+                contractor_accreditation: project.contractor_accreditation
+                    ? [
+                          {
+                              uid: "-1",
+                              name: project.contractor_accreditation,
+                              url: `${window.location.origin}/storage/contractor_accreditation/${project.contractor_accreditation}`,
+                          },
+                      ]
+                    : [],
             });
         } else {
             form.resetFields();
+            form.setFieldsValue({
+                building_permit: [],
+                environmental_compliance_certificate: [],
+                barangay_clearance: [],
+                zoning_clearance: [],
+                contractor_accreditation: [],
+            });
         }
     }, [project, form]);
 
@@ -516,6 +530,88 @@ export default function CreateUpdate({
         },
     };
 
+    //for contractor_accreditation upload
+
+    const [isAccreditationUpload, setIsAccreditationUpload] = useState(false);
+
+    const removeAccreditation = (accreditation) => {
+        axios
+            .post(`/staffone/accreditation-temp-remove/${accreditation}`)
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success("Contractor accreditation removed.");
+                    setIsAccreditationUpload(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
+    };
+
+    const accreditationUploadprops = {
+        name: "contractor_accreditation",
+        action: "/staffone/accreditation-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isAccreditationUpload) {
+                message.error(
+                    "You cannot upload a new contractor accreditation while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/accreditation-replace/${project.id}/${project.contractor_accreditation}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success(
+                        "Contractor accreditation clearance uploaded successfully."
+                    );
+                    // setTempBuildingPermit(info.file.response);
+                    setIsAccreditationUpload(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error(
+                    "Contractor accreditation clearance upload failed."
+                );
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error(
+                    "You cannot remove the contractor accreditation clearance ."
+                );
+                return false; // Prevent file removal
+            }
+
+            removeAccreditation(info.response);
+            return true;
+        },
+    };
+
     // Tracks the contractual status
     const [con, setCon] = useState(
         project.contractual ? project.contractual : 0
@@ -807,6 +903,37 @@ export default function CreateUpdate({
                                 "zoning_clearance"
                             )}
                             {...zoningUploadprops}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Click to Upload
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="CONTRACTOR ACCREDITATION"
+                        name="contractor_accreditation"
+                        valuePropName="fileList"
+                        className="w-full"
+                        getValueFromEvent={(e) =>
+                            Array.isArray(e) ? e : e?.fileList
+                        }
+                        validateStatus={
+                            errors?.contractor_accreditation ? "error" : ""
+                        }
+                        help={
+                            errors?.contractor_accreditation
+                                ? errors.contractor_accreditation[0]
+                                : ""
+                        }
+                    >
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            defaultFileList={form.getFieldValue(
+                                "contractor_accreditation"
+                            )}
+                            {...accreditationUploadprops}
                         >
                             <Button icon={<UploadOutlined />}>
                                 Click to Upload

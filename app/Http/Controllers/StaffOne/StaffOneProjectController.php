@@ -245,6 +245,57 @@ class StaffOneProjectController extends Controller
         ], 200);
     }
 
+    //contractor_accreditation
+
+    public function accreditationempUpload(Request $request){
+        $request->validate([
+            'contractor_accreditation' => ['required','mimes:pdf']
+        ]);
+        
+        $file = $request->contractor_accreditation;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $fileName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('temp', $fileName, 'public');
+        $name = explode('/', $filePath);
+        return $name[1];
+    }
+    public function accreditationRemoveUpload($fileName){
+
+        // return $fileName;
+        if (Storage::disk('public')->exists('temp/' . $fileName)) {
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json([
+                'status' => 'remove'
+            ], 200);
+        }
+    }
+    public function accreditationReplaceUpload($id, $fileName){
+        $data = Project::find($id);
+        $oldFile = $data->contractor_accreditation;
+
+        // return $oldFile;
+        $data->contractor_accreditation = null;
+        $data->save();
+
+        if (Storage::disk('public')->exists('contractor_accreditation/' . $oldFile)) {
+            Storage::disk('public')->delete('contractor_accreditation/' . $oldFile);
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+
+            return response()->json([
+                'status' => 'replace'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error'
+        ], 200);
+    }
+    
+
     
     public function store(ProjectStoreRequest $request)
     {
@@ -296,6 +347,18 @@ class StaffOneProjectController extends Controller
             if (Storage::disk('public')->exists('temp/' . $fileName)) {
                 // Move the file
                 Storage::disk('public')->move('temp/' . $fileName, 'zoning_clearance/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        }
+
+        //contractor_accreditation
+        if(!empty($data['contractor_accreditation']) && isset($request->contractor_accreditation[0]['response'])){
+            $fileName = $request->contractor_accreditation[0]['response'];
+            $data['contractor_accreditation'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'contractor_accreditation/' . $fileName); 
                 Storage::disk('public')->delete('temp/' . $fileName);
             }
         }
@@ -377,6 +440,19 @@ class StaffOneProjectController extends Controller
         } else {
             unset($data['zoning_clearance']); 
         }
+        //contractor_accreditation
+        if(!empty($data['contractor_accreditation']) && isset($request->contractor_accreditation[0]['response'])){
+            $fileName = $request->contractor_accreditation[0]['response'];
+            $data['contractor_accreditation'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'contractor_accreditation/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        } else {
+            unset($data['contractor_accreditation']); 
+        }
 
         if($data['contractual'] === 0){
             $data['status'] = 'Material';
@@ -417,13 +493,19 @@ class StaffOneProjectController extends Controller
         //barangay_clearance
         if (!empty($project->barangay_clearance)) {
             if (Storage::disk('public')->exists('barangay_clearance/' . $project->barangay_clearance)) {
-                Storage::disk('public')->delete('environmental_compliance_certificate/' . $project->environmental_compliance_certificate);
+                Storage::disk('public')->delete('barangay_clearance/' . $project->barangay_clearance);
             }
         }
         //zoning_clearance
         if (!empty($project->zoning_clearance)) {
             if (Storage::disk('public')->exists('zoning_clearance/' . $project->zoning_clearance)) {
-                Storage::disk('public')->delete('environmental_compliance_certificate/' . $project->environmental_compliance_certificate);
+                Storage::disk('public')->delete('zoning_clearance/' . $project->zoning_clearance);
+            }
+        }
+        //contractor_accreditation
+        if (!empty($project->contractor_accreditation)) {
+            if (Storage::disk('public')->exists('contractor_accreditation/' . $project->contractor_accreditation)) {
+                Storage::disk('public')->delete('contractor_accreditation/' . $project->contractor_accreditation);
             }
         }
 

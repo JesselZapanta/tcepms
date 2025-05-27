@@ -46,6 +46,7 @@ class ProjectUpdateRequest extends FormRequest
             'environmental_compliance_certificate' => ['required'],
             'barangay_clearance' => ['required'],
             'zoning_clearance' => ['required'],
+            'contractor_accreditation' => ['required'],
 
         ];
     }
