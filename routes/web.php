@@ -129,16 +129,20 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     
     //Uploads
 
-     //business_permit
+     //building_permit
     Route::post('/staffone/building-permit-temp-upload', [StaffOneProjectController::class, 'buildingPermitTempUpload']);
     Route::post('/staffone/building-permit-temp-remove/{filename}', [StaffOneProjectController::class, 'buildingPermitRemoveUpload']);
-    Route::post('/staffone/building-permit-image-replace/{id}/{filename}', [StaffOneProjectController::class, 'buildingPermitReplaceUpload']);
+    Route::post('/staffone/building-permit-replace/{id}/{filename}', [StaffOneProjectController::class, 'buildingPermitReplaceUpload']);
     
-    //business_permit
+    //environmental_compliance_certificate
     Route::post('/staffone/environmental-temp-upload', [StaffOneProjectController::class, 'environmentalTempUpload']);
     Route::post('/staffone/environmental-temp-remove/{filename}', [StaffOneProjectController::class, 'environmentalRemoveUpload']);
-    Route::post('/staffone/environmental-image-replace/{id}/{filename}', [StaffOneProjectController::class, 'environmentalReplaceUpload']);
-
+    Route::post('/staffone/environmental-replace/{id}/{filename}', [StaffOneProjectController::class, 'environmentalReplaceUpload']);
+    
+    //barangay_clearance
+    Route::post('/staffone/barangay-clearance-temp-upload', [StaffOneProjectController::class, 'barangayTempUpload']);
+    Route::post('/staffone/barangay-clearance-temp-remove/{filename}', [StaffOneProjectController::class, 'barangayRemoveUpload']);
+    Route::post('/staffone/barangay-clearance-replace/{id}/{filename}', [StaffOneProjectController::class, 'barangayReplaceUpload']);
 
 
     Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);

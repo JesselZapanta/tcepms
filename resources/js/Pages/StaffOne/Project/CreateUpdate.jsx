@@ -84,23 +84,34 @@ export default function CreateUpdate({
                 priority: project.priority,
 
                 building_permit: project.building_permit
-                ? [
-                        {
-                            uid: "-1",
-                            name: project.building_permit,
-                            url: `${window.location.origin}/storage/building_permit/${project.building_permit}`,
-                        },
-                    ]
-                : [],
-                environmental_compliance_certificate: project.environmental_compliance_certificate
-                ? [
-                        {
-                            uid: "-1",
-                            name: project.environmental_compliance_certificate,
-                            url: `${window.location.origin}/storage/environmental_compliance_certificate/${project.environmental_compliance_certificate}`,
-                        },
-                    ]
-                : [],
+                    ? [
+                          {
+                              uid: "-1",
+                              name: project.building_permit,
+                              url: `${window.location.origin}/storage/building_permit/${project.building_permit}`,
+                          },
+                      ]
+                    : [],
+                environmental_compliance_certificate:
+                    project.environmental_compliance_certificate
+                        ? [
+                              {
+                                  uid: "-1",
+                                  name: project.environmental_compliance_certificate,
+                                  url: `${window.location.origin}/storage/environmental_compliance_certificate/${project.environmental_compliance_certificate}`,
+                              },
+                          ]
+                        : [],
+                barangay_clearance:
+                    project.barangay_clearance
+                        ? [
+                              {
+                                  uid: "-1",
+                                  name: project.barangay_clearance,
+                                  url: `${window.location.origin}/storage/barangay_clearance/${project.barangay_clearance}`,
+                              },
+                          ]
+                        : [],
             });
         } else {
             form.resetFields();
@@ -170,7 +181,7 @@ export default function CreateUpdate({
                 if (project) {
                     axios
                         .post(
-                            `/staffone/building-permit-image-replace/${project.id}/${project.buildingPermit}`
+                            `/staffone/building-permit-replace/${project.id}/${project.buildingPermit}`
                         )
                         .then((res) => {
                             if (res.data.status === "replace") {
@@ -199,13 +210,13 @@ export default function CreateUpdate({
         },
     };
 
-    //for environmental_compliance_certificate upload
+    //for barangay_clearance upload
 
     const [isEnvironmentalUpload, setIsEnvironmentalUpload] = useState(false);
 
-    const removeEnvironmental = (buildingPermit) => {
+    const removeEnvironmental = (environmental) => {
         axios
-            .post(`/staffone/environmental-temp-remove/${buildingPermit}`)
+            .post(`/staffone/environmental-temp-remove/${environmental}`)
             .then((res) => {
                 if (res.data.status === "remove") {
                     message.success(
@@ -248,7 +259,7 @@ export default function CreateUpdate({
                 if (project) {
                     axios
                         .post(
-                            `/staffone/environmental-image-replace/${project.id}/${project.environmental_compliance_certificate}`
+                            `/staffone/environmental-replace/${project.id}/${project.environmental_compliance_certificate}`
                         )
                         .then((res) => {
                             if (res.data.status === "replace") {
@@ -256,23 +267,109 @@ export default function CreateUpdate({
                             }
                         });
                 } else {
-                    message.success("Environmental compliance certificate uploaded successfully.");
+                    message.success(
+                        "Environmental compliance certificate uploaded successfully."
+                    );
                     // setTempBuildingPermit(info.file.response);
                     setIsEnvironmentalUpload(true);
                 }
             } else if (info.file.status === "error") {
-                message.error("Environmental compliance certificateupload failed.");
+                message.error(
+                    "Environmental compliance certificateupload failed."
+                );
             }
         },
 
         onRemove(info) {
             // Prevent removal if user exists
             if (project) {
-                message.error("You cannot remove the  environmental compliance certificate.");
+                message.error(
+                    "You cannot remove the  environmental compliance certificate."
+                );
                 return false; // Prevent file removal
             }
 
             removeEnvironmental(info.response);
+            return true;
+        },
+    };
+
+    //for barangay_clearance upload 
+
+    const [isBarangayClearanceUpload, setIsBarangayClearanceUpload] = useState(false);
+
+    const removeBarangayClearance = (barangayClearance) => {
+        axios
+            .post(`/staffone/barangay-clearance-temp-remove/${barangayClearance}`)
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success("Barangay clearance removed.");
+                    setIsBarangayClearanceUpload(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
+    };
+
+    const barangayClearanceUploadprops = {
+        name: "barangay_clearance",
+        action: "/staffone/barangay-clearance-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isBarangayClearanceUpload) {
+                message.error(
+                    "You cannot upload a new barangay clearance while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/barangay-clearance-replace/${project.id}/${project.barangay_clearance}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success(
+                        "Barangay clearance uploaded successfully."
+                    );
+                    // setTempBuildingPermit(info.file.response);
+                    setIsEnvironmentalUpload(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error(
+                    "Barangay clearance upload failed."
+                );
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error("You cannot remove the  barangay clearance .");
+                return false; // Prevent file removal
+            }
+
+            removeBarangayClearance(info.response);
             return true;
         },
     };
@@ -565,6 +662,37 @@ export default function CreateUpdate({
                                 "building_permit"
                             )}
                             {...environmentalUploadprops}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Click to Upload
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="BARANGAY CLEARANCE"
+                        name="barangay_clearance"
+                        valuePropName="fileList"
+                        className="w-full"
+                        getValueFromEvent={(e) =>
+                            Array.isArray(e) ? e : e?.fileList
+                        }
+                        validateStatus={
+                            errors?.barangay_clearance ? "error" : ""
+                        }
+                        help={
+                            errors?.barangay_clearance
+                                ? errors.barangay_clearance[0]
+                                : ""
+                        }
+                    >
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            defaultFileList={form.getFieldValue(
+                                "building_permit"
+                            )}
+                            {...barangayClearanceUploadprops}
                         >
                             <Button icon={<UploadOutlined />}>
                                 Click to Upload

@@ -146,6 +146,55 @@ class StaffOneProjectController extends Controller
         ], 200);
     }
 
+    //barangay_clearance
+
+    public function barangayTempUpload(Request $request){
+        $request->validate([
+            'barangay_clearance' => ['required','mimes:pdf']
+        ]);
+        
+        $file = $request->barangay_clearance;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $fileName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('temp', $fileName, 'public');
+        $name = explode('/', $filePath);
+        return $name[1];
+    }
+    public function barangayRemoveUpload($fileName){
+
+        // return $fileName;
+        if (Storage::disk('public')->exists('temp/' . $fileName)) {
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json([
+                'status' => 'remove'
+            ], 200);
+        }
+    }
+    public function barangayReplaceUpload($id, $fileName){
+        $data = Project::find($id);
+        $oldFile = $data->barangay_clearance;
+
+        // return $oldFile;
+        $data->barangay_clearance = null;
+        $data->save();
+
+        if (Storage::disk('public')->exists('barangay_clearance/' . $oldFile)) {
+            Storage::disk('public')->delete('barangay_clearance/' . $oldFile);
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+
+            return response()->json([
+                'status' => 'replace'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error'
+        ], 200);
+    }
 
     
     public function store(ProjectStoreRequest $request)
@@ -174,6 +223,18 @@ class StaffOneProjectController extends Controller
             if (Storage::disk('public')->exists('temp/' . $fileName)) {
                 // Move the file
                 Storage::disk('public')->move('temp/' . $fileName, 'environmental_compliance_certificate/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        }
+
+        //barangay_clearance
+        if(!empty($data['barangay_clearance']) && isset($request->barangay_clearance[0]['response'])){
+            $fileName = $request->barangay_clearance[0]['response'];
+            $data['barangay_clearance'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'barangay_clearance/' . $fileName); 
                 Storage::disk('public')->delete('temp/' . $fileName);
             }
         }
@@ -229,6 +290,19 @@ class StaffOneProjectController extends Controller
         } else {
             unset($data['environmental_compliance_certificate']); 
         }
+        //barangay_clearance
+        if(!empty($data['barangay_clearance']) && isset($request->barangay_clearance[0]['response'])){
+            $fileName = $request->barangay_clearance[0]['response'];
+            $data['barangay_clearance'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'barangay_clearance/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        } else {
+            unset($data['barangay_clearance']); 
+        }
 
         if($data['contractual'] === 0){
             $data['status'] = 'Material';
@@ -263,6 +337,12 @@ class StaffOneProjectController extends Controller
         //environmental_compliance_certificate
         if (!empty($project->environmental_compliance_certificate)) {
             if (Storage::disk('public')->exists('environmental_compliance_certificate/' . $project->environmental_compliance_certificate)) {
+                Storage::disk('public')->delete('environmental_compliance_certificate/' . $project->environmental_compliance_certificate);
+            }
+        }
+        //barangay_clearance
+        if (!empty($project->barangay_clearance)) {
+            if (Storage::disk('public')->exists('barangay_clearance/' . $project->barangay_clearance)) {
                 Storage::disk('public')->delete('environmental_compliance_certificate/' . $project->environmental_compliance_certificate);
             }
         }
