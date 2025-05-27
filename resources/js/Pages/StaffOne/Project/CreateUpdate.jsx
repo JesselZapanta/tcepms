@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
 import {
     Button,
@@ -13,6 +13,8 @@ import {
     Table,
     InputNumber,
     Tag,
+    Upload,
+    message,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -28,6 +30,7 @@ import {
     CodeOutlined,
     SignatureOutlined,
     FileTextOutlined,
+    UploadOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
@@ -79,12 +82,21 @@ export default function CreateUpdate({
                 status: project.status,
                 contractual: project.contractual,
                 priority: project.priority,
+
+                building_permit: project.building_permit
+                    ? [
+                        {
+                            uid: "-1",
+                            name: project.building_permit,
+                            url: `${window.location.origin}/storage/building_permit/${project.building_permit}`,
+                        },
+                    ]
+                    : [],
             });
         } else {
             form.resetFields();
         }
     }, [project, form]);
-    
 
     //for notif
 
@@ -95,6 +107,89 @@ export default function CreateUpdate({
             description: msg,
             placement: placement,
         });
+    };
+
+    //UPLOADS
+
+    const { props } = usePage();
+    const csrfToken = props.auth.csrf_token || "";
+
+    //for buildingPermit upload
+
+    const [isBuildingPermitUpload, setIsBuildingPermitUpload] = useState(false);
+
+    const removeBuildingPermit = (buildingPermit) => {
+        axios
+            .post(
+                `/staffone/building-permit-temp-remove/${buildingPermit}`
+            )
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success("Building Permit removed.");
+                    setIsBuildingPermitUpload(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
+    };
+
+    const buildingPermitUploadprops = {
+        name: "building_permit",
+        action: "/staffone/building-permit-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isBuildingPermitUpload) {
+                message.error(
+                    "You cannot upload a new building permit while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/building-permit-image-replace/${project.id}/${project.buildingPermit}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success("Building Permit uploaded successfully.");
+                    // setTempBuildingPermit(info.file.response);
+                    setIsBuildingPermitUpload(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error("Building Permit upload failed.");
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error("You cannot remove the building Permit.");
+                return false; // Prevent file removal
+            }
+
+            removeBuildingPermit(info.response);
+            return true;
+        },
     };
 
     const handleSubmit = async (values) => {
@@ -126,7 +221,6 @@ export default function CreateUpdate({
                 setErrors(err.response.data.errors);
             } finally {
                 setProcessing(false);
-                
             }
         } else {
             try {
@@ -156,7 +250,9 @@ export default function CreateUpdate({
     };
 
     // Tracks the contractual status
-    const [con, setCon] = useState(project.contractual ? project.contractual : 0);
+    const [con, setCon] = useState(
+        project.contractual ? project.contractual : 0
+    );
 
     useEffect(() => {
         form.setFieldsValue({ status: con === 1 ? "Ongoing" : "Material" });
@@ -325,6 +421,37 @@ export default function CreateUpdate({
                             placeholder="Location"
                             prefix={<EnvironmentOutlined />}
                         />
+                    </Form.Item>
+
+                    <Divider orientation="left">Permits</Divider>
+
+                    <Form.Item
+                        label="BUILDING PERMIT"
+                        name="building_permit"
+                        valuePropName="fileList"
+                        className="w-full"
+                        getValueFromEvent={(e) =>
+                            Array.isArray(e) ? e : e?.fileList
+                        }
+                        validateStatus={errors?.building_permit ? "error" : ""}
+                        help={
+                            errors?.building_permit
+                                ? errors.building_permit[0]
+                                : ""
+                        }
+                    >
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            defaultFileList={form.getFieldValue(
+                                "building_permit"
+                            )}
+                            {...buildingPermitUploadprops}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Click to Upload
+                            </Button>
+                        </Upload>
                     </Form.Item>
 
                     <Divider orientation="left">Other Information</Divider>

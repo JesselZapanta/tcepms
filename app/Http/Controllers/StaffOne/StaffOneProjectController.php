@@ -12,6 +12,8 @@ use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class StaffOneProjectController extends Controller
 {
@@ -42,16 +44,89 @@ class StaffOneProjectController extends Controller
                         ->paginate(10);
     }
 
+    // Uploads
+
+    public function buildingPermitTempUpload(Request $request){
+        $request->validate([
+            'building_permit' => ['required','mimes:pdf']
+        ]);
+        
+        $file = $request->building_permit;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $fileName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('temp', $fileName, 'public');
+        $name = explode('/', $filePath);
+        return $name[1];
+    }
+
+
+    public function buildingPermitRemoveUpload($fileName){
+
+        // return $fileName;
+        if (Storage::disk('public')->exists('temp/' . $fileName)) {
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json([
+                'status' => 'remove'
+            ], 200);
+        }
+    }
+
+    public function buildingPermitReplaceUpload($id, $fileName){
+        $data = Project::find($id);
+        $oldFile = $data->building_permit;
+
+        // return $oldFile;
+        $data->building_permit = null;
+        $data->save();
+
+        if (Storage::disk('public')->exists('building_permit/' . $oldFile)) {
+            Storage::disk('public')->delete('building_permit/' . $oldFile);
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+
+            return response()->json([
+                'status' => 'replace'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error'
+        ], 200);
+    }
+    
+
+
     public function store(ProjectStoreRequest $request)
     {
+        // return $request;
+
         $data = $request->validated();
 
+        if(!empty($data['building_permit']) && isset($request->building_permit[0]['response'])){
+            $fileName = $request->building_permit[0]['response'];
+            $data['building_permit'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'building_permit/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        }
+        
+        
         if($data['contractual'] === 0){
             $data['contructor'] = null;
             $data['status'] = 'Material';
         }else{
             $data['status'] = 'Ongoing';
             $data['actual_start_date'] = $data['start_date'] ?? null;
+        }
+
+        if ($request->hasFile('building_permit')) {
+            $data['building_permit'] = $request->file('building_permit')->store('documents');
         }
 
         $project = Project::create($data);
@@ -65,6 +140,20 @@ class StaffOneProjectController extends Controller
     public function update(ProjectUpdateRequest $request, $id)
     {
         $data = $request->validated();
+
+        //building_permit
+        if(!empty($data['building_permit']) && isset($request->building_permit[0]['response'])){
+            $fileName = $request->building_permit[0]['response'];
+            $data['building_permit'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'building_permit/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        } else {
+            unset($data['building_permit']); 
+        }
 
         if($data['contractual'] === 0){
             $data['status'] = 'Material';
@@ -89,7 +178,15 @@ class StaffOneProjectController extends Controller
 
     public function destroy($id)
     {
-        Project::destroy($id);
+        $project = Project::findOrFail($id);
+
+        if (!empty($project->building_permit)) {
+            if (Storage::disk('public')->exists('building_permit/' . $project->building_permit)) {
+                Storage::disk('public')->delete('building_permit/' . $project->building_permit);
+            }
+        }
+
+        $project->delete();
 
         return response()->json([
             'status' => 'deleted'

@@ -24,6 +24,11 @@ class Project extends Model
         'cost',
         'source',
         'location',
+        'building_permit',
+        'environmental_compliance_certificate',
+        'barangay_clearance',
+        'zoning_clearance',
+        'contractor_accreditation',
         'engineer',
         'contructor',
         'category',
@@ -35,7 +40,7 @@ class Project extends Model
     // protected $casts = [
     //     'start_date' => ManilaDateTimeCast::class,
     //     'end_date' => ManilaDateTimeCast::class,
-    // ];
+    // ]; 
     
 
     public function siteEngineer()

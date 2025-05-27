@@ -28,6 +28,12 @@ return new class extends Migration
 
             $table->string('location');
 
+            $table->string('building_permit')->nullable();
+            $table->string('environmental_compliance_certificate')->nullable();
+            $table->string('barangay_clearance')->nullable();
+            $table->string('zoning_clearance')->nullable();
+            $table->string('contractor_accreditation')->nullable();
+
             $table->foreignId('engineer')->constrained('users')->onDelete('cascade');
             $table->foreignId('contructor')->nullable()->constrained('contructors')->onDelete('cascade');
             $table->tinyText('category');

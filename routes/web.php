@@ -126,6 +126,16 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
 
     Route::get('/staffone/project', [StaffOneProjectController::class, 'index'])->name('staffone.project');
     Route::get('/staffone/project/getdata', [StaffOneProjectController::class, 'getData']);
+    
+    //Uploads
+
+     //business_permit
+    Route::post('/staffone/building-permit-temp-upload', [StaffOneProjectController::class, 'buildingPermitTempUpload']);
+    Route::post('/staffone/building-permit-temp-remove/{filename}', [StaffOneProjectController::class, 'buildingPermitRemoveUpload']);
+    Route::post('/staffone/building-permit-image-replace/{id}/{filename}', [StaffOneProjectController::class, 'buildingPermitReplaceUpload']);
+
+    
+
     Route::post('/staffone/project/store', [StaffOneProjectController::class, 'store']);
     Route::put('/staffone/project/update/{id}', [StaffOneProjectController::class, 'update']);
     Route::delete('/staffone/project/destroy/{id}', [StaffOneProjectController::class, 'destroy']);

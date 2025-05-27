@@ -41,6 +41,8 @@ class ProjectStoreRequest extends FormRequest
             // 'status' => ['required', 'string', 'in:Material,Labor,Ongoing,Completed'],        
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
             'contractual' => ['required', 'in:0,1'],
+
+            'building_permit' => ['required']
         ];
     }
 }
