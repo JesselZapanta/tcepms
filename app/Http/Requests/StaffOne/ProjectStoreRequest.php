@@ -42,7 +42,8 @@ class ProjectStoreRequest extends FormRequest
             'priority' => ['required', 'string', 'in:Low,Medium,High'],
             'contractual' => ['required', 'in:0,1'],
 
-            'building_permit' => ['required']
+            'building_permit' => ['required'],
+            'environmental_compliance_certificate' => ['required'],
         ];
     }
 }

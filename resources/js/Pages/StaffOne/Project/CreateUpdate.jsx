@@ -84,14 +84,23 @@ export default function CreateUpdate({
                 priority: project.priority,
 
                 building_permit: project.building_permit
-                    ? [
+                ? [
                         {
                             uid: "-1",
                             name: project.building_permit,
                             url: `${window.location.origin}/storage/building_permit/${project.building_permit}`,
                         },
                     ]
-                    : [],
+                : [],
+                environmental_compliance_certificate: project.environmental_compliance_certificate
+                ? [
+                        {
+                            uid: "-1",
+                            name: project.environmental_compliance_certificate,
+                            url: `${window.location.origin}/storage/environmental_compliance_certificate/${project.environmental_compliance_certificate}`,
+                        },
+                    ]
+                : [],
             });
         } else {
             form.resetFields();
@@ -120,9 +129,7 @@ export default function CreateUpdate({
 
     const removeBuildingPermit = (buildingPermit) => {
         axios
-            .post(
-                `/staffone/building-permit-temp-remove/${buildingPermit}`
-            )
+            .post(`/staffone/building-permit-temp-remove/${buildingPermit}`)
             .then((res) => {
                 if (res.data.status === "remove") {
                     message.success("Building Permit removed.");
@@ -188,6 +195,84 @@ export default function CreateUpdate({
             }
 
             removeBuildingPermit(info.response);
+            return true;
+        },
+    };
+
+    //for environmental_compliance_certificate upload
+
+    const [isEnvironmentalUpload, setIsEnvironmentalUpload] = useState(false);
+
+    const removeEnvironmental = (buildingPermit) => {
+        axios
+            .post(`/staffone/environmental-temp-remove/${buildingPermit}`)
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success(
+                        "Environmental compliance certificate removed."
+                    );
+                    setIsEnvironmentalUpload(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
+    };
+
+    const environmentalUploadprops = {
+        name: "environmental_compliance_certificate",
+        action: "/staffone/environmental-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isEnvironmentalUpload) {
+                message.error(
+                    "You cannot upload a new environmental compliance certificate while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/environmental-image-replace/${project.id}/${project.environmental_compliance_certificate}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success("Environmental compliance certificate uploaded successfully.");
+                    // setTempBuildingPermit(info.file.response);
+                    setIsEnvironmentalUpload(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error("Environmental compliance certificateupload failed.");
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error("You cannot remove the  environmental compliance certificate.");
+                return false; // Prevent file removal
+            }
+
+            removeEnvironmental(info.response);
             return true;
         },
     };
@@ -447,6 +532,39 @@ export default function CreateUpdate({
                                 "building_permit"
                             )}
                             {...buildingPermitUploadprops}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Click to Upload
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="ENVIRONMENTAL COMPLIANCE CERTIFICATE"
+                        name="environmental_compliance_certificate"
+                        valuePropName="fileList"
+                        className="w-full"
+                        getValueFromEvent={(e) =>
+                            Array.isArray(e) ? e : e?.fileList
+                        }
+                        validateStatus={
+                            errors?.environmental_compliance_certificate
+                                ? "error"
+                                : ""
+                        }
+                        help={
+                            errors?.environmental_compliance_certificate
+                                ? errors.environmental_compliance_certificate[0]
+                                : ""
+                        }
+                    >
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            defaultFileList={form.getFieldValue(
+                                "building_permit"
+                            )}
+                            {...environmentalUploadprops}
                         >
                             <Button icon={<UploadOutlined />}>
                                 Click to Upload
