@@ -286,6 +286,16 @@ export default function Index({
                         />
                         <Column
                             className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Start Date"
+                            dataIndex="start_date"
+                            key="start_date"
+                            render={(start_date) =>
+                                start_date.slice(0, 10) || "N/A"
+                            }
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
                             title="Status"
                             dataIndex="status"
                             key="status"

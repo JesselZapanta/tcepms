@@ -19,12 +19,12 @@ import {
 
 import { CalendarOutlined, PrinterOutlined } from "@ant-design/icons";
 
-import Details from "./Details";
 import { useEffect, useRef, useState } from "react";
 const { Text } = Typography;
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import Report from "./Report";
+import Details from "@/Pages/Partials/Details";
 
 export default function Index({ auth, currentProject }) {
     const [data, setData] = useState([]);

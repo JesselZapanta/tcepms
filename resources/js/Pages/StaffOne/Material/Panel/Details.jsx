@@ -82,6 +82,93 @@ export default function Details({ costs, formatPeso }) {
             span: 3,
             children: costs?.projectDetails?.location,
         },
+
+        {
+            label: "Building Permit",
+            span: 2,
+            children: costs?.projectDetails?.building_permit ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/building_permit/${costs.projectDetails.building_permit}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Environmental Compliance Certificate",
+            span: 2,
+            children: costs?.projectDetails?.environmental_compliance_certificate ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/environmental_compliance_certificate/${costs.projectDetails.environmental_compliance_certificate}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+        
+        {
+            label: "Barangay Clearance",
+            span: 2,
+            children: costs?.projectDetails?.barangay_clearance ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/barangay_clearance/${costs.projectDetails.barangay_clearance}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Zoning Clearance",
+            span: 2,
+            children: costs?.projectDetails?.zoning_clearance ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/zoning_clearance/${costs.projectDetails.zoning_clearance}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Contractor Accreditation",
+            span: 3,
+            children: costs?.projectDetails?.contractor_accreditation ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/contractor_accreditation/${costs.projectDetails.contractor_accreditation}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+        
+
         {
             label: "Engineer",
             span: 2,

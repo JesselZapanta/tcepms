@@ -217,6 +217,16 @@ export default function Index({ auth, categories }) {
                         />
                         <Column
                             className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Start Date"
+                            dataIndex="start_date"
+                            key="start_date"
+                            render={(start_date) =>
+                                start_date.slice(0, 10) || "N/A"
+                            }
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
                             title="Status"
                             dataIndex="status"
                             key="status"
@@ -415,6 +425,116 @@ export default function Index({ auth, categories }) {
                                     </td>
                                     <td className="p-2">{project?.location}</td>
                                 </tr>
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Building Permit:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.building_permit ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/building_permit/${project?.building_permit}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Environmental Compliance Certificate:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.environmental_compliance_certificate ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/environmental_compliance_certificate/${project.environmental_compliance_certificate}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Barangay Clearance:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.barangay_clearance ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/barangay_clearance/${project.barangay_clearance}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Zoning Clearance:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.zoning_clearance ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/zoning_clearance/${project.zoning_clearance}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Contractor Accreditation:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.contractor_accreditation ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/contractor_accreditation/${project.contractor_accreditation}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
+                                </tr>
+
                                 <tr className="border-t">
                                     <td className="p-2 font-bold bg-gray-100 border-r">
                                         On-Site Engineer:

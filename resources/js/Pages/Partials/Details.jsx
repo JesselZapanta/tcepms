@@ -31,80 +31,166 @@ export default function Details({ data }) {
     };
 
     const items = [
-        { label: "Name", span: 3, children: data.name },
+        { label: "Name", span: 3, children: data?.name },
         {
             label: "Description",
             span: 3,
-            children: data.description,
+            children: data?.description,
         },
         {
             label: "Start Date",
             span: 2,
-            children: data.start_date
-                ? dayjs(data.start_date).format("YYYY-MM-DD")
+            children: data?.start_date
+                ? dayjs(data?.start_date).format("YYYY-MM-DD")
                 : "N/A",
         },
         {
             label: "End Date",
             span: 1,
-            children: data.end_date
-                ? dayjs(data.end_date).format("YYYY-MM-DD")
+            children: data?.end_date
+                ? dayjs(data?.end_date).format("YYYY-MM-DD")
                 : "N/A",
         },
         // {
         //     label: "Actual Start Date",
         //     span: 2,
-        //     children: data.actual_start_date
-        //         ? dayjs(data.actual_start_date).format("YYYY-MM-DD")
+        //     children: data?.actual_start_date
+        //         ? dayjs(data?.actual_start_date).format("YYYY-MM-DD")
         //         : "N/A",
         // },
         // {
         //     label: "Actual End Date",
         //     span: 1,
-        //     children: data.actual_end_date
-        //         ? dayjs(data.actual_end_date).format("YYYY-MM-DD")
+        //     children: data?.actual_end_date
+        //         ? dayjs(data?.actual_end_date).format("YYYY-MM-DD")
         //         : "N/A",
         // },
         {
             label: "Budget",
             span: 3,
-            children: formatPeso(data.budget),
+            children: formatPeso(data?.budget),
         },
         {
             label: "Cost",
             span: 3,
-            children: formatPeso(data.cost),
+            children: formatPeso(data?.cost),
         },
         {
             label: "Source",
             span: 3,
-            children: data.source || "N/A",
+            children: data?.source || "N/A",
         },
         {
             label: "Location",
             span: 3,
-            children: data.location,
+            children: data?.location,
         },
         // {
         //     label: "Latitude",
         //     span: 2,
-        //     children: data.latitude || "N/A",
+        //     children: data?.latitude || "N/A",
         // },
         // {
         //     label: "Longitude",
         //     span: 1,
-        //     children: data.longitude || "N/A",
+        //     children: data?.longitude || "N/A",
         // },
+
+        {
+            label: "Building Permit",
+            span: 2,
+            children: data?.building_permit ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/building_permit/${data?.building_permit}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Environmental Compliance Certificate",
+            span: 2,
+            children: data?.environmental_compliance_certificate ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/environmental_compliance_certificate/${data?.environmental_compliance_certificate}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Barangay Clearance",
+            span: 2,
+            children: data?.barangay_clearance ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/barangay_clearance/${data?.barangay_clearance}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Zoning Clearance",
+            span: 2,
+            children: data?.zoning_clearance ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/zoning_clearance/${data?.zoning_clearance}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
+        {
+            label: "Contractor Accreditation",
+            span: 3,
+            children: data?.contractor_accreditation ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/contractor_accreditation/${data?.contractor_accreditation}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+
         {
             label: "Engineer",
             span: 2,
-            children: data.site_engineer?.name,
+            children: data?.site_engineer?.name,
         },
         {
             label: "Constructor",
             span: 1,
             children: data?.contractual
-                ? data.contructor?.company_name
+                ? data?.contructor?.company_name
                 : "Not Contructual",
         },
         {

@@ -25,12 +25,12 @@ import {
     SearchOutlined,
 } from "@ant-design/icons";
 
-import Details from "./Details";
 import { useEffect, useRef, useState } from "react";
 const { Text } = Typography;
 import axios from "axios";
 import Report from "./Report";
 import { useReactToPrint } from "react-to-print";
+import Details from "@/Pages/Partials/Details";
 
 export default function Index({ auth, currentProject }) {
     const [data, setData] = useState([]);
