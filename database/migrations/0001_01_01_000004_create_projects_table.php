@@ -21,12 +21,17 @@ return new class extends Migration
             $table->string('end_date')->nullable();
             $table->string('actual_start_date')->nullable();
             $table->string('actual_end_date')->nullable();
+            $table->string('duration')->nullable();//
 
             $table->decimal('budget', 15, 2);
             $table->decimal('cost', 15, 2)->nullable();
             $table->string('source')->nullable();
 
             $table->string('location');
+
+            $table->string('lot_size');
+            $table->string('structural_plan');
+            $table->string('compliance_standards');
 
             $table->string('building_permit')->nullable();
             $table->string('environmental_compliance_certificate')->nullable();

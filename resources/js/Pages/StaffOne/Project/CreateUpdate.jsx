@@ -638,7 +638,9 @@ export default function CreateUpdate({
                 }}
             >
                 <Form.Item>
-                    <Divider orientation="left">Basic Project Details</Divider>
+                    <Divider className="uppercase bold" orientation="left">
+                        Basic Project Details
+                    </Divider>
                     <Form.Item
                         label="PROJECT NAME"
                         name="name"
@@ -677,7 +679,9 @@ export default function CreateUpdate({
                             rows={4}
                         />
                     </Form.Item>
-                    <Divider orientation="left">Project Timeline</Divider>
+                    <Divider className="uppercase bold" orientation="left">
+                        Project Timeline
+                    </Divider>
                     <div className="flex md:flex-row flex-col gap-4">
                         <Form.Item
                             label="ESTIMATED START DATE"
@@ -702,7 +706,9 @@ export default function CreateUpdate({
                         </Form.Item>
                     </div>
 
-                    <Divider orientation="left">Financial Information</Divider>
+                    <Divider className="uppercase bold" orientation="left">
+                        Financial Information
+                    </Divider>
                     <div className="flex md:flex-row flex-col gap-4">
                         <Form.Item
                             label="ESTIMATED BUDGET"
@@ -731,7 +737,7 @@ export default function CreateUpdate({
                             />
                         </Form.Item>
 
-                        <Form.Item
+                        {/* <Form.Item
                             label="ACTUAL COST"
                             name="cost"
                             validateStatus={errors?.cost ? "error" : ""}
@@ -752,7 +758,7 @@ export default function CreateUpdate({
                                 }
                                 prefix={<DollarOutlined />}
                             />
-                        </Form.Item>
+                        </Form.Item> */}
 
                         <Form.Item
                             label="FUND SOURCE"
@@ -771,7 +777,9 @@ export default function CreateUpdate({
                         </Form.Item>
                     </div>
 
-                    <Divider orientation="left">Location Information</Divider>
+                    <Divider className="uppercase bold" orientation="left">
+                        Location Information
+                    </Divider>
 
                     <Form.Item
                         label="PROJECT LOCATION"
@@ -786,129 +794,139 @@ export default function CreateUpdate({
                         />
                     </Form.Item>
 
-                    <Divider orientation="left">Permits</Divider>
+                    <Divider className="uppercase bold" orientation="left">
+                        Permits and Legal Documents
+                    </Divider>
 
-                    <Form.Item
-                        label="BUILDING PERMIT"
-                        name="building_permit"
-                        valuePropName="fileList"
-                        className="w-full"
-                        getValueFromEvent={(e) =>
-                            Array.isArray(e) ? e : e?.fileList
-                        }
-                        validateStatus={errors?.building_permit ? "error" : ""}
-                        help={
-                            errors?.building_permit
-                                ? errors.building_permit[0]
-                                : ""
-                        }
-                    >
-                        <Upload
-                            listType="picture"
-                            maxCount={1}
-                            defaultFileList={form.getFieldValue(
-                                "building_permit"
-                            )}
-                            {...buildingPermitUploadprops}
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <Form.Item
+                            label="BUILDING PERMIT"
+                            name="building_permit"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.building_permit ? "error" : ""
+                            }
+                            help={
+                                errors?.building_permit
+                                    ? errors.building_permit[0]
+                                    : ""
+                            }
                         >
-                            <Button icon={<UploadOutlined />}>
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                    </Form.Item>
+                            <Upload
+                                listType="picture"
+                                maxCount={1}
+                                defaultFileList={form.getFieldValue(
+                                    "building_permit"
+                                )}
+                                {...buildingPermitUploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
 
-                    <Form.Item
-                        label="ENVIRONMENTAL COMPLIANCE CERTIFICATE"
-                        name="environmental_compliance_certificate"
-                        valuePropName="fileList"
-                        className="w-full"
-                        getValueFromEvent={(e) =>
-                            Array.isArray(e) ? e : e?.fileList
-                        }
-                        validateStatus={
-                            errors?.environmental_compliance_certificate
-                                ? "error"
-                                : ""
-                        }
-                        help={
-                            errors?.environmental_compliance_certificate
-                                ? errors.environmental_compliance_certificate[0]
-                                : ""
-                        }
-                    >
-                        <Upload
-                            listType="picture"
-                            maxCount={1}
-                            defaultFileList={form.getFieldValue(
-                                "building_permit"
-                            )}
-                            {...environmentalUploadprops}
+                        <Form.Item
+                            label="ENVIRONMENTAL COMPLIANCE CERTIFICATE"
+                            name="environmental_compliance_certificate"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.environmental_compliance_certificate
+                                    ? "error"
+                                    : ""
+                            }
+                            help={
+                                errors?.environmental_compliance_certificate
+                                    ? errors
+                                          .environmental_compliance_certificate[0]
+                                    : ""
+                            }
                         >
-                            <Button icon={<UploadOutlined />}>
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                    </Form.Item>
+                            <Upload
+                                listType="picture"
+                                maxCount={1}
+                                defaultFileList={form.getFieldValue(
+                                    "building_permit"
+                                )}
+                                {...environmentalUploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <Form.Item
+                            label="BARANGAY CLEARANCE"
+                            name="barangay_clearance"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.barangay_clearance ? "error" : ""
+                            }
+                            help={
+                                errors?.barangay_clearance
+                                    ? errors.barangay_clearance[0]
+                                    : ""
+                            }
+                        >
+                            <Upload
+                                listType="picture"
+                                maxCount={1}
+                                defaultFileList={form.getFieldValue(
+                                    "building_permit"
+                                )}
+                                {...barangayClearanceUploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
 
-                    <Form.Item
-                        label="BARANGAY CLEARANCE"
-                        name="barangay_clearance"
-                        valuePropName="fileList"
-                        className="w-full"
-                        getValueFromEvent={(e) =>
-                            Array.isArray(e) ? e : e?.fileList
-                        }
-                        validateStatus={
-                            errors?.barangay_clearance ? "error" : ""
-                        }
-                        help={
-                            errors?.barangay_clearance
-                                ? errors.barangay_clearance[0]
-                                : ""
-                        }
-                    >
-                        <Upload
-                            listType="picture"
-                            maxCount={1}
-                            defaultFileList={form.getFieldValue(
-                                "building_permit"
-                            )}
-                            {...barangayClearanceUploadprops}
+                        <Form.Item
+                            label="ZONING CLEARANCE"
+                            name="zoning_clearance"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.zoning_clearance ? "error" : ""
+                            }
+                            help={
+                                errors?.zoning_clearance
+                                    ? errors.zoning_clearance[0]
+                                    : ""
+                            }
                         >
-                            <Button icon={<UploadOutlined />}>
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                    </Form.Item>
-
-                    <Form.Item
-                        label="ZONING CLEARANCE"
-                        name="zoning_clearance"
-                        valuePropName="fileList"
-                        className="w-full"
-                        getValueFromEvent={(e) =>
-                            Array.isArray(e) ? e : e?.fileList
-                        }
-                        validateStatus={errors?.zoning_clearance ? "error" : ""}
-                        help={
-                            errors?.zoning_clearance
-                                ? errors.zoning_clearance[0]
-                                : ""
-                        }
-                    >
-                        <Upload
-                            listType="picture"
-                            maxCount={1}
-                            defaultFileList={form.getFieldValue(
-                                "zoning_clearance"
-                            )}
-                            {...zoningUploadprops}
-                        >
-                            <Button icon={<UploadOutlined />}>
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                    </Form.Item>
+                            <Upload
+                                listType="picture"
+                                maxCount={1}
+                                defaultFileList={form.getFieldValue(
+                                    "zoning_clearance"
+                                )}
+                                {...zoningUploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
+                    </div>
 
                     <Form.Item
                         label="CONTRACTOR ACCREDITATION"
@@ -941,7 +959,9 @@ export default function CreateUpdate({
                         </Upload>
                     </Form.Item>
 
-                    <Divider orientation="left">Other Information</Divider>
+                    <Divider className="uppercase bold" orientation="left">
+                        Other Information
+                    </Divider>
 
                     <div className="flex md:flex-row flex-col gap-4">
                         <Form.Item

@@ -272,7 +272,7 @@ export default function Index({
                             title="Project Name"
                             dataIndex="name"
                             key="name"
-                            render={(name) => truncate(name, 50)}
+                            render={(name) => truncate(name, 30)}
                         />
                         <Column
                             className="whitespace-nowrap bg-white"
