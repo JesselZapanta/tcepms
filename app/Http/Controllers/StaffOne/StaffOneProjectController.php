@@ -299,7 +299,6 @@ class StaffOneProjectController extends Controller
     
     public function store(ProjectStoreRequest $request)
     {
-        // return $request;
 
         $data = $request->validated();
 
@@ -362,7 +361,14 @@ class StaffOneProjectController extends Controller
                 Storage::disk('public')->delete('temp/' . $fileName);
             }
         }
-        
+
+        //using date range
+        // if (isset($data['dates']) && is_array($data['dates']) && count($data['dates']) === 2) {
+        //     $data['start_date'] = $data['dates'][0];
+        //     $data['end_date'] = $data['dates'][1];
+        //     unset($data['dates']); // Optional: remove if not needed anymore
+        // }
+    
         
         if($data['contractual'] === 0){
             $data['contructor'] = null;
@@ -372,9 +378,6 @@ class StaffOneProjectController extends Controller
             $data['actual_start_date'] = $data['start_date'] ?? null;
         }
 
-        if ($request->hasFile('building_permit')) {
-            $data['building_permit'] = $request->file('building_permit')->store('documents');
-        }
 
         $project = Project::create($data);
 

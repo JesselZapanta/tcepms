@@ -31,6 +31,7 @@ import {
     SignatureOutlined,
     FileTextOutlined,
     UploadOutlined,
+    CalculatorOutlined,
 } from "@ant-design/icons";
 import Modal from "antd/es/modal/Modal";
 import TextArea from "antd/es/input/TextArea";
@@ -64,6 +65,13 @@ export default function CreateUpdate({
                     ? dayjs(project.start_date)
                     : null,
                 end_date: project.end_date ? dayjs(project.end_date) : null,
+
+                //using date range
+                // dates:
+                //     project.start_date && project.end_date
+                //         ? [dayjs(project.start_date), dayjs(project.end_date)]
+                //         : [],
+
                 actual_start_date: project.actual_start_date
                     ? dayjs(project.actual_start_date)
                     : null,
@@ -621,6 +629,17 @@ export default function CreateUpdate({
         form.setFieldsValue({ status: con === 1 ? "Ongoing" : "Material" });
     }, [con]);
 
+    //for duration
+    const [start, setStart] = useState(null);
+    const [end, setEnd] = useState(null);
+
+    const duration = start && end ? dayjs(end).diff(dayjs(start), "day") + 1 : 0;
+
+    useEffect(() => {
+        form.setFieldsValue({ duration });
+    }, [duration, start, end]);
+
+
     return (
         <div>
             {contextHolder}
@@ -692,7 +711,10 @@ export default function CreateUpdate({
                             }
                             className="w-full"
                         >
-                            <DatePicker className="w-full" />
+                            <DatePicker
+                                className="w-full"
+                                onChange={(date) => setStart(date)}
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -702,7 +724,36 @@ export default function CreateUpdate({
                             help={errors?.end_date ? errors?.end_date[0] : ""}
                             className="w-full"
                         >
-                            <DatePicker className="w-full" />
+                            <DatePicker
+                                className="w-full"
+                                onChange={(date) => setEnd(date)}
+                            />
+                        </Form.Item>
+                        {/* using date range */}
+                        {/* <Form.Item
+                            label="ESTIMATED DATES"
+                            name="dates"
+                            validateStatus={errors?.dates ? "error" : ""}
+                            help={errors?.dates ? errors?.dates[0] : ""}
+                            className="w-full"
+                        >
+                            <DatePicker.RangePicker
+                                className="w-full"
+                                onChange={handleDateChange}
+                            />
+                        </Form.Item> */}
+                        <Form.Item
+                            label="Duration (In days)"
+                            name="duration"
+                            validateStatus={errors?.duration ? "error" : ""}
+                            help={errors?.duration ? errors?.duration[0] : ""}
+                            className="w-full"
+                        >
+                            <InputNumber
+                                disabled
+                                className="w-full"
+                                prefix={<CalculatorOutlined />}
+                            />
                         </Form.Item>
                     </div>
 
@@ -793,6 +844,86 @@ export default function CreateUpdate({
                             prefix={<EnvironmentOutlined />}
                         />
                     </Form.Item>
+
+                    <Divider className="uppercase bold" orientation="left">
+                        Technical Specifications
+                    </Divider>
+
+                    <Form.Item
+                        label="LOT SIZE"
+                        name="lot_size"
+                        // Custom error handling
+                        validateStatus={errors?.lot_size ? "error" : ""}
+                        help={errors?.lot_size ? errors.location[0] : ""}
+                    >
+                        <Input
+                            placeholder="Lot Size (square meter)"
+                            prefix={<EnvironmentOutlined />}
+                        />
+                    </Form.Item>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <Form.Item
+                            label="STRUCTURAL PLAN"
+                            name="structural_plan"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.structural_plan ? "error" : ""
+                            }
+                            help={
+                                errors?.structural_plan
+                                    ? errors.structural_plan[0]
+                                    : ""
+                            }
+                        >
+                            <Upload
+                                listType="picture"
+                                maxCount={1}
+                                defaultFileList={form.getFieldValue(
+                                    "structural_plan"
+                                )}
+                                {...buildingPermitUploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="COMPLIANCE STANDARDS"
+                            name="compliance_standards"
+                            valuePropName="fileList"
+                            className="w-full"
+                            getValueFromEvent={(e) =>
+                                Array.isArray(e) ? e : e?.fileList
+                            }
+                            validateStatus={
+                                errors?.compliance_standards ? "error" : ""
+                            }
+                            help={
+                                errors?.compliance_standards
+                                    ? errors.compliance_standards[0]
+                                    : ""
+                            }
+                        >
+                            <Upload
+                                listType="picture"
+                                maxCount={1}
+                                defaultFileList={form.getFieldValue(
+                                    "compliance_standards"
+                                )}
+                                {...environmentalUploadprops}
+                            >
+                                <Button icon={<UploadOutlined />}>
+                                    Click to Upload
+                                </Button>
+                            </Upload>
+                        </Form.Item>
+                    </div>
 
                     <Divider className="uppercase bold" orientation="left">
                         Permits and Legal Documents
