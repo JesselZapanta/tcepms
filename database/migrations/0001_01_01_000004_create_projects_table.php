@@ -29,9 +29,9 @@ return new class extends Migration
 
             $table->string('location');
 
-            $table->string('lot_size');
-            $table->string('structural_plan');
-            $table->string('compliance_standards');
+            $table->string('lot_size')->nullable();;
+            $table->string('structural_plan')->nullable();;
+            $table->string('compliance_standards')->nullable();;
 
             $table->string('building_permit')->nullable();
             $table->string('environmental_compliance_certificate')->nullable();
