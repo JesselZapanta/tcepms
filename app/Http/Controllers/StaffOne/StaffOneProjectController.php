@@ -46,6 +46,106 @@ class StaffOneProjectController extends Controller
 
     // Uploads
 
+    //structural_plan
+
+    public function structuralPlanTempUpload(Request $request){
+        $request->validate([
+            'structural_plan' => ['required','mimes:pdf']
+        ]);
+        
+        $file = $request->structural_plan;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $fileName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('temp', $fileName, 'public');
+        $name = explode('/', $filePath);
+        return $name[1];
+    }
+    public function structuralPlanRemoveUpload($fileName){
+
+        // return $fileName;
+        if (Storage::disk('public')->exists('temp/' . $fileName)) {
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json([
+                'status' => 'remove'
+            ], 200);
+        }
+    }
+    public function structuralPlanReplaceUpload($id, $fileName){
+        $data = Project::find($id);
+        $oldFile = $data->structural_plan;
+
+        // return $oldFile;
+        $data->structural_plan = null;
+        $data->save();
+
+        if (Storage::disk('public')->exists('structural_plan/' . $oldFile)) {
+            Storage::disk('public')->delete('structural_plan/' . $oldFile);
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+
+            return response()->json([
+                'status' => 'replace'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error'
+        ], 200);
+    }
+
+    //compliance_standards
+
+    public function complianceStandardsTempUpload(Request $request){
+        $request->validate([
+            'compliance_standards' => ['required','mimes:pdf']
+        ]);
+        
+        $file = $request->compliance_standards;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $fileName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('temp', $fileName, 'public');
+        $name = explode('/', $filePath);
+        return $name[1];
+    }
+    public function complianceStandardsRemoveUpload($fileName){
+
+        // return $fileName;
+        if (Storage::disk('public')->exists('temp/' . $fileName)) {
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json([
+                'status' => 'remove'
+            ], 200);
+        }
+    }
+    public function complianceStandardsReplaceUpload($id, $fileName){
+        $data = Project::find($id);
+        $oldFile = $data->compliance_standards;
+
+        // return $oldFile;
+        $data->compliance_standards = null;
+        $data->save();
+
+        if (Storage::disk('public')->exists('compliance_standards/' . $oldFile)) {
+            Storage::disk('public')->delete('compliance_standards/' . $oldFile);
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+
+            return response()->json([
+                'status' => 'replace'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error'
+        ], 200);
+    }
+
     //buildingPermit
 
     public function buildingPermitTempUpload(Request $request){
@@ -302,6 +402,32 @@ class StaffOneProjectController extends Controller
 
         $data = $request->validated();
 
+        // return $data;
+
+        //structural_plan
+        if(!empty($data['structural_plan']) && isset($request->structural_plan[0]['response'])){
+            $fileName = $request->structural_plan[0]['response'];
+            $data['structural_plan'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'structural_plan/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        }
+
+        //compliance_standards
+        if(!empty($data['compliance_standards']) && isset($request->compliance_standards[0]['response'])){
+            $fileName = $request->compliance_standards[0]['response'];
+            $data['compliance_standards'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'compliance_standards/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        }
+
         //building_permit
         if(!empty($data['building_permit']) && isset($request->building_permit[0]['response'])){
             $fileName = $request->building_permit[0]['response'];
@@ -391,6 +517,32 @@ class StaffOneProjectController extends Controller
     {
         $data = $request->validated();
 
+        //structural_plan
+        if(!empty($data['structural_plan']) && isset($request->structural_plan[0]['response'])){
+            $fileName = $request->structural_plan[0]['response'];
+            $data['structural_plan'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'structural_plan/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        } else {
+            unset($data['structural_plan']); 
+        }
+        //compliance_standards
+        if(!empty($data['compliance_standards']) && isset($request->compliance_standards[0]['response'])){
+            $fileName = $request->compliance_standards[0]['response'];
+            $data['compliance_standards'] = $fileName;
+
+            if (Storage::disk('public')->exists('temp/' . $fileName)) {
+                // Move the file
+                Storage::disk('public')->move('temp/' . $fileName, 'compliance_standards/' . $fileName); 
+                Storage::disk('public')->delete('temp/' . $fileName);
+            }
+        } else {
+            unset($data['compliance_standards']); 
+        }
         //building_permit
         if(!empty($data['building_permit']) && isset($request->building_permit[0]['response'])){
             $fileName = $request->building_permit[0]['response'];
@@ -482,6 +634,19 @@ class StaffOneProjectController extends Controller
     {
         $project = Project::findOrFail($id);
 
+        //structural_plan
+        if (!empty($project->structural_plan)) {
+            if (Storage::disk('public')->exists('structural_plan/' . $project->structural_plan)) {
+                Storage::disk('public')->delete('structural_plan/' . $project->structural_plan);
+            }
+        }
+        //compliance_standards
+        if (!empty($project->compliance_standards)) {
+            if (Storage::disk('public')->exists('compliance_standards/' . $project->compliance_standards)) {
+                Storage::disk('public')->delete('compliance_standards/' . $project->compliance_standards);
+            }
+        }
+        //building_permit
         if (!empty($project->building_permit)) {
             if (Storage::disk('public')->exists('building_permit/' . $project->building_permit)) {
                 Storage::disk('public')->delete('building_permit/' . $project->building_permit);

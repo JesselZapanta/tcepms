@@ -129,6 +129,16 @@ Route::middleware(['auth', 'staffone','userStatus'])->group(function() {
     
     //Uploads
 
+     //structural-plan
+    Route::post('/staffone/structural-plan-temp-upload', [StaffOneProjectController::class, 'structuralPlanTempUpload']);
+    Route::post('/staffone/structural-plan-temp-remove/{filename}', [StaffOneProjectController::class, 'structuralPlanRemoveUpload']);
+    Route::post('/staffone/structural-plan-replace/{id}/{filename}', [StaffOneProjectController::class, 'structuralPlanReplaceUpload']);
+    
+     //compliance-standards
+    Route::post('/staffone/compliance-standards-temp-upload', [StaffOneProjectController::class, 'complianceStandardsTempUpload']);
+    Route::post('/staffone/compliance-standards-temp-remove/{filename}', [StaffOneProjectController::class, 'complianceStandardsRemoveUpload']);
+    Route::post('/staffone/compliance-standards-replace/{id}/{filename}', [StaffOneProjectController::class, 'complianceStandardsReplaceUpload']);
+    
      //building_permit
     Route::post('/staffone/building-permit-temp-upload', [StaffOneProjectController::class, 'buildingPermitTempUpload']);
     Route::post('/staffone/building-permit-temp-remove/{filename}', [StaffOneProjectController::class, 'buildingPermitRemoveUpload']);

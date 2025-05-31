@@ -78,12 +78,14 @@ export default function CreateUpdate({
                 actual_end_date: project.actual_end_date
                     ? dayjs(project.actual_end_date)
                     : null,
+                duration: project.duration,
                 budget: project.budget,
                 cost: project.cost,
                 source: project.source,
                 location: project.location,
                 latitude: project.latitude,
                 longitude: project.longitude,
+                lot_size: project.lot_size,
                 engineer: project.engineer,
                 contructor: project.contructor?.id,
                 category: project.category,
@@ -91,6 +93,24 @@ export default function CreateUpdate({
                 contractual: project.contractual,
                 priority: project.priority,
 
+                structural_plan: project.structural_plan
+                    ? [
+                          {
+                              uid: "-1",
+                              name: project.structural_plan,
+                              url: `${window.location.origin}/storage/structural_plan/${project.structural_plan}`,
+                          },
+                      ]
+                    : [],
+                compliance_standards: project.compliance_standards
+                    ? [
+                          {
+                              uid: "-1",
+                              name: project.compliance_standards,
+                              url: `${window.location.origin}/storage/compliance_standards/${project.compliance_standards}`,
+                          },
+                      ]
+                    : [],
                 building_permit: project.building_permit
                     ? [
                           {
@@ -166,6 +186,158 @@ export default function CreateUpdate({
     const { props } = usePage();
     const csrfToken = props.auth.csrf_token || "";
 
+    //structural_plan StructuralPlan
+    const [isStructuralPlan, setIsStructuralPlan] = useState(false);
+
+    const removeStructuralPlan = (structuralPlan) => {
+        axios
+            .post(`/staffone/structural-plan-temp-remove/${structuralPlan}`)
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success("Structural plan removed.");
+                    setIsStructuralPlan(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
+    };
+
+    const structuralPlantUploadprops = {
+        name: "structural_plan",
+        action: "/staffone/structural-plan-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isStructuralPlan) {
+                message.error(
+                    "You cannot upload a new structural plan while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/structural-plan-replace/${project.id}/${project.structural_plan}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success("Structural plan uploaded successfully.");
+                    setIsStructuralPlan(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error("Structural plan upload failed.");
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error("You cannot remove the structural plan.");
+                return false; // Prevent file removal
+            }
+
+            removeStructuralPlan(info.response);
+            return true;
+        },
+    };
+
+    //compliance_standards ComplianceStandards
+    const [isComplianceStandards, setIsComplianceStandards] = useState(false);
+
+    const removeComplianceStandards = (complianceStandards) => {
+        axios
+            .post(
+                `/staffone/compliance-standards-temp-remove/${complianceStandards}`
+            )
+            .then((res) => {
+                if (res.data.status === "remove") {
+                    message.success("Compliance standards removed.");
+                    setIsComplianceStandards(false);
+                }
+                if (res.data.status === "error") {
+                    alert("error");
+                }
+            });
+    };
+
+    const complianceStandardsUploadprops = {
+        name: "compliance_standards",
+        action: "/staffone/compliance-standards-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+
+        beforeUpload: (file) => {
+            if (isComplianceStandards) {
+                message.error(
+                    "You cannot upload a new compliance standards while one is already uploaded."
+                );
+                return Upload.LIST_IGNORE;
+            }
+
+            const isPDF = file.type === "application/pdf";
+
+            if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+            }
+            return isPDF || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            if (info.file.status === "done") {
+                // Ensure the upload is complete
+                if (project) {
+                    axios
+                        .post(
+                            `/staffone/compliance-standards-replace/${project.id}/${project.compliance_standards}`
+                        )
+                        .then((res) => {
+                            if (res.data.status === "replace") {
+                                message.success("File Replaced");
+                            }
+                        });
+                } else {
+                    message.success(
+                        "Compliance standards uploaded successfully."
+                    );
+                    setIsComplianceStandards(true);
+                }
+            } else if (info.file.status === "error") {
+                message.error("Compliance standards upload failed.");
+            }
+        },
+
+        onRemove(info) {
+            // Prevent removal if user exists
+            if (project) {
+                message.error("You cannot remove the compliance standards.");
+                return false; // Prevent file removal
+            }
+
+            removeComplianceStandards(info.response);
+            return true;
+        },
+    };
+
     //for buildingPermit upload
 
     const [isBuildingPermitUpload, setIsBuildingPermitUpload] = useState(false);
@@ -213,7 +385,7 @@ export default function CreateUpdate({
                 if (project) {
                     axios
                         .post(
-                            `/staffone/building-permit-replace/${project.id}/${project.buildingPermit}`
+                            `/staffone/building-permit-replace/${project.id}/${project.building_permit}`
                         )
                         .then((res) => {
                             if (res.data.status === "replace") {
@@ -633,12 +805,12 @@ export default function CreateUpdate({
     const [start, setStart] = useState(null);
     const [end, setEnd] = useState(null);
 
-    const duration = start && end ? dayjs(end).diff(dayjs(start), "day") + 1 : 0;
+    const duration =
+        start && end ? dayjs(end).diff(dayjs(start), "day") + 1 : 0;
 
     useEffect(() => {
         form.setFieldsValue({ duration });
     }, [duration, start, end]);
-
 
     return (
         <div>
@@ -885,7 +1057,7 @@ export default function CreateUpdate({
                                 defaultFileList={form.getFieldValue(
                                     "structural_plan"
                                 )}
-                                {...buildingPermitUploadprops}
+                                {...structuralPlantUploadprops}
                             >
                                 <Button icon={<UploadOutlined />}>
                                     Click to Upload
@@ -916,7 +1088,7 @@ export default function CreateUpdate({
                                 defaultFileList={form.getFieldValue(
                                     "compliance_standards"
                                 )}
-                                {...environmentalUploadprops}
+                                {...complianceStandardsUploadprops}
                             >
                                 <Button icon={<UploadOutlined />}>
                                     Click to Upload
