@@ -389,6 +389,14 @@ export default function Index({ auth, categories }) {
                                 </tr>
                                 <tr className="border-t">
                                     <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Duration:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.duration + " days"}
+                                    </td>
+                                </tr>
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
                                         End Date:
                                     </td>
                                     <td className="p-2">
@@ -427,6 +435,57 @@ export default function Index({ auth, categories }) {
                                         Location:
                                     </td>
                                     <td className="p-2">{project?.location}</td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Lot Size (Square meter):
+                                    </td>
+                                    <td className="p-2">{project?.lot_size}</td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Structural Plan:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.structural_plan ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/structural_plan/${project?.structural_plan}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr className="border-t">
+                                    <td className="p-2 font-bold bg-gray-100 border-r">
+                                        Compliance Standards:
+                                    </td>
+                                    <td className="p-2">
+                                        {project?.compliance_standards ? (
+                                            <a
+                                                className="underline font-bold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`/storage/compliance_standards/${project?.compliance_standards}`}
+                                            >
+                                                View File
+                                            </a>
+                                        ) : (
+                                            <p className="italic text-gray-500">
+                                                NO FILE FOUND
+                                            </p>
+                                        )}
+                                    </td>
                                 </tr>
 
                                 <tr className="border-t">

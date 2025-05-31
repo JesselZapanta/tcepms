@@ -39,7 +39,7 @@ export default function Details({ data }) {
         },
         {
             label: "Start Date",
-            span: 2,
+            span: 1,
             children: data?.start_date
                 ? dayjs(data?.start_date).format("YYYY-MM-DD")
                 : "N/A",
@@ -50,6 +50,11 @@ export default function Details({ data }) {
             children: data?.end_date
                 ? dayjs(data?.end_date).format("YYYY-MM-DD")
                 : "N/A",
+        },
+        {
+            label: "duration",
+            span: 1,
+            children: `${data?.duration} days`,
         },
         // {
         //     label: "Actual Start Date",
@@ -84,6 +89,43 @@ export default function Details({ data }) {
             label: "Location",
             span: 3,
             children: data?.location,
+        },
+        {
+            label: "Lot Size (Sqaure meter)",
+            span: 3,
+            children: data?.lot_size,
+        },
+        {
+            label: "Structural Plan",
+            span: 2,
+            children: data?.structural_plan ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/structural_plan/${data?.structural_plan}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+        {
+            label: "Compliance Standards",
+            span: 1,
+            children: data?.compliance_standards ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/compliance_standards/${data?.compliance_standards}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
         },
         // {
         //     label: "Latitude",

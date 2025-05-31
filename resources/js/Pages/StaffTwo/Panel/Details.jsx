@@ -44,6 +44,11 @@ export default function Details({ costs, formatPeso }) {
                 ? dayjs(costs?.projectDetails?.end_date).format("YYYY-MM-DD")
                 : "N/A",
         },
+        {
+            label: "duration",
+            span: 1,
+            children: `${costs?.projectDetails?.duration} days`,
+        },
         // {
         //     label: "Actual Start Date",
         //     span: 2,
@@ -81,6 +86,45 @@ export default function Details({ costs, formatPeso }) {
             label: "Location",
             span: 3,
             children: costs?.projectDetails?.location,
+        },
+
+        {
+            label: "Lot Size (Sqaure meter)",
+            span: 3,
+            children: costs?.projectDetails?.lot_size,
+        },
+
+        {
+            label: "Structural Plan",
+            span: 2,
+            children: costs?.projectDetails?.structural_plan ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/structural_plan/${costs?.projectDetails?.structural_plan}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
+        },
+        {
+            label: "Compliance Standards",
+            span: 1,
+            children: costs?.projectDetails?.compliance_standards ? (
+                <a
+                    className="underline font-bold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/storage/compliance_standards/${costs?.projectDetails?.compliance_standards}`}
+                >
+                    View File
+                </a>
+            ) : (
+                <p className="italic text-gray-500">NO FILE FOUND</p>
+            ),
         },
 
         {
