@@ -1026,7 +1026,7 @@ export default function CreateUpdate({
                         name="lot_size"
                         // Custom error handling
                         validateStatus={errors?.lot_size ? "error" : ""}
-                        help={errors?.lot_size ? errors.location[0] : ""}
+                        help={errors?.lot_size ? errors.lot_size[0] : ""}
                     >
                         <Input
                             placeholder="Lot Size (square meter)"

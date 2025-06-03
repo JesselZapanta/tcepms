@@ -87,7 +87,6 @@ export default function Dashboard({ auth }) {
             },
         ],
     };
-
     const options = {
         responsive: true,
         plugins: {
