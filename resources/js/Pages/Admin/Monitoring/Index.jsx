@@ -12,10 +12,15 @@ import {
     Avatar,
     Select,
     Dropdown,
+    Modal,
 } from "antd";
 import Search from "antd/es/input/Search";
-import { SignatureOutlined, AppstoreAddOutlined, BarChartOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import {
+    SignatureOutlined,
+    AppstoreAddOutlined,
+    BarChartOutlined,
+} from "@ant-design/icons";
+import { useEffect, useRef, useState } from "react";
 
 export default function Index({ auth, categories }) {
     const [data, setData] = useState([]);
@@ -71,6 +76,28 @@ export default function Index({ auth, categories }) {
     useEffect(() => {
         getData(false);
     }, [category, status, order]);
+
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentUpdateImages, setCurrentUpdateImages] = useState([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const carouselRef = useRef(null); // ✅ useRef instead of useState
+
+    const showImageModal = (images, index) => {
+        setCurrentUpdateImages(images);
+        setCurrentImageIndex(index);
+        setIsModalVisible(true);
+
+        setTimeout(() => {
+            if (carouselRef.current) {
+                carouselRef.current.goTo(index, true);
+            }
+        }, 50); // ensure modal renders before goTo
+    };
+
+    const handleModalCancel = () => {
+        setIsModalVisible(false);
+    };
 
     return (
         <AuthenticatedLayout header="Project Monitoring" auth={auth}>
@@ -154,25 +181,28 @@ export default function Index({ auth, categories }) {
                                         {project.updates &&
                                         project.updates.length > 0 ? (
                                             <Carousel arrows infinite={true}>
-                                                {project.updates.map(
-                                                    (update, index) =>
-                                                        update.images.map(
-                                                            (
-                                                                image,
-                                                                imgIndex
-                                                            ) => (
-                                                                <div
-                                                                    key={`${index}-${imgIndex}`}
-                                                                >
-                                                                    <Avatar
-                                                                        className="w-full h-72"
-                                                                        shape="square"
-                                                                        src={`/storage/project_images/${image.file_path}`}
-                                                                        alt={`Project Update ${update.id} - Image ${imgIndex}`}
-                                                                    />
-                                                                </div>
-                                                            )
+                                                {project.updates.map((update) =>
+                                                    update.images.map(
+                                                        (image, imgIndex) => (
+                                                            <div
+                                                                key={`${update.id}-${imgIndex}`}
+                                                                onClick={() =>
+                                                                    showImageModal(
+                                                                        update.images,
+                                                                        imgIndex
+                                                                    )
+                                                                }
+                                                                className="cursor-pointer"
+                                                            >
+                                                                <Avatar
+                                                                    className="w-full h-72"
+                                                                    shape="square"
+                                                                    src={`/storage/project_images/${image.file_path}`}
+                                                                    alt={`Project Update ${update.id} - Image ${imgIndex}`}
+                                                                />
+                                                            </div>
                                                         )
+                                                    )
                                                 )}
                                             </Carousel>
                                         ) : (
@@ -418,6 +448,54 @@ export default function Index({ auth, categories }) {
                         onChange={handlePageChange}
                     />
                 </div>
+
+                <Modal
+                    open={isModalVisible}
+                    onCancel={handleModalCancel}
+                    footer={null}
+                    style={{
+                        top: 0,
+                        padding: 0,
+                    }}
+                    bodyStyle={{
+                        height: "90vh",
+                        padding: 0,
+                    }}
+                    width="90"
+                    centered
+                >
+                    <div className="relative">
+                        <Carousel ref={carouselRef} dots>
+                            {currentUpdateImages.map((image) => (
+                                <div
+                                    key={image.id}
+                                    className="flex justify-center items-center py-6"
+                                >
+                                    <img
+                                        src={`/storage/project_images/${image.file_path}`}
+                                        alt="Preview"
+                                        className="max-h-[80vh] w-full object-contain"
+                                    />
+                                </div>
+                            ))}
+                        </Carousel>
+
+                        <div className="flex justify-between gap-4">
+                            <Button
+                                onClick={() => carouselRef.current?.prev()}
+                                type="primary"
+                            >
+                                Prev
+                            </Button>
+                            <Button
+                                onClick={() => carouselRef.current?.next()}
+                                type="primary"
+                            >
+                                Next
+                            </Button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         </AuthenticatedLayout>
     );
