@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Project;
 use App\Models\ProjectUpdate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class StaffOneProjectMonitoringController extends Controller
 {
@@ -18,26 +20,54 @@ class StaffOneProjectMonitoringController extends Controller
         ]);
     }
 
+    // public function getData(Request $request)
+    // {
+    //     return Project::with([
+    //         'siteEngineer:id,name', 
+    //         'updates' => function ($query) {
+    //             $query->with(['images' => function ($query) {
+    //                 $query->orderBy('created_at', 'desc')
+    //                     ->limit(5); // Fetch the latest image per update
+    //             }])
+    //             ->latest('created_at')
+    //             ->limit(1); // Fetch only the latest update per project
+    //         }
+    //     ])
+    //     ->where('category', 'like', "%{$request->category}%")
+    //     ->where('status', 'like', "%{$request->status}%")
+    //     // ->whereIn('status', ['Ongoing', 'Completed'])
+    //     ->where('name', 'like', "%{$request->search}%")
+    //     ->orderBy('id', $request->order)
+    //     ->paginate(10);
+    // }
+
     public function getData(Request $request)
     {
+        $latestUpdateSub = DB::table('project_updates')
+            ->select('project', DB::raw('MAX(update_date) as latest_update'))
+            ->groupBy('project');
+
         return Project::with([
-            'siteEngineer:id,name', 
-            'updates' => function ($query) {
-                $query->with(['images' => function ($query) {
-                    $query->orderBy('created_at', 'desc')
-                        ->limit(5); // Fetch the latest image per update
-                }])
-                ->latest('created_at')
-                ->limit(1); // Fetch only the latest update per project
-            }
-        ])
-        ->where('category', 'like', "%{$request->category}%")
-        ->where('status', 'like', "%{$request->status}%")
-        // ->whereIn('status', ['Ongoing', 'Completed'])
-        ->where('name', 'like', "%{$request->search}%")
-        ->orderBy('id', $request->order)
-        ->paginate(10);
+                'siteEngineer:id,name', 
+                'updates' => function ($query) {
+                    $query->with(['images' => function ($query) {
+                        $query->orderBy('created_at', 'desc')->limit(5);
+                    }])
+                    ->latest('created_at')
+                    ->limit(1);
+                }
+            ])
+            ->leftJoinSub($latestUpdateSub, 'latest_updates', function ($join) {
+                $join->on('projects.id', '=', 'latest_updates.project');
+            })
+            ->where('projects.category', 'like', "%{$request->category}%")
+            ->where('projects.status', 'like', "%{$request->status}%")
+            ->where('projects.name', 'like', "%{$request->search}%")
+            ->orderBy('latest_updates.latest_update', $request->order ?? 'desc') // 'asc' or 'desc'
+            ->select('projects.*')
+            ->paginate(10);
     }
+
 
     public function graph($id)
     {
