@@ -30,7 +30,7 @@ ChartJS.register(
     Legend
 );
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, badge }) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
 
@@ -99,7 +99,6 @@ export default function Dashboard({ auth }) {
             // },
         },
     };
-    
 
     const getData = async () => {
         setLoading(true);
@@ -119,7 +118,11 @@ export default function Dashboard({ auth }) {
     }, []);
 
     return (
-        <AuthenticatedLayout header="Admin Dashboard" auth={auth}>
+        <AuthenticatedLayout
+            header="Admin Dashboard"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Admin Dashboard" />
             {/* <div className="py-2">Admin Dashboard</div> */}
             {loading ? (
@@ -135,6 +138,9 @@ export default function Dashboard({ auth }) {
                     <div className="bg-amber-300 m-4 p-4 font-bold text-2xl rounded">
                         DASHBOARD
                     </div>
+                    <pre className="text-gray-900">
+                        {JSON.stringify(badge, null, 2)}
+                    </pre>
                     <div className="bg-white m-4 p-4 rounded flex">
                         <UserOutlined className="text-5xl mr-4" />
                         <div>

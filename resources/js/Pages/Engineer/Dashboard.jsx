@@ -8,7 +8,7 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, badge }) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
 
@@ -30,7 +30,11 @@ export default function Dashboard({ auth }) {
     }, []);
 
     return (
-        <AuthenticatedLayout header="Engineer Dashboard" auth={auth}>
+        <AuthenticatedLayout
+            header="Engineer Dashboard"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Engineer Dashboard" />
             {/* <div className="py-2">Engineer Dashboard</div> */}
             {loading ? (

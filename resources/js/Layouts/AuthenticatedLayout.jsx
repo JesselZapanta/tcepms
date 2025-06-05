@@ -16,11 +16,19 @@ import {
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Layout, Menu, Space, theme } from "antd";
+import {
+    Avatar,
+    Button,
+    Dropdown,
+    Layout,
+    Menu,
+    Space,
+    theme,
+} from "antd";
 import { Link } from "@inertiajs/react";
 import { Footer } from "antd/es/layout/layout";
 const { Header, Sider, Content } = Layout;
-export default function AuthenticatedLayout({ auth, header, children }) {
+export default function AuthenticatedLayout({ auth, header, children, badge }) {
     const [collapsed, setCollapsed] = useState(true);
 
     const {
@@ -57,14 +65,31 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <DollarCircleOutlined />,
         },
         {
-            label: <Link href={route("admin.project")}>Project</Link>,
+            label: (
+                <Link href={route("admin.project")}>
+                    <div className="flex justify-between items-center gap-2">
+                        Project
+                        {/* <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.ongoingProject ? badge?.ongoingProject : 0}
+                        </span> */}
+                    </div>
+                </Link>
+            ),
             key: "admin.project",
             icon: <ProjectOutlined />,
         },
+
         {
             label: (
                 <Link href={route("admin.project-request-extension")}>
-                    Request Extention
+                    <div className="flex justify-between items-center gap-2">
+                        Request Extention
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.requestExtension
+                                ? badge?.requestExtension
+                                : 0}
+                        </span>
+                    </div>
                 </Link>
             ),
             key: "admin.project-request-extension",
@@ -73,7 +98,16 @@ export default function AuthenticatedLayout({ auth, header, children }) {
         {
             label: (
                 <Link href={route("admin.project-monitoring")}>
-                    Project Monitoring
+                    <Link href={route("admin.project-request-extension")}>
+                        <div className="flex justify-between items-center gap-2">
+                            Project Monitoring
+                            <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                                {badge?.ongoingProject
+                                    ? badge?.ongoingProject
+                                    : 0}
+                            </span>
+                        </div>
+                    </Link>
                 </Link>
             ),
             key: "admin.project-monitoring",
@@ -88,30 +122,30 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <DashboardOutlined />,
         },
         {
-            label: <Link href={route("staffone.project")}>Project</Link>,
+            label: (
+                <Link href={route("staffone.project")}>
+                    <div className="flex justify-between items-center gap-2">
+                        Project
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.pendingMaterials
+                                ? badge?.pendingMaterials
+                                : 0}
+                        </span>
+                    </div>
+                </Link>
+            ),
             key: "staffone.project",
             icon: <ProjectOutlined />,
         },
-        // {
-        //     label: (
-        //         <Link href={route("staffone.project-request-extension")}>
-        //             Request Extention
-        //         </Link>
-        //     ),
-        //     key: "staffone.project-request-extension",
-        //     icon: <CalendarOutlined />,
-        // },
-        // {
-        //     label: (
-        //         <Link href={route("staffone.project")}>Request Material</Link>
-        //     ),
-        //     key: "staffone",
-        //     icon: <ProjectOutlined />,
-        // },
         {
             label: (
                 <Link href={route("staffone.project-monitoring")}>
-                    Project Monitoring
+                    <div className="flex justify-between items-center gap-2">
+                        Project Monitoring
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.ongoingProject ? badge?.ongoingProject : 0}
+                        </span>
+                    </div>
                 </Link>
             ),
             key: "staffone.project-monitoring",
@@ -126,14 +160,30 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <DashboardOutlined />,
         },
         {
-            label: <Link href={route("stafftwo.project")}>Project</Link>,
+            label: (
+                <Link href={route("stafftwo.project")}>
+                    <div className="flex justify-between items-center gap-2">
+                        Project
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.pendingMaterials
+                                ? badge?.pendingMaterials
+                                : 0}
+                        </span>
+                    </div>
+                </Link>
+            ),
             key: "stafftwo.project",
             icon: <ProjectOutlined />,
         },
         {
             label: (
                 <Link href={route("stafftwo.project-monitoring")}>
-                    Project Monitoring
+                    <div className="flex justify-between items-center gap-2">
+                        Project Monitoring
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.ongoingProject ? badge?.ongoingProject : 0}
+                        </span>
+                    </div>
                 </Link>
             ),
             key: "stafftwo.project-monitoring",
@@ -148,14 +198,32 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <DashboardOutlined />,
         },
         {
-            label: <Link href={route("engineer.project")}>Project</Link>,
+            label: (
+                <Link href={route("engineer.project")}>
+                    <div className="flex justify-between items-center gap-2">
+                        Project
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.assingedOngoingProject
+                                ? badge?.assingedOngoingProject
+                                : 0}
+                        </span>
+                    </div>
+                </Link>
+            ),
             key: "engineer.project",
             icon: <ProjectOutlined />,
         },
         {
             label: (
                 <Link href={route("engineer.project-monitoring")}>
-                    Project Monitoring
+                    <div className="flex justify-between items-center gap-2">
+                        Project Monitoring
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.assingedOngoingProject
+                                ? badge?.assingedOngoingProject
+                                : 0}
+                        </span>
+                    </div>
                 </Link>
             ),
             key: "engineer.project-monitoring",
@@ -170,14 +238,28 @@ export default function AuthenticatedLayout({ auth, header, children }) {
             icon: <DashboardOutlined />,
         },
         {
-            label: <Link href={route("mayor.project")}>Project</Link>,
+            label: (
+                <Link href={route("mayor.project")}>
+                    <div className="flex justify-between items-center gap-2">
+                        Project
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.ongoingProject ? badge?.ongoingProject : 0}
+                        </span>
+                    </div>
+                </Link>
+            ),
             key: "mayor.project",
             icon: <ProjectOutlined />,
         },
         {
             label: (
                 <Link href={route("mayor.project-monitoring")}>
-                    Project Monitoring
+                    <div className="flex justify-between items-center gap-2">
+                        Project Monitoring
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.ongoingProject ? badge?.ongoingProject : 0}
+                        </span>
+                    </div>
                 </Link>
             ),
             key: "mayor.project-monitoring",

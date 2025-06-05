@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, badge }) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    
+
     const getData = async () => {
         setLoading(true);
         try {
@@ -28,7 +28,11 @@ export default function Dashboard({ auth }) {
     }, []);
 
     return (
-        <AuthenticatedLayout header="Staff Two Dashboard" auth={auth}>
+        <AuthenticatedLayout
+            header="Staff Two Dashboard"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Staff Two Dashboard" />
             {/* <div className="py-2">Staff Two Dashboard</div> */}
             {loading ? (
@@ -43,6 +47,9 @@ export default function Dashboard({ auth }) {
                     <div className="bg-amber-300 m-4 p-4 font-bold text-2xl rounded">
                         DASHBOARD
                     </div>
+                    <pre className="text-gray-900">
+                        {JSON.stringify(badge, null, 2)}
+                    </pre>
                     <div className="bg-white m-4 p-4 rounded flex">
                         <UserOutlined className="text-5xl mr-4" />
                         <div>
