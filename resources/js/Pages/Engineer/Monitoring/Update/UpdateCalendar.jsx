@@ -4,7 +4,7 @@ import { Badge, Calendar, Modal, Progress, Tooltip, Flex } from "antd";
 import dayjs from "dayjs";
 import { Head } from "@inertiajs/react";
 
-export default function UpdateCalendar({ auth, project }) {
+export default function UpdateCalendar({ auth, project, badge }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedUpdate, setSelectedUpdate] = useState(null);
 
@@ -38,9 +38,7 @@ export default function UpdateCalendar({ auth, project }) {
                                     onClick={() => showModal(item)}
                                     className="text-blue-600 underline hover:text-blue-800"
                                 >
-                                    {dayjs(item.update_date).format(
-                                        "h:mm A"
-                                    )}
+                                    {dayjs(item.update_date).format("h:mm A")}
                                 </button>
                             }
                         />
@@ -51,7 +49,11 @@ export default function UpdateCalendar({ auth, project }) {
     };
 
     return (
-        <AuthenticatedLayout header="Project update calendar" auth={auth}>
+        <AuthenticatedLayout
+            header="Project update calendar"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Project update calendar" />
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
                 <div className="py-2 text-lg font-bold uppercase">
