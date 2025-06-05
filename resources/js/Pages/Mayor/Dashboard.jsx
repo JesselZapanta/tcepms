@@ -43,9 +43,9 @@ export default function Dashboard({ auth, badge }) {
                     <div className="bg-amber-300 m-4 p-4 font-bold text-2xl rounded">
                         DASHBOARD
                     </div>
-                    <pre className="text-gray-900">
+                    {/* <pre className="text-gray-900">
                         {JSON.stringify(badge, null, 2)}
-                    </pre>
+                    </pre> */}
                     <div className="bg-white m-4 p-4 rounded flex">
                         <UserOutlined className="text-5xl mr-4" />
                         <div>

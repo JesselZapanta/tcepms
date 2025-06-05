@@ -14,7 +14,7 @@ import { useReactToPrint } from "react-to-print";
 import DetailedReport from "@/Pages/Partials/DetailedReport";
 import Details from "@/Pages/Partials/Details";
 
-export default function Index({ auth, categories }) {
+export default function Index({ auth, categories, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -124,7 +124,11 @@ export default function Index({ auth, categories }) {
     }, [reportData, shouldPrint]);
 
     return (
-        <AuthenticatedLayout header="Project Management" auth={auth}>
+        <AuthenticatedLayout
+            header="Project Management"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Project Management" />
             <div className="max-w-7xl p-4 mt-4 rounded bg-white mx-auto">
                 <div className="py-2 text-lg font-bold uppercase">

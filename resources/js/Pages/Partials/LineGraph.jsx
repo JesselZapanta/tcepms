@@ -32,7 +32,7 @@ ChartJS.register(
     ChartDataLabels
 );
 
-export default function LineGraph({ auth, rawData, project }) {
+export default function LineGraph({ auth, rawData, project, badge }) {
     const labels = ["Start", ...rawData.dates];
 
     const datasets = [
@@ -112,7 +112,11 @@ export default function LineGraph({ auth, rawData, project }) {
     });
 
     return (
-        <AuthenticatedLayout header="Project Monitoring" auth={auth}>
+        <AuthenticatedLayout
+            header="Project Monitoring"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Project Monitoring" />
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
                 <div className="py-2 text-lg font-bold uppercase">
