@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Details from "./Panel/Details";
 import Summary from "./Panel/Summary";
 
-export default function Index({ auth, project }) {
+export default function Index({ auth, project, badge }) {
     const formatPeso = (value) => {
         const num = parseFloat(value);
         if (isNaN(num)) return "₱0.00";
@@ -48,7 +48,11 @@ export default function Index({ auth, project }) {
         {
             key: "2",
             label: "Materials Details",
-            children: <div className="text-center">No material details for contructual projects.</div>,
+            children: (
+                <div className="text-center">
+                    No material details for contructual projects.
+                </div>
+            ),
         },
     ];
 
@@ -138,7 +142,7 @@ export default function Index({ auth, project }) {
     ];
     //costs.projectDetails.contractual === 1
     return (
-        <AuthenticatedLayout header="Material" auth={auth}>
+        <AuthenticatedLayout header="Material" auth={auth} badge={badge}>
             <Head title="Material" />
 
             {/* <pre className="text-gray-900">

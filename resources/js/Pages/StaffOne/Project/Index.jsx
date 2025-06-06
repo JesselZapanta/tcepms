@@ -40,13 +40,7 @@ import { useReactToPrint } from "react-to-print";
 import DetailedReport from "@/Pages/Partials/DetailedReport";
 import CreateUpdate from "./CreateUpdate";
 
-export default function Index({
-    auth,
-    contructors,
-    engineers,
-    categories,
-    funds,
-}) {
+export default function Index({ auth, contructors, engineers, categories, funds, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -120,7 +114,7 @@ export default function Index({
     const handleCancel = () => {
         setIsModalOpen(false);
         setProject(false);
-        setErrors({})
+        setErrors({});
         getData();
     };
 
@@ -185,7 +179,11 @@ export default function Index({
     }, [reportData, shouldPrint]);
 
     return (
-        <AuthenticatedLayout header="Project Management" auth={auth}>
+        <AuthenticatedLayout
+            header="Project Management"
+            auth={auth}
+            badge={badge}
+        >
             {contextHolder}
             <Head title="Project Management" />
             <div className="max-w-7xl p-4 mt-4 rounded bg-white mx-auto">

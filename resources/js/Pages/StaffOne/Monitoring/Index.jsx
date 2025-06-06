@@ -22,7 +22,7 @@ import {
 } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 
-export default function Index({ auth, categories }) {
+export default function Index({ auth, categories, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
@@ -99,7 +99,11 @@ export default function Index({ auth, categories }) {
     };
 
     return (
-        <AuthenticatedLayout header="Project Monitoring" auth={auth}>
+        <AuthenticatedLayout
+            header="Project Monitoring"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Project Monitoring" />
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
                 <div className="py-2 text-lg font-bold uppercase">

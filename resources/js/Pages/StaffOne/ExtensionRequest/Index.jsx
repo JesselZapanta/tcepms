@@ -28,7 +28,7 @@ import Details from "@/Pages/Partials/Details";
 import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
 
-export default function Index({ auth }) {
+export default function Index({ auth, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -140,7 +140,11 @@ export default function Index({ auth }) {
     };
 
     return (
-        <AuthenticatedLayout header="Request Extension" auth={auth}>
+        <AuthenticatedLayout
+            header="Request Extension"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Request Extension" />
             {/* {contextHolder} */}
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">
