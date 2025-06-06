@@ -20,7 +20,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 import TextArea from "antd/es/input/TextArea";
 
-export default function Index({auth}) {
+export default function Index({ auth, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -99,7 +99,7 @@ export default function Index({auth}) {
             address: contructor.address,
             status: contructor.status,
         });
-    }
+    };
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -111,8 +111,8 @@ export default function Index({auth}) {
 
     const handleSubmit = async (values) => {
         setProcessing(true);
-        
-        if(contructor){
+
+        if (contructor) {
             try {
                 const res = await axios.put(
                     `/admin/contructor/update/${contructor.id}`,
@@ -132,7 +132,7 @@ export default function Index({auth}) {
             } finally {
                 setProcessing(false);
             }
-        }else{
+        } else {
             try {
                 const res = await axios.post("/admin/contructor/store", values);
                 if (res.data.status === "created") {
@@ -152,10 +152,10 @@ export default function Index({auth}) {
         }
     };
 
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         setLoading(true);
-        
-        try{
+
+        try {
             const res = await axios.delete(`/admin/contructor/destroy/${id}`);
 
             if (res.data.status === "deleted") {
@@ -167,16 +167,19 @@ export default function Index({auth}) {
                     "The contructor has been deleted successfully."
                 );
             }
-
-        }catch(err){
-            console.log(err)
-        }finally{
+        } catch (err) {
+            console.log(err);
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
-        <AuthenticatedLayout header="Contructor Management" auth={auth}>
+        <AuthenticatedLayout
+            header="Contructor Management"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Contructor Management" />
             {contextHolder}
             <div className="max-w-5xl mx-auto p-4 mt-4 rounded bg-white">

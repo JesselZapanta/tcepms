@@ -22,7 +22,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 import TextArea from "antd/es/input/TextArea";
 
-export default function Index({auth}) {
+export default function Index({ auth, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -97,7 +97,7 @@ export default function Index({auth}) {
             name: fund.name,
             status: fund.status,
         });
-    }
+    };
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -109,8 +109,8 @@ export default function Index({auth}) {
 
     const handleSubmit = async (values) => {
         setProcessing(true);
-        
-        if(fund){
+
+        if (fund) {
             try {
                 const res = await axios.put(
                     `/admin/fund/update/${fund.id}`,
@@ -130,7 +130,7 @@ export default function Index({auth}) {
             } finally {
                 setProcessing(false);
             }
-        }else{
+        } else {
             try {
                 const res = await axios.post("/admin/fund/store", values);
                 if (res.data.status === "created") {
@@ -150,10 +150,10 @@ export default function Index({auth}) {
         }
     };
 
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         setLoading(true);
-        
-        try{
+
+        try {
             const res = await axios.delete(`/admin/fund/destroy/${id}`);
 
             if (res.data.status === "deleted") {
@@ -165,16 +165,15 @@ export default function Index({auth}) {
                     "The fund has been deleted successfully."
                 );
             }
-
-        }catch(err){
-            console.log(err)
-        }finally{
+        } catch (err) {
+            console.log(err);
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
-        <AuthenticatedLayout header="Fund Management" auth={auth}>
+        <AuthenticatedLayout header="Fund Management" auth={auth} badge={badge}>
             <Head title="Fund Management" />
             {contextHolder}
             <div className="max-w-5xl mx-auto p-4 mt-4 rounded bg-white">

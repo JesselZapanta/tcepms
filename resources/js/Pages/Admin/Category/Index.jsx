@@ -21,7 +21,7 @@ import axios from "axios";
 import Column from "antd/es/table/Column";
 import TextArea from "antd/es/input/TextArea";
 
-export default function Index({auth}) {
+export default function Index({ auth, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
@@ -96,7 +96,7 @@ export default function Index({auth}) {
             name: category.name,
             status: category.status,
         });
-    }
+    };
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -108,8 +108,8 @@ export default function Index({auth}) {
 
     const handleSubmit = async (values) => {
         setProcessing(true);
-        
-        if(category){
+
+        if (category) {
             try {
                 const res = await axios.put(
                     `/admin/category/update/${category.id}`,
@@ -129,7 +129,7 @@ export default function Index({auth}) {
             } finally {
                 setProcessing(false);
             }
-        }else{
+        } else {
             try {
                 const res = await axios.post("/admin/category/store", values);
                 if (res.data.status === "created") {
@@ -149,10 +149,10 @@ export default function Index({auth}) {
         }
     };
 
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         setLoading(true);
-        
-        try{
+
+        try {
             const res = await axios.delete(`/admin/category/destroy/${id}`);
 
             if (res.data.status === "deleted") {
@@ -164,16 +164,19 @@ export default function Index({auth}) {
                     "The category has been deleted successfully."
                 );
             }
-
-        }catch(err){
-            console.log(err)
-        }finally{
+        } catch (err) {
+            console.log(err);
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
-        <AuthenticatedLayout header="Category Management" auth={auth}>
+        <AuthenticatedLayout
+            header="Category Management"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Category Management" />
             {contextHolder}
             <div className="max-w-5xl mx-auto p-4 mt-4 rounded bg-white">
@@ -301,14 +304,8 @@ export default function Index({auth}) {
                                 label="CATEGORY NAME"
                                 name="name"
                                 // Custom error handling
-                                validateStatus={
-                                    errors?.name ? "error" : ""
-                                }
-                                help={
-                                    errors?.name
-                                        ? errors.name[0]
-                                        : ""
-                                }
+                                validateStatus={errors?.name ? "error" : ""}
+                                help={errors?.name ? errors.name[0] : ""}
                             >
                                 <Input
                                     placeholder="Category Name"

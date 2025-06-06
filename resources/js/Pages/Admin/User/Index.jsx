@@ -28,7 +28,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Column from "antd/es/table/Column";
 
-export default function Index({ auth }) {
+export default function Index({ auth, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -192,7 +192,7 @@ export default function Index({ auth }) {
     };
 
     return (
-        <AuthenticatedLayout header="User Management" auth={auth}>
+        <AuthenticatedLayout header="User Management" auth={auth} badge={badge}>
             <Head title="User Management" />
             {contextHolder}
             <div className="max-w-5xl mx-auto p-4 mt-4 rounded bg-white">
@@ -394,8 +394,14 @@ export default function Index({ auth }) {
                                     <Select
                                         options={[
                                             { value: 0, label: "Admin" },
-                                            { value: 1, label: "Staff (Project Material Division)" },
-                                            { value: 2, label: "Staff (Project Labor Division)" },
+                                            {
+                                                value: 1,
+                                                label: "Staff (Project Material Division)",
+                                            },
+                                            {
+                                                value: 2,
+                                                label: "Staff (Project Labor Division)",
+                                            },
                                             {
                                                 value: 3,
                                                 label: "On-Site Engineer",

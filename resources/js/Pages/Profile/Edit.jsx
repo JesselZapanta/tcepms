@@ -4,9 +4,9 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
-export default function Edit({ mustVerifyEmail, status, auth }) {
+export default function Edit({ mustVerifyEmail, status, auth, badge }) {
     return (
-        <AuthenticatedLayout header="Profile" auth={auth}>
+        <AuthenticatedLayout header="Profile" auth={auth} badge={badge}>
             <Head title="Profile" />
             <div className="flex flex-col gap-4">
                 <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">

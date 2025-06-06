@@ -32,7 +32,7 @@ import Report from "./Report";
 import { useReactToPrint } from "react-to-print";
 import Details from "@/Pages/Partials/Details";
 
-export default function Index({ auth, currentProject }) {
+export default function Index({ auth, currentProject, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -48,7 +48,7 @@ export default function Index({ auth, currentProject }) {
         try {
             const res = await axios.get(
                 `/admin/project-monitoring/project/getData/${currentProject.id}?month=${month}&year=${year}&order=${order}`
-            );            
+            );
 
             setData(res.data.projectDetails);
         } catch (err) {
@@ -124,7 +124,11 @@ export default function Index({ auth, currentProject }) {
     };
 
     return (
-        <AuthenticatedLayout header="Project Update and Timeline" auth={auth}>
+        <AuthenticatedLayout
+            header="Project Update and Timeline"
+            auth={auth}
+            badge={badge}
+        >
             <Head title="Project Update and Timeline" />
 
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">

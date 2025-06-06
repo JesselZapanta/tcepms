@@ -19,7 +19,7 @@ import Report from "./Report";
 import { useReactToPrint } from "react-to-print";
 
 
-export default function Index({ auth, contructor }) {
+export default function Index({ auth, contructor, badge }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
@@ -88,7 +88,6 @@ export default function Index({ auth, contructor }) {
         setYears(yearArray);
     }, []);
 
-
     //report
 
     const componentRef = useRef();
@@ -97,11 +96,12 @@ export default function Index({ auth, contructor }) {
         documentTitle: "Project Update Report",
         content: () => componentRef.current,
     });
-    
+
     return (
         <AuthenticatedLayout
             header={`${contructor.company_name} / Project Monitoring`}
             auth={auth}
+            badge={badge}
         >
             <Head title={`${contructor.company_name} / Project Monitoring`} />
             <div className="max-w-7xl mx-auto p-4 mt-4 rounded bg-white">

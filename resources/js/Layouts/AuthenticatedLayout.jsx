@@ -98,16 +98,12 @@ export default function AuthenticatedLayout({ auth, header, children, badge }) {
         {
             label: (
                 <Link href={route("admin.project-monitoring")}>
-                    <Link href={route("admin.project-request-extension")}>
-                        <div className="flex justify-between items-center gap-2">
-                            Project Monitoring
-                            <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
-                                {badge?.ongoingProject
-                                    ? badge?.ongoingProject
-                                    : 0}
-                            </span>
-                        </div>
-                    </Link>
+                    <div className="flex justify-between items-center gap-2">
+                        Project Monitoring
+                        <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                            {badge?.ongoingProject ? badge?.ongoingProject : 0}
+                        </span>
+                    </div>
                 </Link>
             ),
             key: "admin.project-monitoring",
