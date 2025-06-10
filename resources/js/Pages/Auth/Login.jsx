@@ -49,7 +49,7 @@ export default function Login({ status, canResetPassword }) {
                     />
                     <div className="font-bold text-6xl">TCPEMS</div>
                 </div> */}
-                <Link href="/">
+                <Link href="login">
                     <img
                         src="/images/banner.png"
                         alt="Jobly"
