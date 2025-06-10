@@ -339,7 +339,7 @@ export default function Index({ auth, currentProject, badge }) {
                                     height: "90vh",
                                     padding: 0,
                                 }}
-                                width="90"
+                                width="100%"
                                 centered
                             >
                                 <div className="relative">

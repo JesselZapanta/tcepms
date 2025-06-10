@@ -13,6 +13,8 @@ import {
     Select,
     Dropdown,
     Modal,
+    Divider,
+    Tag,
 } from "antd";
 import Search from "antd/es/input/Search";
 import {
@@ -231,9 +233,25 @@ export default function Index({ auth, categories, badge }) {
                                         )}
                                     </div>
                                     <div className="p-4">
+                                        <Tag color="blue">
+                                            {project.category}
+                                        </Tag>
                                         <div className="font-bold text-lg">
                                             {project.name}
                                         </div>
+                                        <div className="italic text-sm">
+                                            {project.status === "Ongoing" ? (
+                                                <Tag color="orange">
+                                                    Ongoing
+                                                </Tag>
+                                            ) : (
+                                                <Tag color="green">
+                                                    Completed - (
+                                                    {project?.actual_end_date})
+                                                </Tag>
+                                            )}
+                                        </div>
+                                        <Divider />
                                         <div className="mt-4 font-bold">
                                             <Flex
                                                 wrap="wrap"
