@@ -161,8 +161,8 @@ export default function AuthenticatedLayout({ auth, header, children, badge }) {
                     <div className="flex justify-between items-center gap-2">
                         Project
                         <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
-                            {badge?.pendingMaterials
-                                ? badge?.pendingMaterials
+                            {badge?.pendingLabor
+                                ? badge?.pendingLabor
                                 : 0}
                         </span>
                     </div>

@@ -186,7 +186,7 @@ export default function Index({ auth, contructors, engineers, categories, funds,
         >
             {contextHolder}
             <Head title="Project Management" />
-            <div className="max-w-7xl p-4 mt-4 rounded bg-white mx-auto">
+            <div className="w-full p-4 mt-4 rounded bg-white mx-auto">
                 <div className="py-2 text-lg font-bold uppercase">
                     List of Project
                 </div>
@@ -271,6 +271,14 @@ export default function Index({ auth, contructors, engineers, categories, funds,
                             dataIndex="name"
                             key="name"
                             render={(name) => truncate(name, 30)}
+                        />
+                        <Column
+                            className="whitespace-nowrap bg-white"
+                            //sorter={true}
+                            title="Category"
+                            dataIndex="category"
+                            key="category"
+                            render={(name) => <Tag>{truncate(name, 20)}</Tag>}
                         />
                         <Column
                             className="whitespace-nowrap bg-white"
